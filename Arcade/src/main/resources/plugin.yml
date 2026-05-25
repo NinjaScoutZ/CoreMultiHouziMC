@@ -1,0 +1,6 @@
+name: HouziCoreArcade
+main: com.houzicore.arcade.Arcade
+version: 1.21.11
+author: HouziCore
+api-version: '26.1.2'
+depend: [HouziCore-Shared, PlaceholderAPI, ProtocolLib]

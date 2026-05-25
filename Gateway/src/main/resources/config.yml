@@ -1,0 +1,86 @@
+# HouziGate Configuration
+# Gateway authentication plugin for HouziCore network
+
+database:
+  host: localhost
+  port: 3306
+  name: houzigate
+  user: root
+  password: ""
+  pool_size: 5
+
+auth:
+  min_password_length: 6
+  max_attempts: 5
+  login_timeout_seconds: 60
+  premium_bypass: true
+  max_trusted_ips: 10
+
+2fa:
+  enabled: true
+  min_pin_length: 4
+  staff_permissions:
+    - houzigate.staff
+    - houzigate.admin
+
+# ── BungeeCord Transfer ────────────────────────────────────────────────────────
+bungee:
+  # Name of the Lobby server in BungeeCord config.yml
+  lobby_server: "Lobby"
+
+# ── Login Screen ───────────────────────────────────────────────────────────────
+screen:
+  # Players are automatically teleported to max world height (Y=319)
+  # with flight enabled and zero speed — they cannot move or fall.
+
+  # Action bar text shown while waiting to authenticate
+  action_bar_login:    "&e⚷ Type &a/login <password> &eto continue"
+  action_bar_register: "&e✦ Type &a/register <pass> <pass> &eto create account"
+  action_bar_2fa:      "&e⚿ New IP — type &a/2fa <pin> &eto verify"
+
+# ── Messages ───────────────────────────────────────────────────────────────────
+messages:
+  prefix: "&8[&bGate&8] "
+  please_login: "&ePlease type &a/login <password> &eto continue."
+  please_register: "&eWelcome! Type &a/register <pass> <pass> &eto create an account."
+  please_2fa: "&eNew IP detected — type &a/2fa <pin> &eto verify your identity."
+  login_success: "&aAuthenticated successfully."
+  register_success: "&aAccount created and logged in."
+  wrong_password: "&cIncorrect password. Attempts remaining: &f<remaining>"
+  pin_wrong: "&cIncorrect PIN. Try again."
+  pin_correct: "&aIP verified and trusted."
+  timeout_kick: "&cLogin timeout. Please reconnect."
+  max_attempts_kick: "&cToo many failed attempts. Please reconnect."
+  already_authed: "&cYou are already authenticated."
+  not_registered: "&cNo account found. Use &a/register <pass> <pass>&c."
+  register_mismatch: "&cPasswords do not match."
+  register_too_short: "&cPassword must be at least &f<min> &ccharacters."
+  pin_set: "&a2FA PIN updated successfully."
+  pin_too_short: "&cPIN must be at least &f<min> &cdigits."
+  admin_reset: "&aPassword for &f<player> &areset."
+  admin_trust: "&aIP &f<ip> &atrusted for &f<player>&a."
+  admin_cleartrust: "&aAll trusted IPs cleared for &f<player>&a."
+  admin_forceauth: "&f<player> &aforce-authenticated."
+  premium_detected: "&bPremium account detected — password login skipped."
+  new_ip_notice: "&eLogging in from a new IP address."
+  ip_banned: "&cIP นี้โดนระงับการเชื่อมต่อชั่วคราวเนื่องจากเดารหัสผ่านผิดบ่อยเกินไป (IP temporarily blocked due to brute-force protection)"
+  register_confirm_prompt: "&eกรุณายืนยันรหัสผ่านอีกครั้งเพื่อความปลอดภัย (Please confirm your password)"
+  register_confirm_mismatch: "&cรหัสผ่านไม่ตรงกัน กรุณาทำรายการใหม่ (Passwords do not match, please restart registration)"
+
+# ── Session & Security Options ────────────────────────────────────────────────
+session:
+  # เปิดใช้งานระบบจดจำสิทธิ์การล็อกอิน (Session Login)
+  # ระบบจะไม่ถามรหัสผ่านถ้าเชื่อมต่อด้วยชื่อเดิมจาก IP เดิมภายในเวลาที่กำหนด
+  enabled: true
+  timeout_minutes: 15
+
+rate_limit:
+  # เปิดใช้งานระบบป้องกัน Brute Force ทาง IP
+  enabled: true
+  max_failures_per_ip: 10
+  ban_duration_minutes: 10
+
+ui:
+  # บังคับขั้นตอนยืนยันรหัสผ่านตอนสมัคร (Register Confirmation)
+  register_confirm: true
+

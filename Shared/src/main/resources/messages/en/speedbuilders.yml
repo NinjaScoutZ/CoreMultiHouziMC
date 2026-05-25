@@ -1,0 +1,36 @@
+speedbuilders:
+  scoreboard:
+    title: "&b&lSPEED BUILDERS"
+    stage: "&e&lStage"
+    stage_warmup: "&aWarm-up"
+    stage_main: "&eMain Game"
+    stage_sudden: "&cSudden Death"
+    round: "&e&lRound"
+    time: "&e&lTime Left"
+    timeLeft: "&f{0}s"
+    rank: "&e&lRank"
+    combo: "&e&lCombo"
+    players: "&e&lPlayers"
+  hologram:
+    completed: "Completed"
+  perfect: "Perfect Match!"
+  eliminated: "&c{0} &7was incinerated by the Dragon!"
+  speedbonus: "&e+{0} Speed Bonus!"
+  actionbar:
+    progress: "&aMatch: &e{0}% &7| &aSpeed Bonus: &e+{1} pts"
+    perfect: "&a&lPERFECT! &eCombo Streak: &d{0}x"
+  chat:
+    score_summary: "&e&lRound Summary: &a{0} pts &7(Base: {1}, Speed: {2}, Combo: x{3})"
+  gui:
+    vote:
+      title: "&8Vote for Creativity!"
+      title_voted: "&dCreativity Vote Cast!"
+      currently_selected: "&a✔ Currently Selected"
+      item_name: "&e{0}"
+      item_lore:
+        - "&7Click to vote for their creativity!"
+        - "&8───────────"
+        - "&fVotes: &b{0}"
+      already_voted: "&cYou have already voted for {0}!"
+      success: "&aYou voted for {0}!"
+      ended: "&cVoting period has ended."

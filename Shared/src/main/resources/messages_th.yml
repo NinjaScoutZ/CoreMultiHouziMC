@@ -1,0 +1,808 @@
+# ============================================================
+# HouziCore Lobby - Thai Messages (messages_th.yml)
+# ภาษาไทย — ใช้ไฟล์ messages_en.yml เป็นต้นแบบโครงสร้าง
+# รองรับ & colour codes และ {0}, {1} สำหรับค่าตัวแปร
+# ============================================================
+
+# -----------------------------------------------------------
+# Compass
+# -----------------------------------------------------------
+compass:
+  name: "&aกลับสู่ Lobby"
+  lore.1: ""
+  lore.2: "&7ถือไอเทมนี้แล้วคลิก"
+  lore.3: "&7เพื่อกลับ Hub"
+
+afk:
+  kick: "&e[AFK] &7คุณถูกเตะออกเพราะ AFK เกิน 5 นาที"
+  warning_title: "&cᴀꜰᴋ ᴡᴀʀɴɪɴɢ!"
+  warning_subtitle: "&7จะถูกเตะใน {0}s"
+  warning_chat: "&cคุณจะถูกเตะออกในอีก &l{0}s&c หากไม่มีการเคลื่อนไหว!"
+
+# -----------------------------------------------------------
+# Scoreboard labels
+# -----------------------------------------------------------
+scoreboard:
+  label.player: "&e&lผู้เล่น"
+  label.level: "&b&lเลเวล"
+  label.rank: "&6&lแรงค์"
+  label.coins: "&e&lเหรียญ"
+  label.gems: "&a&lอัญมณี"
+  label.server: "&3&lเซิร์ฟเวอร์"
+  label.online: "&5&lออนไลน์"
+
+# -----------------------------------------------------------
+# Hub Hotbar Items & HubManager
+# -----------------------------------------------------------
+hub:
+  item.game_menu: "<GRADIENT:#10A0FF,#1055FF> ɢᴀᴍᴇ ᴍᴇɴᴜ </GRADIENT>"
+  item.game_menu.lore1: "§7คลิกขวาเพื่อเปิดเมนู"
+  item.game_menu.lore2: "§7เลือกห้องและเล่นมินิเกม"
+  item.profile: "<GRADIENT:#55FF55,#00AA00> ᴍʏ ᴘʀᴏғɪʟᴇ </GRADIENT>"
+  item.lobby_menu: "<GRADIENT:#FFD700,#FF6B00> ʟᴏʙʙʏ ᴍᴇɴᴜ </GRADIENT>"
+
+  join.title: "<gradient:#FFD700:#FF8C00><bold>✦ {1} ✦</bold></gradient>"
+  join.subtitle: "<white>ยินดีต้อนรับคุณ <gradient:#00E5FF:#2575FC><bold>{0}</bold></gradient></white>"
+  welcome_chat.line1: " "
+  welcome_chat.line2: "      <gradient:#FFE259:#FFA751:#FF5E62><strikethrough>                        </strikethrough></gradient> <gradient:#FFD700:#FF8C00><bold>✦ {1} ✦</bold></gradient> <gradient:#FF5E62:#FFA751:#FFE259><strikethrough>                        </strikethrough></gradient>"
+  welcome_chat.line3: " "
+  welcome_chat.line4: "         <gray>ขอต้อนรับสู่เครือข่ายเซิร์ฟเวอร์ที่มุ่งมั่นมอบประสบการณ์ที่ดีที่สุด!</gray>"
+  welcome_chat.line5: "         <gray>หากต้องการความช่วยเหลือ โปรดติดต่อทีมงานของเรา</gray>"
+  welcome_chat.line6: " "
+  welcome_chat.line7: "   <click:open_url:'https://discord.gg/houzicore'><hover:show_text:'<color:#7289DA>เข้าร่วม Discord</color>'><color:#7289DA><bold>💬 ᴅɪꜱᴄᴏʀᴅ</bold></color></hover></click> <dark_gray>▪</dark_gray> <click:open_url:'https://{2}'><hover:show_text:'<color:#FFD700>เยี่ยมชมเว็บไซต์</color>'><color:#FFD700><bold>🌐 ᴡᴇʙꜱɪᴛᴇ</bold></color></hover></click> <dark_gray>▪</dark_gray> <click:open_url:'https://store.{2}'><hover:show_text:'<color:#FF6B6B>สนับสนุนพวกเรา</color>'><color:#FF6B6B><bold>🛒 ꜱᴛᴏʀᴇ</bold></color></hover></click> <dark_gray>▪</dark_gray> <click:open_url:'https://{2}/wiki'><hover:show_text:'<color:#55FF55>คู่มือการเล่น</color>'><color:#55FF55><bold>📖 ᴡɪᴋɪ</bold></color></hover></click>"
+  welcome_chat.line8: " "
+  welcome_chat.line9: "         <click:open_url:'https://{2}/changelog'><hover:show_text:'<color:#00E5FF>อัปเดตล่าสุดมีอะไรใหม่?</color>'><gradient:#00E5FF:#2575FC><bold>▶ ดูบันทึกการอัปเดตล่าสุด (ᴄʜᴀɴɢᴇʟᴏɢ) ◀</bold></gradient></hover></click>"
+  welcome_chat.line10: " "
+  welcome_chat.line11: "      <gradient:#FFE259:#FFA751:#FF5E62><strikethrough>                                                                 </strikethrough></gradient>"
+  welcome_chat.line12: ""
+  welcome_chat.line13: ""
+  quit.message: "&c{0} ออกจากเครือข่ายแล้ว"
+  chat.spawn_lock: "&7คุณต้องออกจากจุดสตาร์ทก่อนจึงจะพูดในแชทได้!"
+  chat.spawn_lock_pm: "&7คุณต้องออกจากจุดสตาร์ทก่อนจึงจะส่งข้อความส่วนตัวได้!"
+
+# -----------------------------------------------------------
+# Tutorial
+# -----------------------------------------------------------
+tutorial:
+  started: "&aTutorial&7: คุณเริ่ม &e{0}&7 แล้ว"
+  completed: "&aTutorial&7: คุณทำ &e{0}&7 สำเร็จแล้ว!"
+  reward: "&aGem&7: คุณได้รับ &e{0} Gems"
+
+# -----------------------------------------------------------
+# Poll
+# -----------------------------------------------------------
+poll:
+  thanks: "&aขอบคุณสำหรับคำตอบของคุณ!"
+  reward: "&aGem&7: คุณได้รับ &e{0} Gems!"
+  error: "&cเกิดข้อผิดพลาดในการประมวลผลโพล"
+  listing: "&eรายการโพลทั้งหมด:"
+  click_view: "&7คลิกโพลเพื่อดูผลลัพธ์!"
+  invalid_int: "&cตัวเลขไม่ถูกต้อง: &e{0}"
+  not_found: "&cไม่พบโพล กรุณาลองใหม่!"
+  fetching: "&eกำลังดึงข้อมูลโพล..."
+  question: "&eคำถาม: &f{0}"
+  enabled: "&eสถานะ: &f{0}"
+  poll_id: "&eไอดีโพล: &f{0}"
+  reward_amount: "&eรางวัล: &f{0}"
+  display_type: "&eประเภทการแสดง: &f{0}"
+  failed_parse: "&cไม่สามารถประมวลผลคำตอบ กรุณาลองใหม่ภายหลัง"
+  expired: "&cโพลนี้ไม่มีอยู่แล้ว ขออภัย!"
+  total: "&eจำนวนคำตอบทั้งหมด: &f{0}"
+
+# -----------------------------------------------------------
+# Server Game Menu — game descriptions
+# -----------------------------------------------------------
+game_menu:
+  title: "&eเลือกเกม"
+  join_players: "&fเข้าร่วมกับ &a{0} &fผู้เล่น!"
+  status.online: "§a● §aออนไลน์"
+  status.offline: "§c● §cออฟไลน์"
+
+  bridges.name: "<GRADIENT:#FFD700,#FF6B00> ᴛʜᴇ ʙʀɪᴅɢᴇs </GRADIENT>"
+  bridges.desc.1: "&7จักรวรรดิบนเกาะที่ถูกแบ่งแยกด้วยความว่างเปล่า"
+  bridges.desc.2: "&7เมื่อผ่านไป 10 นาที &bสะพาน &7จะปรากฏขึ้น"
+  bridges.desc.3: "&7ข้ามสะพานไป และ&cอย่าให้เหลือผู้รอดชีวิต"
+
+  sg.name: "<GRADIENT:#FFD700,#FF6B00> sᴜʀᴠɪᴠᴀʟ ᴘʀɪᴍᴀʟ ɢᴀᴍᴇs (ʜᴜɴɢᴇʀ ɢᴀᴍᴇ) </GRADIENT>"
+  sg.desc.1: "&7บททดสอบแห่งการเอาชีวิตรอดที่แท้จริง"
+  sg.desc.2: "&7ล่า &eหีบสมบัติ &7และต่อสู้ในโลกที่กำลังพังทลาย"
+  sg.desc.3: "&cฉีกกฎเพลย์สไตล์เดิมๆ &7เพื่อเป็นผู้รอดชีวิตคนสุดท้าย"
+
+  skywars.name: "<GRADIENT:#FFD700,#FF6B00> sᴋʏᴡᴀʀs </GRADIENT>"
+  skywars.desc.1: "&7ความว่างเปล่ากำลังเพรียกหา จงอย่าร่วงหล่น"
+  skywars.desc.2: "&7ฟาร์ม &eหีบสมบัติบนเกาะ &7แล้วต่อบล็อกข้ามช่องว่าง"
+  skywars.desc.3: "&cกำจัด &7ศัตรูและพิชิตสมรภูมิบนท้องฟ้า"
+
+  uhc.name: "<GRADIENT:#FFD700,#FF6B00> ᴜʟᴛʀᴀ ʜᴀʀᴅᴄᴏʀᴇ </GRADIENT>"
+  uhc.desc.1: "&7การเอาชีวิตรอดที่ท้าทายขีดจำกัดขั้นสุด"
+  uhc.desc.2: "&7ไม่มีการฟื้นฟูเลือด ใช้แค่ &eแอปเปิ้ลทอง &7เท่านั้น"
+  uhc.desc.3: "&7จงระวัง &bบาเรียโลก &7ที่แคบลงเรื่อยๆ..."
+
+  wizards.name: "<GRADIENT:#FFD700,#FF6B00> ᴡɪᴢᴀʀᴅs </GRADIENT>"
+  wizards.desc.1: "&7สวมบทจอมเวทชูไม้กายสิทธิ์อันทรงพลัง"
+  wizards.desc.2: "&7ระเบิดภูเขาเผากระท่อมใส่ผู้เล่นคนอื่น"
+  wizards.desc.3: "&7ในโหมด Free-for-all ห้ำหั่นด้วยเวทมนตร์!"
+
+  castle_siege.name: "<GRADIENT:#FFD700,#FF6B00> ᴄᴀsᴛʟᴇ sɪᴇɢᴇ </GRADIENT>"
+  castle_siege.desc.1: "&7มหากาพย์การต่อสู้ ผู้พิทักษ์ปะทะซอมบี้"
+  castle_siege.desc.2: "&7ปกป้อง &eกษัตริย์ &7จากคลื่นมรณะที่ไม่มีวันจบ"
+  castle_siege.desc.3: "&7จนกว่าพระอาทิตย์ยามเช้าจะฉายแสง!"
+
+  block_hunt.name: "<GRADIENT:#FFD700,#FF6B00> ᴘʀᴏᴘ ʀᴜsʜ (ʙʟᴏᴄᴋ ʜᴜɴᴛ) </GRADIENT>"
+  block_hunt.desc.1: "&7เกมแมวจับหนูที่ถูกอัปเกรดให้ลื่นไหลและมันส์ยิ่งขึ้น"
+  block_hunt.desc.2: "&7ซ่อนตัวเป็นสิ่งของ หรือไล่ล่าพวกมัน"
+  block_hunt.desc.3: "&7ด้วยคลาสสกิลความสามารถมากมาย!"
+
+  minestrike.name: "<GRADIENT:#FFD700,#FF6B00> ᴍɪɴᴇ-sᴛʀɪᴋᴇ </GRADIENT>"
+  minestrike.desc.1: "&7โหมดชูตติ้งวางแผนแบบแบ่งทีมสุดมันส์"
+  minestrike.desc.2: "&7ป้องกันจุดวางระเบิดซีโฟร์ 2 จุด หรือจะ"
+  minestrike.desc.3: "&7เป็นฝ่ายวางระเบิดก่อนเวลาหมด!"
+
+  drawmything.name: "<GRADIENT:#FFD700,#FF6B00> ᴅʀᴀᴡ ᴍʏ ᴛʜɪɴɢ </GRADIENT>"
+  drawmything.desc.1: "&7แข่งขันวาดรูปและทายคำศัพท์สุดฮา"
+  drawmything.desc.2: "&7สลับกันวาดรูป ใครทายถูกภายในพริบตา"
+  drawmything.desc.3: "&7รับคะแนนไปเลย!"
+
+  dominate.name: "<GRADIENT:#FFD700,#FF6B00> ᴅᴏᴍɪɴᴀᴛᴇ </GRADIENT>"
+  dominate.desc.1: "&7สวมบทบาทคลาสอาชีพพร้อมอุปกรณ์หลากหลาย"
+  dominate.desc.2: "&7เข้าตีกับทีมตรงข้ามเพื่อยึดครอง"
+  dominate.desc.3: "&7จุดควบคุมพื้นที่ในสมรภูมิ!"
+
+  tdm.name: "<GRADIENT:#FFD700,#FF6B00> ᴛᴇᴀᴍ ᴅᴇᴀᴛʜᴍᴀᴛᴄʜ </GRADIENT>"
+  tdm.desc.1: "&7การต่อสู้โหมดทีมเดธแมตช์ระดับคลาสสิค"
+  tdm.desc.2: "&7ต่อสู้และเด็ดหัวทีมศัตรูให้หมด"
+  tdm.desc.3: "&7ปราบพวกมันอย่าให้เหลือซาก!"
+
+  master_builders.name: "<GRADIENT:#FFD700,#FF6B00> ᴍᴀsᴛᴇʀ ʙᴜɪʟᴅᴇʀs </GRADIENT>"
+  master_builders.desc.1: "&7การประชันความคิดสร้างสรรค์อันไร้ขีดจำกัด"
+  master_builders.desc.2: "&7สร้างผลงานชิ้นเอกตามธีมที่ได้รับ"
+  master_builders.desc.3: "&7แล้วให้ทุกคนโหวตคะแนน!"
+
+  arcade.name: "<GRADIENT:#FFD700,#FF6B00> ᴀʀᴄᴀᴅᴇ ᴜɴɪᴠᴇʀsᴇ </GRADIENT>"
+  arcade.desc.intro: "&7จุดสูงสุดของมินิเกมเพลย์ฉับไวแห่งโลกผู้เล่น:"
+  arcade.cycle.micro_battles: "&aMicro Battles"
+  arcade.cycle.turf_wars: "&aTurf Wars"
+  arcade.cycle.runner: "&aRunner"
+  arcade.cycle.dragon_escape: "&aDragon Escape"
+  arcade.cycle.death_tag: "&aDeath Tag"
+
+  arcade.map_vote_ends: "การโหวตแผนที่จะสิ้นสุดในอีก &a{0} วินาที&r!"
+  arcade.map_vote_winner: "การโหวตสิ้นสุดลงแล้ว! แผนที่ที่ชนะ: &a{0}"
+  arcade.map_generate: "กำลังสร้างแผนที่เกมในอีก &a{0} วินาที&r!"
+  arcade.lobby.loading: "กำลังเตรียมโลก..."
+  arcade.lobby.starting_in: "เริ่มในอีก "
+  arcade.trait.no_traits: "&cคิทนี้ยังไม่มี Trait ให้เลือกใช้งาน"
+
+  player_servers.name: "<GRADIENT:#FFD700,#FF6B00> ᴘʟᴀʏᴇʀ sᴇʀᴠᴇʀs </GRADIENT>"
+  player_servers.desc.1: "&7เปิดเซิร์ฟเวอร์ย่อยในฉบับของคุณเอง"
+  player_servers.desc.2: "&7ชวนเพื่อน หรือลากผู้เล่นมาตั้งกติกาเอง"
+  player_servers.desc.3: "&7เล่นเกมที่ใช่ เวลาที่อยากเล่น!"
+
+# -----------------------------------------------------------
+# Preferences Page
+# -----------------------------------------------------------
+prefs:
+  title: "ตั้งค่าเกม"
+  language.name: "ภาษาเซิร์ฟเวอร์"
+  language.desc.1: "เลือกแล้ว: {0}"
+  language.desc.2: "คลิกเพื่อสลับเป็น {0}"
+  visibility.name: "ซ่อนผู้เล่น"
+  chat.name: "แชท/ข้อความส่วนตัว"
+  pm.name: "กระซิบ"
+  party.name: "คำเชิญปาร์ตี้ / เพื่อน"
+  friend.name: "คำขอเป็นเพื่อน"
+  stacker.name: "ต่อตัวผู้เล่น"
+  radio.name: "วิทยุเพลง"
+  status.enabled: "เปิดใช้"
+  status.disabled: "ปิด"
+  click.enable: "คลิกเพื่อเปิด"
+  click.disable: "คลิกเพื่อปิด"
+  close: "\u2716 ปิด"
+
+# -----------------------------------------------------------
+# Cosmetics Page
+# -----------------------------------------------------------
+cosmetic:
+  title: "ของตกแต่ง"
+  particles: "เอฟเฟกต์อนุภาค"
+  gadgets: "ของเล่น"
+  morphs: "แปลงร่าง"
+  mounts: "สัตว์ขี่"
+  pets: "สัตว์เลี้ยง"
+  costumes: "ชุดแต่งกาย"
+  music: "เพลง"
+  sprays: "สเปรย์"
+  auras: "ออร่าโฮโลแกรม"
+  wineffects: "เอฟเฟกต์ผู้ชนะ"
+  banners: "แบนเนอร์"
+  active_preview: "ของที่กำลังใช้งานอยู่"
+  click_deactivate: "คลิกเพื่อถอดออก"
+  active: "กำลังใช้งาน"
+  unlocked: "ปลดล็อคแล้ว"
+  locked: "ยังไม่ได้ปลดล็อค"
+  cost: "ราคา: "
+  coins: " เหรียญ"
+  treasure_found: "พบได้ในหีบสมบัติ"
+  free: "ฟรี"
+  ammo: "กระสุน: "
+  right_click_buy: "คลิกขวาเพื่อซื้อเพิ่ม"
+  deactivate: "คลิกเพื่อปิดใช้งาน"
+  activate: "คลิกเพื่อเปิดใช้งาน"
+  purchase: "คลิกเพื่อซื้อ"
+  unlock_info: "เปิดหีบสมบัติเพื่อปลดล็อค"
+  claim_free: "คลิกเพื่อรับฟรี"
+  not_enough_coins: "เหรียญไม่เพียงพอ"
+  dismount: "คลิกเพื่อลงจากสัตว์ขี่"
+  mount: "คลิกเพื่อขี่"
+  put_away_pet: "คลิกเพื่อเก็บสัตว์เลี้ยง"
+  summon_pet: "คลิกเพื่อเรียกสัตว์เลี้ยง"
+  go_back: "กลับ"
+
+# -----------------------------------------------------------
+# Prop Rush / Block Hunt Kits & Game
+# -----------------------------------------------------------
+hideseek:
+  desc.1: "ซ่อนตัวเป็นบล็อกหรือสัตว์"
+  desc.2: "อัปเกรดอาวุธและต่อสู้เพื่อรอดชีวิต"
+  desc.3: "จากเหล่านักล่า!"
+
+
+
+
+
+
+
+
+
+
+# -----------------------------------------------------------
+# GUIs (Lobby)
+# -----------------------------------------------------------
+# GUIs (Lobby) - Additional Game Menu Items (ภาษาไทย)
+# -----------------------------------------------------------
+gui:
+  treasure.title: "เปิดกล่องสมบัติ"
+  profile.title: "โปรไฟล์ส่วนตัว"
+  queue.title: "คิวเซิร์ฟเวอร์"
+  notification.title: "การแจ้งเตือน"
+
+# -----------------------------------------------------------
+# Game Menu Items (Hotbar & Navigation) (ภาษาไทย)
+# -----------------------------------------------------------
+item:
+  game_menu.name: "เมนูเกม"
+  game_menu.lore.1: "คลิกขวาเพื่อเปิดเมนู"
+  game_menu.lore.2: "เลือกห้องและเล่นมินิเกม"
+  
+  profile.name: "โปรไฟล์ของฉัน"
+  lobby_menu.name: "เมนูล็อบบี้"
+  
+  compass.name: "กลับเข้าสู่ Hub"
+  compass.lore.1: ""
+  compass.lore.2: "คลิกในขณะที่ถือสิ่งนี้"
+  compass.lore.3: "เพื่อกลับไปยัง Hub"
+
+# -----------------------------------------------------------
+# Shop & Store Items (ภาษาไทย)
+# -----------------------------------------------------------
+
+# -----------------------------------------------------------
+# Treasure Chests
+# -----------------------------------------------------------
+treasure:
+  old_chest.name: "หีบอดีตกาล"
+  old_chest.lore.1: "&7มรดกจากยุคอดีตกาลที่ถูกหลงลืม"
+  old_chest.lore.2: "&7ถูกค้นพบ ณ ส่วนลึกของปราการร้าง"
+  old_chest.lore.3: "&7สลักที่ขึ้นสนิมเหล่านั้นซุกซ่อน"
+  old_chest.lore.4: "&7สมบัติ &eล้ำค่า &7ที่รอคอยการถูกค้นพบ"
+
+  ancient_chest.name: "หีบโบราณ"
+  ancient_chest.lore.1: "&7ถูกขุดพบโดยเหล่านักผจญภัยผู้เก่งกาจ"
+  ancient_chest.lore.2: "&7จากวิหารโบราณที่ถูกซุกซ่อนไว้"
+  ancient_chest.lore.3: "&7หีบใบนี้แผ่ซ่านออร่าแห่ง &eเวทมนตร์"
+  ancient_chest.lore.4: "&7ความลับใดกันที่หลับใหลอยู่ภายใน?"
+
+  mythical_chest.name: "หีบเทวตำนาน"
+  mythical_chest.lore.1: "&7ตำนานเล่าขานถึงหีบอันทรงพลัง"
+  mythical_chest.lore.2: "&7ที่ผู้คนมากมายต้องสละชีพเพื่อไขว่คว้า"
+  mythical_chest.lore.3: "&7ถูกหล่อหลอมขึ้นโดยเหล่า &eทวยเทพ"
+  mythical_chest.lore.4: "&7มีเพียงผู้คู่ควรเท่านั้นที่จะได้รับมัน"
+
+  chest.click_open: "&aคลิกเพื่อเปิด!"
+  chest.click_purchase: "คลิกเพื่อซื้อในราคา "
+  chest.purchase_admin: "หรือซื้อด้วย: "
+  chest.admin: "ผู้ดูแลระบบ"
+  chest.owned.old: "จำนวนหีบอดีตกาลที่มี"
+  chest.owned.ancient: "จำนวนหีบโบราณที่มี"
+  chest.owned.mythical: "จำนวนหีบเทวตำนานที่มี"
+  wait_current: "&7กรุณารอให้กล่องปัจจุบันเปิดเสร็จก่อน"
+  no_chests: "&7คุณไม่มีกล่องสมบัติให้เปิด!"
+  select_four: "&7เลือก 4 กล่องเพื่อเปิด!"
+  open_announce: "{0} &7กำลังเปิด {1}"
+  found_announce: "{0} &7ค้นพบ {1}{2} {3}"
+
+# -----------------------------------------------------------
+# Profile Stats
+# -----------------------------------------------------------
+profile:
+  general.name: "สถิติทั่วไป"
+  general.games_played: "&7จำนวนเกมที่เล่น: &a{0}"
+  general.time_in_game: "&7เวลาในเกมทั้งหมด: &a{0} ชั่วโมง"
+  general.essence_earned: "&7Essence ที่ได้รับ: &a{0}"
+
+  arcade.name: "สถิติชัยชนะ"
+  arcade.sg_wins: "&7ชนะ Survival Games: &a{0}"
+  arcade.sk_wins: "&7ชนะ Skywars: &a{0}"
+  arcade.master_wins: "&7ชนะ Master Builders: &a{0}"
+  arcade.bridge_wins: "&7ชนะ Bridges: &a{0}"
+  arcade.uhc_wins: "&7ชนะ UHC: &a{0}"
+
+  account.name: "ข้อมูลบัญชี"
+  account.rank: "&7ยศ: {0}"
+  account.essence: "&7Essence: &a{0}"
+  account.coins: "&7เหรียญ: &6{0}"
+
+  social.name: "โซเชียล"
+  social.friends: "&7เพื่อน: &a{0}"
+  social.party: "&7สถานะปาร์ตี้: &c{0}"
+  social.none: "ไม่มี"
+# -----------------------------------------------------------
+# Party Module
+# -----------------------------------------------------------
+party:
+  invite_offline: "{0} ไม่ตอบรับคำเชิญปาร์ตี้"
+  invite_declined: "{0} อยู่ในปาร์ตี้อยู่แล้ว"
+  invite_declined_other: "{0} ถูกเชิญเข้าปาร์ตี้ไปแล้ว"
+  invited: "{0} ถูกเชิญเข้าปาร์ตี้ของคุณ"
+  invited_you: "{0} เชิญคุณเข้าปาร์ตี้ของเขา"
+  invited_instruction_1: "พิมพ์ /party leave จากนั้นตามด้วย /party {0} เพื่อเข้าร่วม"
+  invited_instruction_2: "พิมพ์ /party {0} เพื่อเข้าร่วม"
+  created: "คุณสร้างปาร์ตี้ใหม่"
+  joined: "{0} เข้าร่วมปาร์ตี้แล้ว!"
+  kicked: "{0} ถูกเตะออกจากปาร์ตี้"
+  left: "{0} ออกจากปาร์ตี้แล้ว"
+  leadership_passed: "หัวหน้าปาร์ตี้ถูกส่งต่อให้ {0}"
+  leadership_returned: "หัวหน้าปาร์ตี้ถูกส่งกลับให้ {0}"
+  command_help_title: "รายการคำสั่งปาร์ตี้:"
+  command_help_join: "เข้าร่วม/สร้าง/เชิญผู้เล่น"
+  command_help_leave: "ออกจากปาร์ตี้ปัจจุบัน"
+  command_help_kick: "เตะผู้เล่นออกจากปาร์ตี้"
+  not_in_party: "คุณไม่ได้อยู่ในปาร์ตี้"
+  cannot_kick_self: "คุณไม่สามารถเตะตัวเองออกจากปาร์ตี้"
+  not_leader: "คุณไม่ใช่หัวหน้าปาร์ตี้"
+  cannot_party_self: "คุณไม่สามารถปาร์ตี้กับตัวเองได้"
+  disabled_requests: "คุณไม่สามารถปาร์ตี้กับ {0} ได้! เขาไม่อนุญาตคำขอปาร์ตี้"
+  party_full: "ปาร์ตี้ของคุณมีขนาดเกิน 16 คนไม่ได้"
+  suggest_invite: "{0} เสนอให้เชิญ {1} เข้าปาร์ตี้"
+  suggest_invite_cmd: "พิมพ์ /party {0} เพื่อเชิญเขา"
+  ui_create_name: "สร้างปาร์ตี้"
+  ui_create_lore_1: "สร้างปาร์ตี้ใหม่"
+  ui_create_lore_2: "คุณจะได้เป็นหัวหน้าปาร์ตี้!"
+  ui_kick_lore: "คลิกเพื่อเตะออกจากปาร์ตี้"
+  ui_leave_name: "ออกจากปาร์ตี้"
+  ui_leave_lore: "ออกจากปาร์ตี้ปัจจุบันของคุณ"
+  ui_invite_name: "เชิญผู้เล่น"
+  ui_invite_lore_1: "คลิกเพื่อเปิดคำสั่ง"
+  ui_invite_lore_2: "เพื่อเชิญผู้เล่น"
+  ui_invite_prompt: "พิมพ์ /party <player> เพื่อเชิญผู้เล่น!"
+# -----------------------------------------------------------
+# Gadget Module
+# -----------------------------------------------------------
+gadget:
+  enabled: "&7คุณเรียกใช้ {0}"
+  disabled: "&7คุณยกเลิกการเรียกใช้ {0}"
+  equipped: "&7คุณสวมใส่ {0}"
+  unequipped: "&7คุณถอด {0}"
+  morphed: "&7คุณแปลงร่างเป็น {0}"
+  unmorphed: "&7คุณคืนร่างจาก {0}"
+  none_left: "&7คุณไม่มี {0} &7เหลืออยู่เลย"
+  not_activated: "&7ยังไม่ได้เปิดใช้งาน {0}"
+  insufficient_essence: "&7คุณมี Essence ไม่เพียงพอ"
+  insufficient_coins: "&7คุณมีเหรียญไม่เพียงพอ"
+  used_skill: "&7คุณใช้ {0}"
+  threw: "&7คุณขว้าง {0}"
+  amount: "&fจำนวนที่มี: &e"
+  near_portal: "&7คุณไม่สามารถใช้ {0} ใกล้ประตูมิติได้"
+  morph_block_error: "&7คุณไม่สามารถแปลงร่างเป็นบล็อกตรงนี้ได้"
+  throw_announce_essence: "&a&l{0} &f&lขว้าง {1}&f&l!"
+  throw_announce_coin: "&e&l{0} &f&lขว้าง {1}&f&l!"
+music:
+  already_playing: "&7มีเพลงกำลังเล่นอยู่แล้วตอนนี้"
+  near_portal: "&7ไม่สามารถเล่นเพลงใกล้ประตูมิติได้"
+  cannot_place: "&7คุณไม่สามารถวางตู้เพลงตรงนี้ได้"
+
+mount:
+  despawned: "&7คุณเก็บสัตว์ขี่ {0} แล้ว"
+  spawned: "&7คุณเรียกสัตว์ขี่ {0} ออกมา"
+  not_yours: "&7นี่ไม่ใช่สัตว์ขี่ของคุณ!"
+  not_enabled: "&7{0} ยังไม่ได้เปิดใช้งาน"
+
+teleport:
+  tp_to_player: "วาร์ปไปยังผู้เล่น"
+  undo_tp: "ย้อนกลับวาร์ปล่าสุด"
+  tp_to_self: "ดึงผู้เล่นมาหาตนเอง"
+  tp_player_to_player: "วาร์ปผู้เล่นไปหาผู้เล่น"
+  tp_to_loc: "วาร์ปไปยังพิกัด"
+  tp_all: "ดึงทุกคนมาหาตนเอง"
+  invalid_loc: "พิกัดไม่ถูกต้อง [{0},{1},{2}]"
+  no_history: "{0} ไม่มีประวัติการวาร์ป"
+  tp_you_to_player: "คุณวาร์ปไปหา {0}"
+  tp_them_to_you: "{0} ดึงคุณไปหา"
+  tp_you_to_them: "คุณดึง {0} มาหา"
+  tp_them_to_other: "{0} วาร์ปคุณไปหา {1}"
+  tp_you_to_other: "คุณวาร์ป {0} ไปหา {1}"
+  tp_you_to_loc: "คุณวาร์ปไปพิกัด {0}"
+  tp_them_to_loc: "{0} วาร์ปคุณมาพิกัด {1}"
+  invalid_amt: "จำนวนไม่ถูกต้อง [{0}] จะใช้ค่าเริ่มต้นคือ [1]"
+locate:
+  missing_arg: "ไม่ได้ระบุชื่อผู้เล่น"
+  same_server: " [{0}] อยู่ในเซิร์ฟเวอร์เดียวกันแล้ว!"
+  located: "พบ [{0}] ที่ "
+  failed: "ไม่พบข้อมูลของ [{0}]"
+spawn:
+  added: "คุณเพิ่มจุดเกิด 1 จุด"
+  cleared: "ล้างจุดเกิดทั้งหมดเรียบร้อย"
+  add_help: "เพิ่มพิกัดปัจจุบันเป็นจุดเกิด"
+  clear_help: "ล้างจุดเกิดทั้งหมด"
+npc:
+  saved_auto: "บันทึก NPC {0} ลงฐานข้อมูลอัตโนมัติ"
+  spawned_temp: "เสก NPC แบบชั่วคราว (ใช้ /adminbuilder หากต้องการบันทึกลง DB)"
+  del_help: "คลิกขวาที่ NPC เพื่อลบ"
+  home_help: "วาร์ป NPC ทั้งหมดกลับจุดเกิด"
+  clear_help: "ลบ NPC ทั้งหมด"
+  refresh_help: "โหลดข้อมูล NPC ใหม่จากฐานข้อมูล"
+  refreshed: "โหลดข้อมูล NPC ใหม่เรียบร้อย"
+  home_tp: "วาร์ป NPC ทั้งหมดกลับจุดเกิดเรียบร้อย"
+  right_click_del: "คลิกขวาที่ NPC ที่ต้องการลบได้เลย"
+  cleared: "ลบ NPC ทั้งหมดแล้ว"
+  builder_enable: "โหมดนักสร้างสรรค์ &aเปิดใช้งาน&7 แล้ว! NPC ที่เสกใหม่จะถูกบันทึกลงฐานข้อมูลอัตโนมัติ"
+  builder_op: "คุณได้รับสถานะ &aOP&7 และ &aCreative Mode&7 ชั่วคราวเพื่อตั้งค่าระบบ"
+  builder_disable: "โหมดนักสร้างสรรค์ &cปิดใช้งาน&7 แล้ว! NPC ที่เสกจะไม่บันทึกลงฐานข้อมูลอีก"
+  builder_revoke: "สถานะ OP และ Creative ของคุณถูก &cเรียกคืน&7 แล้ว"
+  builder_rejoin: "&bกรุณาออกแล้วเข้าเซิร์ฟเวอร์ใหม่เพื่อดึงไอเทม Lobby คืน"
+message:
+  patient: "&5กรุณารอสักครู่หากผู้เล่นไม่ได้ตอบกลับทันที"
+  err: "&cเอ๊ะ... เกิดข้อผิดพลาดบางอย่าง?"
+  offline_target: "{0} ไม่ได้ออนไลน์อยู่แล้ว"
+  no_reply: "คุณยังไม่ได้ส่งข้อความหาใครเมื่อเร็วๆนี้"
+  no_admin_reply: "คุณยังไม่ได้ส่งข้อความแอดมินหาใครเมื่อเร็วๆนี้"
+  missing_arg: "ไม่ได้ระบุชื่อผู้เล่น"
+  missing_msg_arg: "ไม่ได้ระบุข้อความ"
+  no_staff: "ไม่มีทีมงานออนไลน์อยู่ในขณะนี้"
+friend:
+  cannot_add_self: "&7คุณไม่สามารถเพิ่มตัวเองเป็นเพื่อนได้"
+  denied: "&a{0}&7 ได้ปฏิเสธคำขอเป็นเพื่อนของคุณ"
+  already_friends: "คุณเป็นเพื่อนกับ &a{0}&7 อยู่แล้ว"
+  pending: "&a{0}&7 ยังไม่ได้ตอบรับคำขอเบ็นเพื่อนของคุณ"
+  now_friends: "คุณและ &a{0}&7 เป็นเพื่อนกันแล้ว!"
+  added: "เพิ่ม &a{0}&7 ลงในรายชื่อเพื่อนแล้ว!"
+  deleted: "ลบ &a{0}&7 ออกจากรายชื่อเพื่อนแล้ว!"
+  page_title: "เพื่อน"
+  left_click_tp: "&eคลิกซ้าย &7เพื่อวาร์ปไปหา"
+  right_click_remove: "&cคลิกขวา &7เพื่อลบเพื่อน"
+  status_offline: "&7สถานะ: &cออฟไลน์"
+  status_online: "&7สถานะ: &aออนไลน์"
+  requested: "&eขอเพิ่มคุณเป็นเพื่อน"
+  left_click_accept: "&aคลิกซ้าย &7เพื่อยอมรับ"
+  right_click_deny: "&cคลิกขวา &7เพื่อปฏิเสธ"
+  awaiting_response: "&7รอการตอบรับ..."
+  right_click_cancel: "&cคลิกขวา &7เพื่อยกเลิกคำขอ"
+ignore:
+  cannot_ignore_self: "&7คุณไม่สามารถเพิกเฉยต่อตัวเองได้"
+  already_ignored: "&a{0}&7 ถูกเพิกเฉยไปแล้ว"
+  now_ignoring: "กำลังเพิกเฉยต่อ &a{0}"
+  no_longer_ignoring: "ยกเลิกการเพิกเฉยต่อ &a{0}&7 แล้ว!"
+furniture:
+  item_name: "&e&lเฟอร์นิเจอร์: &f{0}"
+  lore_1: "&7BDEngine เฟอร์นิเจอร์"
+  lore_2: "&7คลิกขวาที่พื้นเพื่อ &eวางเฟอร์นิเจอร์"
+  lore_3: "&aโมเดลสำหรับวางบนพื้น"
+quest:
+  completed: "คุณทำภารกิจ &a{0}&7 สำเร็จและได้รับ &b{1}&7 Essence!"
+server:
+  portal.cooldown: "&cคุณยังเข้าเซิร์ฟเวอร์ไม่ได้อีก &a{0}&c!"
+  portal.no_servers: "&cขณะนี้ไม่มีเซิร์ฟเวอร์ที่พร้อมให้เข้าร่วม!"
+  selector.quick_match.name: "Quick Match"
+  selector.quick_match.desc.1: "หารอบที่พร้อมที่สุดให้คุณ"
+  selector.quick_match.desc.2: "แล้วพาเข้าเซิร์ฟเวอร์ให้อัตโนมัติ"
+  selector.select_server.name: "เลือกเซิร์ฟเวอร์"
+  selector.select_server.desc.1: "เปิดหน้ารายชื่อเซิร์ฟเวอร์เพื่อให้คุณ"
+  selector.select_server.desc.2: "เลือกห้องที่ต้องการเองได้"
+  npc.lore.game: "&7โหมด: &e{0}"
+  npc.lore.map: "&7แผนที่: &e{0}"
+  npc.lore.players: "&7ผู้เล่น: &b{0}/{1}"
+  npc.lore.click_join: "&aคลิกเพื่อเข้าร่วม"
+  npc.lore.in_progress: "&eเกมกำลังเล่นอยู่"
+  npc.lore.click_spectate: "&eคลิกเพื่อดู"
+  npc.lore.wait_next: "§7รอเกมถัดไป!"
+  npc.lore.restarting: "§7เซิร์ฟเวอร์นี้จะเปิดให้เข้าในไม่ช้า!"
+  npc.lore.get_ultra: "&cซื้อ Ultra เพื่อเข้าเซิร์ฟเวอร์ที่เต็มแล้ว!"
+  npc.lore.beta_ultra: "&cซื้อ Ultra เพื่อเข้าเซิร์ฟเวอร์ทัวร์นาเมนต์!"
+  npc.lore.survival_locked.1: "&7เซิร์ฟเวอร์ Survival Primal Game ที่เต็ม"
+  npc.lore.survival_locked.2: "&7จะไม่สามารถเข้าร่วมได้"
+  npc.in_progress_count: "&bกำลังเล่นอยู่ {0} เกม"
+  npc.server_label: "เซิร์ฟเวอร์ {0}"
+  npc.queue_timer: "เวลารอคิว"
+  npc.queue_time_remaining: "&7เวลาที่เหลือ: &f{0}"
+  npc.queue_wait: "&7กรุณารอสักครู่ ระบบกำลังเตรียมเซิร์ฟเวอร์ให้..."
+  npc.private_host: "&eHost: &f{0}"
+  npc.private_staff: "&aดูแลโดยทีมงาน"
+  tournament.title: "เซิร์ฟเวอร์ทัวร์นาเมนต์"
+  tournament.desc.1: "&bผู้เล่น Ultra และ Hero"
+  tournament.desc.2: "&bสามารถเข้าเซิร์ฟทัวร์นาเมนต์ได้!"
+  tournament.link: "&aติดต่อแอดมินเพื่อรับสิทธิ์!"
+  rank_required: "ผู้เล่นระดับ {0}&7+ เท่านั้นที่สามารถสร้างเซิร์ฟเวอร์ส่วนตัวได้"
+  create_info: "ระบบกำลังจะสร้างเซิร์ฟเวอร์ส่วนตัวให้คุณ"
+  play_friends: "ที่นี่คุณสามารถเล่นมินิเกมที่ชอบกับเพื่อนๆ ได้!"
+  click_create_hover: "&7คลิกเพื่อสร้างเซิร์ฟเวอร์"
+  click_here: "[คลิกที่นี่]"
+  confirm: " เพื่อยืนยันคำสั่ง"
+  lobby.go_back: "กลับ"
+portal:
+  sent: "คุณถูกส่งจาก &6{0}&7 ไปยัง &6{1}"
+  is_full: "&6{0}&c เต็มแล้วเข้าไม่ได้!"
+
+# -----------------------------------------------------------
+# Arena PVP
+# -----------------------------------------------------------
+arena:
+  actionbar_hp: "&f⚔ &aเลเวลเลือดของคุณ: &a{0}/20  &7│  &cศัตรู: &c{1}/20"
+  win_3_title: "&6&l★ 3 WINS ★"
+  win_3_sub: "&7สายเลือดร้อนแรง!"
+  win_streak_title: "&6&l🔥 {0} WINS 🔥"
+  win_streak_sub: "&7โคตรโหด!"
+  win_title: "&6&l⚔ ชนะ!"
+  win_sub: "&7คุณได้ครองลานต่อ"
+  lose_title: "&c&l✘ แพ้"
+  lose_sub: ""
+  broadcast_win: "&6{0} ชนะ!"
+  countdown_title: "{0}&lเริ่มใน {1}"
+  fight_title: "&6&lFIGHT!"
+  forfeit_win: "&aคู่ต่อสู้ออกไป คุณชนะ!"
+  sneak_exit: "&eย่อค้าง 3 วินาที เพื่อออกจากลาน"
+  arena_empty: "&a▐▐▐▐▐▐ ⚔ ARENA ว่าง ▐▐▐▐▐▐"
+  arena_occupied: "&e▐▐▐▐▐▐ ⚔ {0} รอคอยคู่ต่อสู้ ▐▐▐▐▐▐"
+  arena_countdown: "&6▐▐▐▐▐▐ ⚔ กำลังจับคู่ประลอง ▐▐▐▐▐▐"
+  arena_fighting: "&c▐▐▐▐▐▐ ⚔ {0} VS {1} ▐▐▐▐▐▐"
+  streak_holo_5plus: "&6&l🔥 {0} ชนะ 🔥"
+  streak_holo_3: "&6&l⚔ {0} ชนะ ⚔"
+  streak_holo_2: "&e&l{0} ชนะ"
+hub.gadget.toggle: "&f&lGadgets/Mounts &7ตอนนี้ {0}"
+hub.gadget.enabled: "&aเปิดใช้งาน"
+hub.gadget.disabled: "&cปิดการใช้งาน"
+hub.poll.thanks: "&aขอบคุณสำหรับคำตอบของคุณ!"
+hub.poll.reward: "&7คุณได้รับ {0} Essence!"
+hub.poll.error: "&cเกิดข้อผิดพลาดในการประมวลผลโพลของคุณ"
+hub.poll.list: "&7รายการโพล;"
+hub.poll.click_to_view: "&7คลิกที่โพลเพื่อดูผลลัพธ์!"
+hub.poll.invalid_number: "&cตัวเลขไม่ถูกต้อง: {0}"
+hub.poll.not_found: "&cไม่พบโพลที่มี ID ดังกล่าว โปรดลองใหม่!"
+hub.poll.total_respondents: "&7ผู้ตอบแบบสอบถามทั้งหมด: {0}"
+hub.poll.cannot_process: "&cไม่สามารถประมวลผลคำตอบของคุณได้ โปรดลองใหม่ภายหลัง"
+hub.poll.no_longer_exists: "&cโพลนี้ไม่มีอยู่แล้ว ขออภัย!"
+hub.poll.invalid_answer: "&cนั่นไม่ใช่คำตอบที่ถูกต้องสำหรับโพลนี้"
+hub.poll.disabled_poll: "&cโพลนี้ถูกปิดการใช้งานแล้ว!"
+hub.poll.already_answered: "&cคุณตอบโพลนี้ไปแล้ว!"
+hub.poll.click_in_chat: "&cโปรดคลิกในช่องแชทด้วยเมาส์เพื่อตอบ!"
+
+hub.party.leader_only: "&cเฉพาะหัวหน้าปาร์ตี้เท่านั้นที่สามารถเข้าเกมได้"
+hub.party.leave_hint: "&7พิมพ์ &a/party leave&7 หากคุณต้องการออกจากปาร์ตี้"
+
+hub.item.daily_login: "<GRADIENT:#FFD700,#FF6B00> รั บ ร า ง วั ล ร า ย วั น </GRADIENT>"
+hub.item.daily_login.lore1: "§7คลิกขวาเพื่อเปิด"
+hub.item.daily_login.lore2: "§7กระดานรางวัลล็อกอินของคุณ!"
+
+# -----------------------------------------------------------
+# Achievement Chat & UI Renderer Fallbacks
+# -----------------------------------------------------------
+achievement.chat.complete: "สำเร็จ!"
+music:
+  already_playing: "&7มีเพลงกำลังเล่นอยู่แล้วตอนนี้"
+  near_portal: "&7ไม่สามารถเล่นเพลงใกล้ประตูมิติได้"
+  cannot_place: "&7คุณไม่สามารถวางตู้เพลงตรงนี้ได้"
+
+mount:
+  despawned: "&7คุณเก็บสัตว์ขี่ {0} แล้ว"
+  spawned: "&7คุณเรียกสัตว์ขี่ {0} ออกมา"
+  not_yours: "&7นี่ไม่ใช่สัตว์ขี่ของคุณ!"
+  not_enabled: "&7{0} ยังไม่ได้เปิดใช้งาน"
+
+teleport:
+  tp_to_player: "วาร์ปไปยังผู้เล่น"
+  undo_tp: "ย้อนกลับวาร์ปล่าสุด"
+  tp_to_self: "ดึงผู้เล่นมาหาตนเอง"
+  tp_player_to_player: "วาร์ปผู้เล่นไปหาผู้เล่น"
+  tp_to_loc: "วาร์ปไปยังพิกัด"
+  tp_all: "ดึงทุกคนมาหาตนเอง"
+  invalid_loc: "พิกัดไม่ถูกต้อง [{0},{1},{2}]"
+  no_history: "{0} ไม่มีประวัติการวาร์ป"
+  tp_you_to_player: "คุณวาร์ปไปหา {0}"
+  tp_them_to_you: "{0} ดึงคุณไปหา"
+  tp_you_to_them: "คุณดึง {0} มาหา"
+  tp_them_to_other: "{0} วาร์ปคุณไปหา {1}"
+  tp_you_to_other: "คุณวาร์ป {0} ไปหา {1}"
+  tp_you_to_loc: "คุณวาร์ปไปพิกัด {0}"
+  tp_them_to_loc: "{0} วาร์ปคุณมาพิกัด {1}"
+  invalid_amt: "จำนวนไม่ถูกต้อง [{0}] จะใช้ค่าเริ่มต้นคือ [1]"
+locate:
+  missing_arg: "ไม่ได้ระบุชื่อผู้เล่น"
+  same_server: " [{0}] อยู่ในเซิร์ฟเวอร์เดียวกันแล้ว!"
+  located: "พบ [{0}] ที่ "
+  failed: "ไม่พบข้อมูลของ [{0}]"
+spawn:
+  added: "คุณเพิ่มจุดเกิด 1 จุด"
+  cleared: "ล้างจุดเกิดทั้งหมดเรียบร้อย"
+  add_help: "เพิ่มพิกัดปัจจุบันเป็นจุดเกิด"
+  clear_help: "ล้างจุดเกิดทั้งหมด"
+npc:
+  saved_auto: "บันทึก NPC {0} ลงฐานข้อมูลอัตโนมัติ"
+  spawned_temp: "เสก NPC แบบชั่วคราว (ใช้ /adminbuilder หากต้องการบันทึกลง DB)"
+  del_help: "คลิกขวาที่ NPC เพื่อลบ"
+  home_help: "วาร์ป NPC ทั้งหมดกลับจุดเกิด"
+  clear_help: "ลบ NPC ทั้งหมด"
+  refresh_help: "โหลดข้อมูล NPC ใหม่จากฐานข้อมูล"
+  refreshed: "โหลดข้อมูล NPC ใหม่เรียบร้อย"
+  home_tp: "วาร์ป NPC ทั้งหมดกลับจุดเกิดเรียบร้อย"
+  right_click_del: "คลิกขวาที่ NPC ที่ต้องการลบได้เลย"
+  cleared: "ลบ NPC ทั้งหมดแล้ว"
+  builder_enable: "โหมดนักสร้างสรรค์ &aเปิดใช้งาน&7 แล้ว! NPC ที่เสกใหม่จะถูกบันทึกลงฐานข้อมูลอัตโนมัติ"
+  builder_op: "คุณได้รับสถานะ &aOP&7 และ &aCreative Mode&7 ชั่วคราวเพื่อตั้งค่าระบบ"
+  builder_disable: "โหมดนักสร้างสรรค์ &cปิดใช้งาน&7 แล้ว! NPC ที่เสกจะไม่บันทึกลงฐานข้อมูลอีก"
+  builder_revoke: "สถานะ OP และ Creative ของคุณถูก &cเรียกคืน&7 แล้ว"
+  builder_rejoin: "&bกรุณาออกแล้วเข้าเซิร์ฟเวอร์ใหม่เพื่อดึงไอเทม Lobby คืน"
+message:
+  patient: "&5กรุณารอสักครู่หากผู้เล่นไม่ได้ตอบกลับทันที"
+  err: "&cเอ๊ะ... เกิดข้อผิดพลาดบางอย่าง?"
+  offline_target: "{0} ไม่ได้ออนไลน์อยู่แล้ว"
+  no_reply: "คุณยังไม่ได้ส่งข้อความหาใครเมื่อเร็วๆนี้"
+  no_admin_reply: "คุณยังไม่ได้ส่งข้อความแอดมินหาใครเมื่อเร็วๆนี้"
+  missing_arg: "ไม่ได้ระบุชื่อผู้เล่น"
+  missing_msg_arg: "ไม่ได้ระบุข้อความ"
+  no_staff: "ไม่มีทีมงานออนไลน์อยู่ในขณะนี้"
+friend:
+  cannot_add_self: "&7คุณไม่สามารถเพิ่มตัวเองเป็นเพื่อนได้"
+  denied: "&a{0}&7 ได้ปฏิเสธคำขอเป็นเพื่อนของคุณ"
+  already_friends: "คุณเป็นเพื่อนกับ &a{0}&7 อยู่แล้ว"
+  pending: "&a{0}&7 ยังไม่ได้ตอบรับคำขอเบ็นเพื่อนของคุณ"
+  now_friends: "คุณและ &a{0}&7 เป็นเพื่อนกันแล้ว!"
+  added: "เพิ่ม &a{0}&7 ลงในรายชื่อเพื่อนแล้ว!"
+  deleted: "ลบ &a{0}&7 ออกจากรายชื่อเพื่อนแล้ว!"
+  page_title: "เพื่อน"
+  left_click_tp: "&eคลิกซ้าย &7เพื่อวาร์ปไปหา"
+  right_click_remove: "&cคลิกขวา &7เพื่อลบเพื่อน"
+  status_offline: "&7สถานะ: &cออฟไลน์"
+  status_online: "&7สถานะ: &aออนไลน์"
+  requested: "&eขอเพิ่มคุณเป็นเพื่อน"
+  left_click_accept: "&aคลิกซ้าย &7เพื่อยอมรับ"
+  right_click_deny: "&cคลิกขวา &7เพื่อปฏิเสธ"
+  awaiting_response: "&7รอการตอบรับ..."
+  right_click_cancel: "&cคลิกขวา &7เพื่อยกเลิกคำขอ"
+ignore:
+  cannot_ignore_self: "&7คุณไม่สามารถเพิกเฉยต่อตัวเองได้"
+  already_ignored: "&a{0}&7 ถูกเพิกเฉยไปแล้ว"
+  now_ignoring: "กำลังเพิกเฉยต่อ &a{0}"
+  no_longer_ignoring: "ยกเลิกการเพิกเฉยต่อ &a{0}&7 แล้ว!"
+furniture:
+  item_name: "&e&lเฟอร์นิเจอร์: &f{0}"
+  lore_1: "&7BDEngine เฟอร์นิเจอร์"
+  lore_2: "&7คลิกขวาที่พื้นเพื่อ &eวางเฟอร์นิเจอร์"
+  lore_3: "&aโมเดลสำหรับวางบนพื้น"
+quest:
+  completed: "คุณทำภารกิจ &a{0}&7 สำเร็จและได้รับ &b{1}&7 Essence!"
+server:
+  portal.cooldown: "&cคุณยังเข้าเซิร์ฟเวอร์ไม่ได้อีก &a{0}&c!"
+  portal.no_servers: "&cขณะนี้ไม่มีเซิร์ฟเวอร์ที่พร้อมให้เข้าร่วม!"
+  selector.quick_match.name: "Quick Match"
+  selector.quick_match.desc.1: "หารอบที่พร้อมที่สุดให้คุณ"
+  selector.quick_match.desc.2: "แล้วพาเข้าเซิร์ฟเวอร์ให้อัตโนมัติ"
+  selector.select_server.name: "เลือกเซิร์ฟเวอร์"
+  selector.select_server.desc.1: "เปิดหน้ารายชื่อเซิร์ฟเวอร์เพื่อให้คุณ"
+  selector.select_server.desc.2: "เลือกห้องที่ต้องการเองได้"
+  npc.lore.game: "&7โหมด: &e{0}"
+  npc.lore.map: "&7แผนที่: &e{0}"
+  npc.lore.players: "&7ผู้เล่น: &b{0}/{1}"
+  npc.lore.click_join: "&aคลิกเพื่อเข้าร่วม"
+  npc.lore.in_progress: "&eเกมกำลังเล่นอยู่"
+  npc.lore.click_spectate: "&eคลิกเพื่อดู"
+  npc.lore.wait_next: "§7รอเกมถัดไป!"
+  npc.lore.restarting: "§7เซิร์ฟเวอร์นี้จะเปิดให้เข้าในไม่ช้า!"
+  npc.lore.get_ultra: "&cซื้อ Ultra เพื่อเข้าเซิร์ฟเวอร์ที่เต็มแล้ว!"
+  npc.lore.beta_ultra: "&cซื้อ Ultra เพื่อเข้าเซิร์ฟเวอร์ทัวร์นาเมนต์!"
+  npc.lore.survival_locked.1: "&7เซิร์ฟเวอร์ Survival Primal Game ที่เต็ม"
+  npc.lore.survival_locked.2: "&7จะไม่สามารถเข้าร่วมได้"
+  npc.in_progress_count: "&bกำลังเล่นอยู่ {0} เกม"
+  npc.server_label: "เซิร์ฟเวอร์ {0}"
+  npc.queue_timer: "เวลารอคิว"
+  npc.queue_time_remaining: "&7เวลาที่เหลือ: &f{0}"
+  npc.queue_wait: "&7กรุณารอสักครู่ ระบบกำลังเตรียมเซิร์ฟเวอร์ให้..."
+  npc.private_host: "&eHost: &f{0}"
+  npc.private_staff: "&aดูแลโดยทีมงาน"
+  tournament.title: "เซิร์ฟเวอร์ทัวร์นาเมนต์"
+  tournament.desc.1: "&bผู้เล่น Ultra และ Hero"
+  tournament.desc.2: "&bสามารถเข้าเซิร์ฟทัวร์นาเมนต์ได้!"
+  tournament.link: "&aติดต่อแอดมินเพื่อรับสิทธิ์!"
+  rank_required: "ผู้เล่นระดับ {0}&7+ เท่านั้นที่สามารถสร้างเซิร์ฟเวอร์ส่วนตัวได้"
+  create_info: "ระบบกำลังจะสร้างเซิร์ฟเวอร์ส่วนตัวให้คุณ"
+  play_friends: "ที่นี่คุณสามารถเล่นมินิเกมที่ชอบกับเพื่อนๆ ได้!"
+  click_create_hover: "&7คลิกเพื่อสร้างเซิร์ฟเวอร์"
+  click_here: "[คลิกที่นี่]"
+  confirm: " เพื่อยืนยันคำสั่ง"
+  lobby.go_back: "กลับ"
+portal:
+  sent: "คุณถูกส่งจาก &6{0}&7 ไปยัง &6{1}"
+  is_full: "&6{0}&c เต็มแล้วเข้าไม่ได้!"
+
+# -----------------------------------------------------------
+# Arena PVP
+# -----------------------------------------------------------
+arena:
+  actionbar_hp: "&f⚔ &aเลเวลเลือดของคุณ: &a{0}/20  &7│  &cศัตรู: &c{1}/20"
+  win_3_title: "&6&l★ 3 WINS ★"
+  win_3_sub: "&7สายเลือดร้อนแรง!"
+  win_streak_title: "&6&l🔥 {0} WINS 🔥"
+  win_streak_sub: "&7โคตรโหด!"
+  win_title: "&6&l⚔ ชนะ!"
+  win_sub: "&7คุณได้ครองลานต่อ"
+  lose_title: "&c&l✘ แพ้"
+  lose_sub: ""
+  broadcast_win: "&6{0} ชนะ!"
+  countdown_title: "{0}&lเริ่มใน {1}"
+  fight_title: "&6&lFIGHT!"
+  forfeit_win: "&aคู่ต่อสู้ออกไป คุณชนะ!"
+  sneak_exit: "&eย่อค้าง 3 วินาที เพื่อออกจากลาน"
+  arena_empty: "&a▐▐▐▐▐▐ ⚔ ARENA ว่าง ▐▐▐▐▐▐"
+  arena_occupied: "&e▐▐▐▐▐▐ ⚔ {0} รอคอยคู่ต่อสู้ ▐▐▐▐▐▐"
+  arena_countdown: "&6▐▐▐▐▐▐ ⚔ กำลังจับคู่ประลอง ▐▐▐▐▐▐"
+  arena_fighting: "&c▐▐▐▐▐▐ ⚔ {0} VS {1} ▐▐▐▐▐▐"
+  streak_holo_5plus: "&6&l🔥 {0} ชนะ 🔥"
+  streak_holo_3: "&6&l⚔ {0} ชนะ ⚔"
+  streak_holo_2: "&e&l{0} ชนะ"
+hub.gadget.toggle: "&f&lGadgets/Mounts &7ตอนนี้ {0}"
+hub.gadget.enabled: "&aเปิดใช้งาน"
+hub.gadget.disabled: "&cปิดการใช้งาน"
+hub.poll.thanks: "&aขอบคุณสำหรับคำตอบของคุณ!"
+hub.poll.reward: "&7คุณได้รับ {0} Essence!"
+hub.poll.error: "&cเกิดข้อผิดพลาดในการประมวลผลโพลของคุณ"
+hub.poll.list: "&7รายการโพล;"
+hub.poll.click_to_view: "&7คลิกที่โพลเพื่อดูผลลัพธ์!"
+hub.poll.invalid_number: "&cตัวเลขไม่ถูกต้อง: {0}"
+hub.poll.not_found: "&cไม่พบโพลที่มี ID ดังกล่าว โปรดลองใหม่!"
+hub.poll.total_respondents: "&7ผู้ตอบแบบสอบถามทั้งหมด: {0}"
+hub.poll.cannot_process: "&cไม่สามารถประมวลผลคำตอบของคุณได้ โปรดลองใหม่ภายหลัง"
+hub.poll.no_longer_exists: "&cโพลนี้ไม่มีอยู่แล้ว ขออภัย!"
+hub.poll.invalid_answer: "&cนั่นไม่ใช่คำตอบที่ถูกต้องสำหรับโพลนี้"
+hub.poll.disabled_poll: "&cโพลนี้ถูกปิดการใช้งานแล้ว!"
+hub.poll.already_answered: "&cคุณตอบโพลนี้ไปแล้ว!"
+hub.poll.click_in_chat: "&cโปรดคลิกในช่องแชทด้วยเมาส์เพื่อตอบ!"
+
+hub.party.leader_only: "&cเฉพาะหัวหน้าปาร์ตี้เท่านั้นที่สามารถเข้าเกมได้"
+hub.party.leave_hint: "&7พิมพ์ &a/party leave&7 หากคุณต้องการออกจากปาร์ตี้"
+
+hub.item.daily_login: "<GRADIENT:#FFD700,#FF6B00> รั บ ร า ง วั ล ร า ย วั น </GRADIENT>"
+hub.item.daily_login.lore1: "§7คลิกขวาเพื่อเปิด"
+hub.item.daily_login.lore2: "§7กระดานรางวัลล็อกอินของคุณ!"
+
+# -----------------------------------------------------------
+# Achievement Chat & UI Renderer Fallbacks
+# -----------------------------------------------------------
+achievement.chat.complete: "สำเร็จ!"
+achievement.chat.levelup: "เลเวลอัป!"
+achievement.chat.tocomplete: "แต้มเพื่อรับรางวัล"
+achievement.chat.tonextlevel: "แต้มเพื่อสะสมเลเวลถัดไป"
+achievement.ui.complete: "สำเร็จแล้ว!"
+
+# -----------------------------------------------------------
+# Arcade Texts
+# -----------------------------------------------------------
+arcade:
+  map_vote_ends: "การโหวตแผนที่จะสิ้นสุดในอีก &a{0} วินาที&r!"
+  map_vote_winner: "การโหวตสิ้นสุดลงแล้ว! แผนที่ที่ชนะ: &a{0}"
+  map_vote_winner_title: "&a&lเลือกแผนที่สำเร็จ!"
+  map_vote_winner_subtitle: "&e{0} &7(สร้างโดย: {1})"
+  map_author: "สร้างโดย: &e{0}"
+  kit_select_item: "&a&lเลือกคิท"
+  kit_select_item_lore: "§7คลิกขวาเพื่อเลือกคิท"
+  kit_select_gui_title: "เลือกคิท"
+  team_floor_hologram: "&lทีม{0}"
+  team_floor_hologram_queue: "&7[{0}/{1}]"
+  team_full: "&cทีมนี้เต็มแล้ว!"

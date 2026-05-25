@@ -1,0 +1,465 @@
+prop_rush:
+  game:
+    title: "<gradient:#4de2ff:#0aa2ff><bold>BLOCK HUNT</bold></gradient>"
+    desc:
+      - "Hide as props, rotate, and survive."
+      - "Hunters must scan, force, and finish."
+  lobby:
+    status: "Status"
+    loadout: "Loadout"
+    map: "Map"
+    players: "Players"
+    mode: "Mode"
+    kit: "Kit"
+    team: "Team"
+    role: "Role"
+    solo: "Solo"
+    essence: "Essence"
+    achievement_kit: "Achievement Kit"
+    loading: "Preparing world..."
+    loading_map: "Loading..."
+    starting_in: "Starting in "
+    none_selected: "None"
+    ready: "Ready to start!"
+    need_more: "Need <count> more"
+    holo:
+      select: "Select"
+      kit: "Kit"
+      instructions_short: "&8» &eClick to Choose &3| &dUpgrade Traits &8«"
+  summary:
+    kit_label: "Kit"
+    kit_compact:
+      default: "Play for contact before burning utility."
+      chameleon: "Slot 5 Decoy: throw it after a corner, then rotate."
+      ghost: "Slot 5 Phase Shift: save it for hard commits."
+      trickster: "Bait swings first, then escape the panic."
+      bomb_bug: "Slot 5 Bomb Shell: punish greedy checks with lethal burst."
+      locksmith: "Slot 5 Secret Passage: break prediction, then re-lock."
+      mimic: "Slot 5 Mirror Image: use after your spot is known."
+      tracker: "Slot 2 Scanner Pulse: scan first, then collapse."
+      destroyer: "Slot 2 Flare: force props out before the swing."
+      trapper: "Slot 3 Trapper Webs: close corners before chasing."
+      bloodhound: "Slot 2 Bloodhound Sense: ping first, cut off second."
+      saboteur: "Slot 2 Smoke Bomb: throw in close fights only."
+      bounty_hunter: "Slot 2 Bounty Dash: commit after you see the exit lane."
+      exorcist: "Slot 2 Purge Pulse: cleanse utility, then reveal."
+      falconer: "Slot 2 Sky Sweep: launch the hawk, then run down glowing prey."
+      warden: "Slot 2 Echo Sentry: catch movers and lock the lane."
+  menu:
+    status:
+      online: "&a● &aOnline"
+      offline: "&c● &cOffline"
+  countdown:
+    hunters_release: "Hunters releasing soon..."
+    panic_approaching: "Panic is approaching..."
+    chaos_approaching: "Chaos is approaching..."
+    time_running_out: "Time is running out!"
+  phase:
+    prep: "Prep"
+    hunt: "Search"
+    panic: "Panic"
+    chaos: "Chaos"
+  scoreboard:
+    phase: "Phase"
+    objective: "Objective"
+    top_points: "Top Points"
+    objective_prep_primary: "H: Hide (<props>) | S: Plan Routes"
+    objective_prep_secondary: "Hunters release (<time>) • Gold heals HP only"
+    objective_hunt_primary: "Catch Props (<found>/<total>)"
+    objective_hunt_terminal: "H: Hack Terminal | S: Trigger Relay"
+    objective_hunt_secondary: "Gold restores HP • Relay CD <time>"
+    objective_panic_primary: "Rotate before zone sweep (<time>)"
+    objective_panic_danger: "Rotate through zone and contest Gold (<time>)"
+    objective_panic_secondary: "Keep moving • Gold is your only heal"
+    objective_chaos_primary: "Stay in ring (<props> props)"
+    objective_chaos_secondary: "No regen • Next pulse (<time>)"
+  bossbar:
+    hider:
+      prep: "Objective: Prepare your hideout and position carefully"
+      hunt: "Objective: Survive the hunt and gather Gold to heal"
+      hunt_terminals: "Objective: Hack Terminals to disrupt Hunter tech"
+      panic: "Objective: Reposition before the next sweep catches you"
+      panic_danger: "Objective: Cross the zone, contest Gold, and survive"
+      chaos: "Objective: Hold the ring and survive the collapse"
+    hunter:
+      prep: "Objective: Map relay routes and prepare to hunt"
+      hunt: "Objective: Hunt, rotate, and deny Gold pickups"
+      hunt_terminals: "Objective: Trigger Search Relays to find Hiders"
+      panic: "Objective: Hunt Hiders forced to move by the sweep"
+      panic_danger: "Objective: Punish greedy rotations across the zone"
+      chaos: "Objective: Contest Gold and win the collapse"
+  ability:
+    scanner_pulse:
+      name: "Scanner Pulse"
+      lore:
+        1: "Sweeps outward for 5 seconds."
+        2: "Only reports rough distance and direction."
+    fake_sound_ping:
+      name: "Fake Sound Ping"
+      lore:
+        1: "Creates a loud fake noise."
+        2: "Confuses hunters."
+    prop_swap:
+      name: "Prop Swap"
+      lore:
+        1: "Click to change into the target block."
+    solidify_lock:
+      name: "Solidify Lock"
+      lore:
+        1: "Locks your prop position."
+        2: "Makes you look perfectly matched to the grid."
+    cat_taunt:
+      name: "Cat Taunt"
+      lore:
+        1: "Meows loudly to bait hunters."
+        2: "Rewards +5pts if you survive!"
+    signal_flare:
+      name: "Signal Flare"
+      lore:
+        1: "Shoots a bold flare into the sky."
+        2: "Rewards +2pts for bravery!"
+    hider_snowball:
+      name: "Snow Ball"
+      lore:
+        1: "Throw it to chip Hunters for 0.5 heart."
+        2: "Also chills and slows them for 2 seconds."
+    sixth_sense:
+      name: "Sixth Sense"
+      lore:
+        1: "Briefly highlights all Hunters."
+        2: "Outlines active hunters for 10 seconds."
+    dash:
+      name: "Feather Dash"
+      lore:
+        1: "Launch forward 3 blocks safely."
+        2: "Prevents wall-clipping automatically."
+    tracker_compass:
+      name: "Tracker Compass"
+      lore:
+        1: "Points to the nearest Hider."
+        2: "3 Charges, 30s Cooldown."
+    flare:
+      name: "Flare"
+      lore:
+        1: "Throws a brightly burning flare."
+        2: "Reveals hiders caught in its radius."
+    bloodhound_sense:
+      name: "Bloodhound Sense"
+      lore:
+        1: "Sniffs out one nearby hider."
+        2: "Gives a clean chase line for the next collapse."
+    smoke_bomb:
+      name: "Smoke Bomb"
+      lore:
+        1: "Creates a thick cloud of smoke."
+        2: "Blinds nearby hiders."
+    bounty_dash:
+      name: "Bounty Dash"
+      lore:
+        1: "Dashes quickly in the facing direction."
+        2: "Gain speed boost temporarily."
+    purge_pulse:
+      name: "Purge Pulse"
+      lore:
+        1: "Emits a pulse that forces hiders out."
+        2: "Destroys nearby traps and decoys."
+    sky_sweep:
+      name: "Sky Sweep"
+      lore:
+        1: "Keeps a hawk circling overhead for 10 seconds."
+        2: "Follows hidden paths with faint tracks, even on still Hiders."
+    echo_sentry:
+      name: "Echo Sentry"
+      lore:
+        1: "Deploys a lane sentry that catches movers."
+        2: "Slows and reveals anyone crossing its zone."
+  item:
+    action_suffix: " (Right Click)"
+    cooldown_label: "&7Base Cooldown: &a<seconds> Seconds"
+    cooldown_note: "&7Cooldown may vary based on traits/phase."
+  notice:
+    form_changed: "<green><bold>SHAPE SHIFTED</bold></green>"
+    form_changed_sub: "<white>You are now a <gold><block></gold>!</white>"
+    wrong_block_hit: "<red>Wrong block hit</red> - took 0.5 heart."
+    terminal_interference_blind: "<red>Terminal interference disrupted your vision.</red>"
+    terminal_hacked: "<green>Terminal hacked</green> - Warden tech disrupted."
+    terminal_hacked_reset: "<green>Terminal hacked</green> - Warden tech disrupted and Danger Zone reset."
+    terminal_activated_broadcast: "<aqua><bold><player></bold></aqua><gray> activated a Terminal.</gray>"
+    danger_zone_active: "<red>Danger Zone active</red> - move or be revealed."
+    danger_zone_caught: "<red>Danger Zone caught you</red> - Hunters can see you."
+    fake_sound_ping_deployed: "<aqua>Fake Sound Ping deployed.</aqua>"
+    search_relay_blocked: "<red>Relay blocked by Terminal interference.</red>"
+    search_relay_recharging: "<red>Search Relay recharging</red><gray> - <time></gray>"
+    search_relay_online_found: "<green>Search Relay online</green> - revealed nearby props."
+    search_relay_online_empty: "<green>Search Relay online</green> - swept the lane, but found nothing."
+    search_relay_broadcast: "<aqua><bold><player></bold></aqua><gray> triggered a Search Relay.</gray>"
+    terminal_already_used: "<red>This Terminal has already been used.</red>"
+    terminal_hold_sneak: "<aqua>Hold sneak for 4s to hack the Terminal.</aqua>"
+    terminal_channel_interrupted: "<red>Terminal channel interrupted.</red>"
+    perfect_placement: "<green>Perfect Placement</green> - Nerve drain reduced and +1 point."
+    gold_cache_spawned: "<yellow>A Gold Cache has spawned nearby.</yellow>"
+    gold_cache_collected: "<white>Collected </white><yellow>Gold</yellow><gray> (+2 Hearts)</gray>"
+    panic_jump_triggered: "<aqua>Panic Jump triggered.</aqua>"
+    scanner_pulse_cast: "<aqua>Scanner Pulse online</aqua><gray> - sweeping for 5 seconds.</gray>"
+    scanner_pulse_ping: "<aqua>Pulse <pulse>/<total></aqua><gray> - about <distance> blocks <direction>.</gray>"
+    echo_sentry_detected: "<green>Echo Sentry</green><gray> caught <count> moving Hider(s).</gray>"
+    purge_pulse_result: "<green>Purge Pulse</green><gray> cleansed <purged> decoys and marked <revealed> traced Hiders.</gray>"
+    purge_pulse_none: "<red>No arcane traces found nearby.</red>"
+    sky_sweep_found: "<green>Sky Sweep</green><gray> found <count> hidden path(s).</gray>"
+    sky_sweep_none: "<red>The hawk found no hidden path.</red>"
+    sky_sweep_cast: "<aqua>Sky Sweep airborne</aqua><gray> - follow the faint tracks for 10 seconds.</gray>"
+    falcon_marked: "<gold><bold>Falcon Marked!</bold></gold><gray> - a Hider has been revealed by your hawk.</gray>"
+    falcon_spoiled: "<gold><bold>Falcon Spoiled!</bold></gold><gray> - a solidified Hider has been broken out!</gray>"
+    warden_interference: "<red>Terminal interference is disrupting Warden tech.</red>"
+    echo_sentry_deployed: "<green>Echo Sentry deployed.</green><gray> Lane locked.</gray>"
+    hider_snowball_stock: "<aqua>Snow Ball stock refreshed</aqua><gray> - charges ready: <count>.</gray>"
+    hunter_respawn_wait: "<red>You were downed</red><gray> - rejoin the hunt in <time>s.</gray>"
+    hunter_respawn_ready: "<green>Respawn ready</green><gray> - back in the hunt.</gray>"
+    kit_adjusted: "<yellow>Kit adjusted</yellow><gray> - <white><kit></white><gray> (<reason>)</gray>"
+    kit_swap_reason:
+      team_composition_cap: "team composition cap"
+      scan_heavy_trio_guardrail: "scan-heavy trio guardrail"
+      tight_map_bounty_limit: "tight-map bounty limit"
+  feedback:
+    decoy_empty_space: "<red>You must be in an empty space to place a Decoy!</red>"
+    bomb_shell_clear_space: "<red>You need a clear space to arm Bomb Shell!</red>"
+    bomb_shell_armed: "<yellow><bold>Bomb Shell armed!</bold></yellow>"
+    secret_passage_no_route: "<red>No hidden route opened from this angle.</red>"
+    mirror_image_no_room: "<red>Mirror Image needs more room to split.</red>"
+    mirror_image_split: "<aqua><bold>Mirror Image split into <count> illusions!</bold></aqua>"
+    phase_shift_no_route: "<red>Phase Shift could not find a safe landing path.</red>"
+    cat_taunt_cooldown: "<red>Cat Taunt on cooldown! (<time>s)</red>"
+    cat_taunt_ready: "<green><bold>Cat Taunt! Survive 15 seconds for +5 bonus points!</bold></green>"
+    signal_flare_cooldown: "<red>Signal Flare on cooldown! (<time>s)</red>"
+    signal_flare_launched: "<yellow><bold>+2 Points! Signal Flare launched!</bold></yellow>"
+    decoy_destroyed: "<green><bold>You destroyed a Decoy!</bold></green>"
+    scanner_pulse_found: "<green><bold>Pulse detected a Hider nearby!</bold></green>"
+    scanner_pulse_none: "<red><bold>No Hiders detected.</bold></red>"
+    bloodhound_targeted: "<red><bold>The Bloodhound picked up your scent!</bold></red>"
+    bloodhound_found: "<green><bold>Scent detected! Target revealed.</bold></green>"
+    bloodhound_none: "<red><bold>No nearby scent found.</bold></red>"
+    exorcist_traced: "<red><bold>Exorcist traced your lingering magic!</bold></red>"
+    flare_revealed: "<red><bold>You were revealed by a Hunter's Flare!</bold></red>"
+    smoke_bomb_blinded: "<red><bold>You were blinded by a Smoke Bomb!</bold></red>"
+    echo_sentry_locked: "<red><bold>Echo Sentry caught your movement!</bold></red>"
+    taunt_survived: "<gold><bold>+5 Points! Taunted and survived!</bold></gold>"
+    bomb_bug_detonated: "<red><bold>Bomb Bug trap detonated!</bold></red>"
+    bomb_shell_connected: "<yellow><bold>Bomb Shell chunked a Hunter!</bold></yellow>"
+    hider_snowball_hit: "<aqua><bold>Snow Ball connected for 0.5 heart and chilled the Hunter!</bold></aqua>"
+    hider_snowball_taken: "<red><bold>A Hider Snow Ball chipped you for 0.5 heart and slowed you!</bold></red>"
+  direction:
+    front: "ahead"
+    front_left: "front-left"
+    left: "left"
+    back_left: "back-left"
+    back: "behind"
+    back_right: "back-right"
+    right: "right"
+    front_right: "front-right"
+  kit:
+    chameleon:
+      name: "Chameleon"
+      desc:
+        - "&7Baseline Hider that wins by blending into the room."
+        - "&7Use Decoy to make Hunters waste checks on the wrong prop."
+        - ""
+        - "&aPros: &fStrong deception and room-read pressure"
+        - "&cCons: &fNo escape tool once revealed"
+    ghost:
+      name: "Ghost"
+      desc:
+        - "&7Mobility Hider that breaks chases through walls."
+        - "&7Phase Shift resets line-of-sight when pressure gets close."
+        - ""
+        - "&aPros: &fStrong escape through tight routes"
+        - "&cCons: &fTeleport sound and particles expose your route"
+    trickster:
+      name: "Trickster"
+      desc:
+        - "&7Tempo Hider that survives by never running straight."
+        - "&7Blind the pursuer, swap routes, and keep the chase messy."
+        - ""
+        - "&aPros: &fPermanent speed and melee blind"
+        - "&cCons: &fSnow trail makes repeated paths easy to read"
+    bomb_bug:
+      name: "Bomb Bug"
+      desc:
+        - "&7Trap Hider that can actually punish Hunters with lethal burst."
+        - "&7Set explosive bait where greedy checks will cost real health."
+        - ""
+        - "&aPros: &fReal kill pressure when Hunters over-check"
+        - "&cCons: &fNeeds setup time and believable bait"
+    locksmith:
+      name: "Locksmith"
+      desc:
+        - "&7Route Hider that escapes through awkward barriers and corners."
+        - "&7Best when the map has narrow choke points or hidden pathing."
+        - ""
+        - "&aPros: &fCan break pursuit through route tricks"
+        - "&cCons: &fWeak if the room offers no usable escape line"
+    mimic:
+      name: "Mimic"
+      desc:
+        - "&7Illusion Hider that splits attention before changing position."
+        - "&7Mirror Image buys a short window to reroute the chase."
+        - ""
+        - "&aPros: &fGood at confusing single-target pursuit"
+        - "&cCons: &fIllusions fade fast if Hunters wait you out"
+    tracker:
+      name: "Tracker"
+      desc:
+        - "&7Scout Hunter that narrows the map before the team commits."
+        - "&7Use Scanner Pulse to confirm sectors, then rotate with Double Jump."
+        - ""
+        - "&aPros: &fReliable information and fast vertical sweep"
+        - "&cCons: &fNeeds follow-up to convert scans into kills"
+    destroyer:
+      name: "Destroyer"
+      desc:
+        - "&7Area-pressure Hunter that checks suspicious rooms with force."
+        - "&7Flare reveals clustered Hiders before you step into the room."
+        - ""
+        - "&aPros: &fStrong room breach and reveal pressure"
+        - "&cCons: &fSlower rotations between fights"
+    trapper:
+      name: "Trapper"
+      desc:
+        - "&7Zone-control Hunter that wins by denying escape routes."
+        - "&7Webs and bow turn choke points into easy follow-up kills."
+        - ""
+        - "&aPros: &fExcellent catch potential and chase control"
+        - "&cCons: &fLight armor in open fights"
+    bloodhound:
+      name: "Bloodhound"
+      desc:
+        - "&7Chase Hunter that turns first contact into a full track."
+        - "&7Use Bloodhound Sense to keep pressure on runners and route breakers."
+        - ""
+        - "&aPros: &fFast pursuit and single-target tracking"
+        - "&cCons: &fNo wide-area reveal or ranged finisher"
+    saboteur:
+      name: "Saboteur"
+      desc:
+        - "&7Disruption Hunter that starts fights on your terms."
+        - "&7Smoke Bomb blinds and slows Hiders for a clean collapse."
+        - ""
+        - "&aPros: &fStrong opener and anti-hide utility"
+        - "&cCons: &fWeak solo cleanup if the engage misses"
+    bounty_hunter:
+      name: "Bounty Hunter"
+      desc:
+        - "&7Bruiser Hunter that finishes revealed targets with raw pressure."
+        - "&7Heavy armor buys time until Bounty Dash closes the last gap."
+        - ""
+        - "&aPros: &fHigh cleanup power and strong armor"
+        - "&cCons: &fVery slow without information or setup"
+    exorcist:
+      name: "Exorcist"
+      desc:
+        - "&7Counter-utility Hunter that punishes lingering Hider magic."
+        - "&7Best used after decoys, traces, or recent skill effects appear."
+        - ""
+        - "&aPros: &fPurges Decoys and reveals recent skill users"
+        - "&cCons: &fNeeds timing and close-range positioning"
+    falconer:
+      name: "Falconer"
+      desc:
+        - "&7Aerial scout that sends a hawk to tag moving Hiders."
+        - "&7Once prey glows, Falconer gets the speed to close the chase."
+        - ""
+        - "&aPros: &fClear chase payoff after a successful sweep"
+        - "&cCons: &fLoses value when Hiders can stay still and boxed in"
+    warden:
+      name: "Warden"
+      desc:
+        - "&7Lane-control Hunter that punishes movers crossing key routes."
+        - "&7Echo Sentry locks one crossover and slows anyone trying to slip through."
+        - ""
+        - "&aPros: &fReliable hold pressure on doors, flanks, and choke points"
+        - "&cCons: &fStatic utility and weaker value in wide open maps"
+  perk:
+    decoy:
+      name: "Decoy"
+      desc:
+        - "Right-click Armor Stand to place a fake prop check."
+        - "Best for baiting spam-hits or covering your real hiding spot."
+    phase_shift:
+      name: "Phase Shift"
+      desc:
+        - "Right-click Ender Pearl to blink to the safest short exit in front of you."
+        - "Best used to break line-of-sight without clipping into bad anticheat landings."
+    trickery:
+      name: "Trickery"
+      desc:
+        - "Permanent Speed I keeps your chase tempo high."
+        - "Use it to change routes before Hunters can settle their aim."
+    blinding_strike:
+      name: "Blinding Strike"
+      desc:
+        - "Melee hits briefly Blind Hunters."
+        - "Best used right before cutting a corner or escaping a tight chase."
+    bomb_shell:
+      name: "Bomb Shell"
+      desc:
+        - "Right-click Firework Star to plant a heavy explosive decoy trap."
+        - "Best for punishing greedy checks with real damage, blind, and knockback."
+    secret_passage:
+      name: "Secret Passage"
+      desc:
+        - "Right-click Tripwire Hook to slip through a nearby barrier."
+        - "Use it to cut a chase route and reappear on the safer side of a wall."
+    mirror_image:
+      name: "Mirror Image"
+      desc:
+        - "Right-click Echo Shard to split illusions and briefly blind nearby Hunters."
+        - "Use it when pursuit is already close and one wrong read buys your escape."
+    scanner_pulse:
+      name: "Scanner Pulse"
+      desc:
+        - "Right-click Compass to send 5 radar waves out to 20 blocks."
+        - "Each wave only tells rough distance and direction, not the exact prop."
+    double_jump:
+      name: "Double Jump"
+      desc:
+        - "Tap jump twice to launch upward and rotate faster."
+        - "Use it to claim roofs, windows, and vertical shortcuts before props reset."
+    flare:
+      name: "Flare"
+      desc:
+        - "Right-click Fire Charge to throw a revealing flare."
+        - "Use it to force hidden props out before committing to a room check."
+    speed_ii:
+      name: "Speed II"
+      desc:
+        - "Permanent Speed II helps you throw web fields first and chase trapped Hiders."
+        - "Use your speed to claim choke points before the Hider can route around them."
+    bloodhound_sense:
+      name: "Bloodhound Sense"
+      desc:
+        - "Right-click Bone to reveal one nearby Hider."
+        - "Best after first contact, when a runner is trying to break your chase route."
+    smoke_bomb:
+      name: "Smoke Bomb"
+      desc:
+        - "Right-click Gunpowder to throw a smoke bomb that blinds and slows Hiders."
+        - "Best used to open a push or collapse on a room before props can scatter."
+    bounty_dash:
+      name: "Bounty Dash"
+      desc:
+        - "Right-click Crossbow to launch a heavy gap-closing dash."
+        - "Best used after a reveal, when the target has little space left to escape."
+    purge_pulse:
+      name: "Purge Pulse"
+      desc:
+        - "Right-click Amethyst Shard to purge nearby decoys and traces."
+        - "Use it right after Hiders spend utility to catch the freshest trail."
+    sky_sweep:
+      name: "Sky Sweep"
+      desc:
+        - "Right-click Feather to keep a hawk circling overhead for 10 seconds."
+        - "It traces faint tracks toward nearby Hiders, even if they stop moving."
+    echo_sentry:
+      name: "Echo Sentry"
+      desc:
+        - "Right-click Sculk Sensor to deploy a sentry that catches movers in one lane."
+        - "Use it to slow crossings, break rotations, and lock one side of the room."

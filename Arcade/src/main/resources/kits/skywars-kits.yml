@@ -1,0 +1,85 @@
+# Skywars Kit Definitions
+archer:
+  name: "Archer"
+  availability: "Gem"
+  cost: 5000
+  entity-type: "ZOMBIE"
+  display-item: "BOW"
+  desc-en:
+    - "§7A skilled marksman with a §ebow§7."
+    - ""
+    - "§7Arrows deal §eheavy knockback§7."
+  desc-th:
+    - "§7นักแม่นธนูผู้เชี่ยวชาญการใช้ §eธนู§7"
+    - ""
+    - "§7ลูกธนูจะทำให้เป้าหมาย §eกระเด็นถอยหลังอย่างรุนแรง"
+builder:
+  name: "Builder"
+  availability: "Free"
+  cost: 0
+  entity-type: "ZOMBIE"
+  display-item: "BRICK"
+  desc-en:
+    - "§7Master of construction."
+    - ""
+    - "§7Starts with §eBricks§7."
+  desc-th:
+    - "§7ปรมาจารย์แห่งการก่อสร้าง"
+    - ""
+    - "§7เริ่มเกมพร้อมกับ §eอิฐบล็อก§7"
+chemist:
+  name: "Chemist"
+  availability: "Gem"
+  cost: 5000
+  entity-type: "ZOMBIE"
+  display-item: "SPLASH_POTION"
+  desc-en:
+    - "§7A mad scientist with potions."
+    - ""
+    - "§7Starts with §eSplash Potions§7."
+  desc-th:
+    - "§7นักวิทยาศาสตร์สติเฟื่องพร้อมน้ำยาเคมี"
+    - ""
+    - "§7เริ่มเกมพร้อมกับ §eยาสาดบรรจุขวด§7"
+destructor:
+  name: "Destructor"
+  availability: "Gem"
+  cost: 5000
+  entity-type: "ZOMBIE"
+  display-item: "ENDER_PEARL"
+  desc-en:
+    - "§7Destroys islands with ease."
+    - ""
+    - "§7Throws explosive §eEnder Pearls§7."
+  desc-th:
+    - "§7ทำลายเกาะลอยฟ้าได้อย่างง่ายดาย"
+    - ""
+    - "§7ขว้าง §eไข่มุกเอนเดอร์§7 ที่ระเบิดได้"
+eggman:
+  name: "Eggman"
+  availability: "Gem"
+  cost: 5000
+  entity-type: "ZOMBIE"
+  display-item: "EGG"
+  desc-en:
+    - "§7Controls the power of chickens."
+    - ""
+    - "§7Throws eggs that knock enemies off."
+  desc-th:
+    - "§7ควบคุมพลังแห่งไก่"
+    - ""
+    - "§7ขว้างไข่กระแทกศัตรูให้ตกขอบ"
+prospector:
+  name: "Prospector"
+  availability: "Free"
+  cost: 0
+  entity-type: "ZOMBIE"
+  display-item: "IRON_PICKAXE"
+  desc-en:
+    - "§7Mine blocks for resources."
+    - ""
+    - "§7Ores drop §ebetter loot§7."
+  desc-th:
+    - "§7ขุดบล็อกเพื่อหาทรัพยากร"
+    - ""
+    - "§7แร่จะดรอป §eไอเทมที่ดีขึ้นกว่าเดิม§7"

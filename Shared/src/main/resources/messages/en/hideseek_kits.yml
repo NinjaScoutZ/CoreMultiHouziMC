@@ -1,0 +1,28 @@
+hideseek:
+  kit.chameleon.desc: '&7The standard prop hider. Uses Decoy.'
+  kit.chameleon.pros: Has Decoy ability
+  kit.chameleon.cons: No mobility tools
+  kit.ghost.desc: '&7Can Phase Shift through walls.'
+  kit.ghost.pros: Phase Shift escape
+  kit.ghost.cons: Loud sound & particles
+  kit.trickster.desc: '&7Hits Hunters to blind them. Speed I.'
+  kit.trickster.pros: Speed I & Blind Attack
+  kit.trickster.cons: Snow particles trail
+  kit.tracker.desc: '&7Standard Hunter. Gets Radar Scanner.'
+  kit.tracker.pros: Compass points to Hiders
+  kit.tracker.cons: Basic physical combat
+  kit.destroyer.desc: '&7Explosive expert. Breaks blocks.'
+  kit.destroyer.pros: TNT clears hiding spots
+  kit.destroyer.cons: Slowness I effect
+  kit.trapper.desc: '&7Trap master. Stops Hiders.'
+  kit.trapper.pros: Web traps & Bow
+  kit.trapper.cons: Weak leather armor
+  kit.bloodhound.desc: '&7Sniffs out injured Hiders. Speed I.'
+  kit.bloodhound.pros: Speed I & Blood trail
+  kit.bloodhound.cons: No ranged weapons
+  kit.saboteur.desc: '&7Traps decoys and fake blocks.'
+  kit.saboteur.pros: Revealer Bow & Trap block
+  kit.saboteur.cons: No melee weapons
+  kit.bountyhunter.desc: '&7Heavy tank. Gets bonus gems.'
+  kit.bountyhunter.pros: Diamond Armor & Big Damage
+  kit.bountyhunter.cons: Slowness II effect

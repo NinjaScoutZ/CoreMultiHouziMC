@@ -1,0 +1,12 @@
+name: MapParser
+version: 1.0
+main: com.houzicore.mapparser.MapParserPlugin
+api-version: '26.1.2'
+depend: [HouziCore-Shared, HouziCoreArcade]
+commands:
+  parse:
+    description: Parse a map
+    usage: /<command> [radius]
+  map:
+    description: Map configuration
+    usage: /<command> [name|author|gametype] [value]

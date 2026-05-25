@@ -1,0 +1,160 @@
+[6x] SYMBOL: variable log
+  -> E:\Houzicore\Code\Arcade\src\main\java\com\houzicore\arcade\nautilus\game\arcade\game\games\primalgames\PrimalGames.java:1862
+  -> E:\Houzicore\Code\Arcade\src\main\java\com\houzicore\arcade\nautilus\game\arcade\game\games\searchanddestroy\SearchAndDestroy.java:317
+  -> E:\Houzicore\Code\Arcade\src\main\java\com\houzicore\arcade\nautilus\game\arcade\game\games\skywars\Skywars.java:1288
+  -> E:\Houzicore\Code\Arcade\src\main\java\com\houzicore\arcade\nautilus\game\arcade\game\games\skywars\Skywars.java:1285
+  -> E:\Houzicore\Code\Arcade\src\main\java\com\houzicore\arcade\nautilus\game\arcade\game\games\primalgames\PrimalGames.java:1865
+
+[4x] SYMBOL: method getName()
+  -> E:\Houzicore\Code\Arcade\src\main\java\com\houzicore\arcade\nautilus\game\arcade\game\games\searchanddestroy\TeamBomb.java:298
+  -> E:\Houzicore\Code\Arcade\src\main\java\com\houzicore\arcade\nautilus\game\arcade\game\games\searchanddestroy\TeamBomb.java:353
+  -> E:\Houzicore\Code\Arcade\src\main\java\com\houzicore\arcade\nautilus\game\arcade\game\games\searchanddestroy\TeamBomb.java:309
+  -> E:\Houzicore\Code\Arcade\src\main\java\com\houzicore\arcade\nautilus\game\arcade\game\games\searchanddestroy\TeamBomb.java:127
+
+[3x] SYMBOL: variable CRIT_MAGIC
+  -> E:\Houzicore\Code\Arcade\src\main\java\com\houzicore\arcade\nautilus\game\arcade\game\games\hideseek\HideSeek.java:603
+  -> E:\Houzicore\Code\Arcade\src\main\java\com\houzicore\arcade\nautilus\game\arcade\game\games\hideseek\HideSeek.java:683
+  -> E:\Houzicore\Code\Arcade\src\main\java\com\houzicore\arcade\nautilus\game\arcade\game\games\hideseek\HideSeek.java:643
+
+[3x] SYMBOL: variable killer
+  -> E:\Houzicore\Code\Arcade\src\main\java\com\houzicore\arcade\nautilus\game\arcade\game\games\lobbers\BombLobbers.java:172
+  -> E:\Houzicore\Code\Arcade\src\main\java\com\houzicore\arcade\nautilus\game\arcade\game\games\lobbers\BombLobbers.java:176
+  -> E:\Houzicore\Code\Arcade\src\main\java\com\houzicore\arcade\nautilus\game\arcade\game\games\lobbers\BombLobbers.java:169
+
+[3x] SYMBOL: variable score
+  -> E:\Houzicore\Code\Arcade\src\main\java\com\houzicore\arcade\nautilus\game\arcade\game\games\mineware\challenges\ChallengeShootChickens.java:110
+  -> E:\Houzicore\Code\Arcade\src\main\java\com\houzicore\arcade\nautilus\game\arcade\game\games\mineware\challenges\ChallengeShootChickens.java:112
+  -> E:\Houzicore\Code\Arcade\src\main\java\com\houzicore\arcade\nautilus\game\arcade\game\games\mineware\challenges\ChallengeShootChickens.java:108
+
+[3x] SYMBOL: variable id
+  -> E:\Houzicore\Code\Arcade\src\main\java\com\houzicore\arcade\nautilus\game\arcade\game\games\runner\Runner.java:255
+  -> E:\Houzicore\Code\Arcade\src\main\java\com\houzicore\arcade\nautilus\game\arcade\game\games\runner\Runner.java:258
+  -> E:\Houzicore\Code\Arcade\src\main\java\com\houzicore\arcade\nautilus\game\arcade\game\games\runner\Runner.java:256
+
+[3x] SYMBOL: method getShooter()
+  -> E:\Houzicore\Code\Arcade\src\main\java\com\houzicore\arcade\nautilus\game\arcade\game\games\skywars\Skywars.java:948
+  -> E:\Houzicore\Code\Arcade\src\main\java\com\houzicore\arcade\nautilus\game\arcade\game\games\skywars\Skywars.java:946
+  -> E:\Houzicore\Code\Arcade\src\main\java\com\houzicore\arcade\nautilus\game\arcade\game\games\runner\kits\KitFrosty.java:58
+
+[3x] SYMBOL: variable pearlIter
+  -> E:\Houzicore\Code\Arcade\src\main\java\com\houzicore\arcade\nautilus\game\arcade\game\games\skywars\Skywars.java:1251
+  -> E:\Houzicore\Code\Arcade\src\main\java\com\houzicore\arcade\nautilus\game\arcade\game\games\skywars\Skywars.java:1244
+  -> E:\Houzicore\Code\Arcade\src\main\java\com\houzicore\arcade\nautilus\game\arcade\game\games\skywars\Skywars.java:1246
+
+[2x] SYMBOL: method setData(byte)
+  -> E:\Houzicore\Code\Arcade\src\main\java\com\houzicore\arcade\nautilus\game\arcade\game\games\minestrike\data\Bomb.java:101
+  -> E:\Houzicore\Code\Arcade\src\main\java\com\houzicore\arcade\nautilus\game\arcade\game\games\mineware\challenges\ChallengeStandOnColor.java:90
+
+[2x] SYMBOL: variable sloc
+  -> E:\Houzicore\Code\Arcade\src\main\java\com\houzicore\arcade\nautilus\game\arcade\game\games\mineware\challenges\ChallengeShootChickens.java:106
+  -> E:\Houzicore\Code\Arcade\src\main\java\com\houzicore\arcade\nautilus\game\arcade\game\games\mineware\challenges\ChallengeShootChickens.java:108
+
+[2x] SYMBOL: class TileEntityChest
+  -> E:\Houzicore\Code\Arcade\src\main\java\com\houzicore\arcade\nautilus\game\arcade\game\games\primalgames\PrimalGames.java:1921
+  -> E:\Houzicore\Code\Arcade\src\main\java\com\houzicore\arcade\nautilus\game\arcade\game\games\primalgames\PrimalGames.java:1925
+
+[2x] SYMBOL: variable worldBorderType
+  -> E:\Houzicore\Code\Arcade\src\main\java\com\houzicore\arcade\nautilus\game\arcade\game\games\primalgames\PrimalGames.java:1958
+  -> E:\Houzicore\Code\Arcade\src\main\java\com\houzicore\arcade\nautilus\game\arcade\game\games\primalgames\PrimalGames.java:1977
+
+[2x] SYMBOL: class PacketPlayOutScoreboardTeam
+  -> E:\Houzicore\Code\Arcade\src\main\java\com\houzicore\arcade\nautilus\game\arcade\game\games\primalgames\PrimalGames.java:2388
+  -> E:\Houzicore\Code\Arcade\src\main\java\com\houzicore\arcade\nautilus\game\arcade\game\games\primalgames\PrimalGames.java:2394
+
+[2x] SYMBOL: method hideArmor()
+  -> E:\Houzicore\Code\Arcade\src\main\java\com\houzicore\arcade\nautilus\game\arcade\game\games\smash\kits\KitWitherSkeleton.java:125
+  -> E:\Houzicore\Code\Arcade\src\main\java\com\houzicore\arcade\nautilus\game\arcade\game\games\smash\kits\KitSkeleton.java:124
+
+[1x] SYMBOL: variable x
+  -> E:\Houzicore\Code\Arcade\src\main\java\com\houzicore\arcade\nautilus\game\arcade\game\games\minestrike\MineStrike.java:1096
+
+[1x] SYMBOL: variable y
+  -> E:\Houzicore\Code\Arcade\src\main\java\com\houzicore\arcade\nautilus\game\arcade\game\games\minestrike\MineStrike.java:1096
+
+[1x] SYMBOL: variable z
+  -> E:\Houzicore\Code\Arcade\src\main\java\com\houzicore\arcade\nautilus\game\arcade\game\games\minestrike\MineStrike.java:1096
+
+[1x] SYMBOL: method GetDamageMod()
+  -> E:\Houzicore\Code\Arcade\src\main\java\com\houzicore\arcade\nautilus\game\arcade\game\games\minestrike\MineStrike.java:1267
+
+[1x] SYMBOL: variable item
+  -> E:\Houzicore\Code\Arcade\src\main\java\com\houzicore\arcade\nautilus\game\arcade\game\games\mineware\challenges\ChallengeChestLoot.java:103
+
+[1x] SYMBOL: class GameProfile
+  -> E:\Houzicore\Code\Arcade\src\main\java\com\houzicore\arcade\nautilus\game\arcade\game\games\primalgames\PrimalGames.java:1169
+
+[1x] SYMBOL: method getProperties()
+  -> E:\Houzicore\Code\Arcade\src\main\java\com\houzicore\arcade\nautilus\game\arcade\game\games\primalgames\PrimalGames.java:1175
+
+[1x] SYMBOL: class ProfileProperty
+  -> E:\Houzicore\Code\Arcade\src\main\java\com\houzicore\arcade\nautilus\game\arcade\game\games\primalgames\PrimalGames.java:1175
+
+[1x] SYMBOL: class Property
+  -> E:\Houzicore\Code\Arcade\src\main\java\com\houzicore\arcade\nautilus\game\arcade\game\games\primalgames\PrimalGames.java:1177
+
+[1x] SYMBOL: method setSleeping(org.bukkit.block.BlockFace)
+  -> E:\Houzicore\Code\Arcade\src\main\java\com\houzicore\arcade\nautilus\game\arcade\game\games\primalgames\PrimalGames.java:1182
+
+[1x] SYMBOL: method setDespawnTimer(int)
+  -> E:\Houzicore\Code\Arcade\src\main\java\com\houzicore\arcade\nautilus\game\arcade\game\games\primalgames\PrimalGames.java:1190
+
+[1x] SYMBOL: variable SEEDS
+  -> E:\Houzicore\Code\Arcade\src\main\java\com\houzicore\arcade\nautilus\game\arcade\game\games\primalgames\PrimalGames.java:1336
+
+[1x] SYMBOL: variable SAPLING
+  -> E:\Houzicore\Code\Arcade\src\main\java\com\houzicore\arcade\nautilus\game\arcade\game\games\primalgames\PrimalGames.java:1337
+
+[1x] SYMBOL: variable LEAVES
+  -> E:\Houzicore\Code\Arcade\src\main\java\com\houzicore\arcade\nautilus\game\arcade\game\games\primalgames\PrimalGames.java:1339
+
+[1x] SYMBOL: variable LONG_GRASS
+  -> E:\Houzicore\Code\Arcade\src\main\java\com\houzicore\arcade\nautilus\game\arcade\game\games\primalgames\PrimalGames.java:1340
+
+[1x] SYMBOL: variable RED_ROSE
+  -> E:\Houzicore\Code\Arcade\src\main\java\com\houzicore\arcade\nautilus\game\arcade\game\games\primalgames\PrimalGames.java:1341
+
+[1x] SYMBOL: variable YELLOW_FLOWER
+  -> E:\Houzicore\Code\Arcade\src\main\java\com\houzicore\arcade\nautilus\game\arcade\game\games\primalgames\PrimalGames.java:1342
+
+[1x] SYMBOL: variable WATER_LILY
+  -> E:\Houzicore\Code\Arcade\src\main\java\com\houzicore\arcade\nautilus\game\arcade\game\games\primalgames\PrimalGames.java:1344
+
+[1x] SYMBOL: variable CARROT_ITEM
+  -> E:\Houzicore\Code\Arcade\src\main\java\com\houzicore\arcade\nautilus\game\arcade\game\games\primalgames\PrimalGames.java:1347
+
+[1x] SYMBOL: variable POTATO_ITEM
+  -> E:\Houzicore\Code\Arcade\src\main\java\com\houzicore\arcade\nautilus\game\arcade\game\games\primalgames\PrimalGames.java:1353
+
+[1x] SYMBOL: variable WOOD
+  -> E:\Houzicore\Code\Arcade\src\main\java\com\houzicore\arcade\nautilus\game\arcade\game\games\primalgames\PrimalGames.java:1365
+
+[1x] SYMBOL: variable FIREWORK
+  -> E:\Houzicore\Code\Arcade\src\main\java\com\houzicore\arcade\nautilus\game\arcade\game\games\primalgames\PrimalGames.java:1398
+
+[1x] SYMBOL: method keySet()
+  -> E:\Houzicore\Code\Arcade\src\main\java\com\houzicore\arcade\nautilus\game\arcade\game\games\primalgames\PrimalGames.java:1921
+
+[1x] SYMBOL: class ScoreboardTeam
+  -> E:\Houzicore\Code\Arcade\src\main\java\com\houzicore\arcade\nautilus\game\arcade\game\games\primalgames\PrimalGames.java:2392
+
+[1x] SYMBOL: variable _packetTeam
+  -> E:\Houzicore\Code\Arcade\src\main\java\com\houzicore\arcade\nautilus\game\arcade\game\games\primalgames\PrimalGames.java:2392
+
+[1x] SYMBOL: variable _nameTagVisibility
+  -> E:\Houzicore\Code\Arcade\src\main\java\com\houzicore\arcade\nautilus\game\arcade\game\games\primalgames\PrimalGames.java:2459
+
+[1x] SYMBOL: method setColor(org.bukkit.DyeColor)
+  -> E:\Houzicore\Code\Arcade\src\main\java\com\houzicore\arcade\nautilus\game\arcade\game\games\smash\kits\KitSheep.java:131
+
+[1x] SYMBOL: method setType(org.bukkit.entity.Horse.Variant)
+  -> E:\Houzicore\Code\Arcade\src\main\java\com\houzicore\arcade\nautilus\game\arcade\game\games\smash\kits\KitSkeletalHorse.java:121
+
+[1x] SYMBOL: variable LEASH
+  -> E:\Houzicore\Code\Arcade\src\main\java\com\houzicore\arcade\nautilus\game\arcade\game\games\smash\kits\KitWitch.java:69
+
+[1x] SYMBOL: method SetSkeletonType(org.bukkit.entity.Skeleton.SkeletonType)
+  -> E:\Houzicore\Code\Arcade\src\main\java\com\houzicore\arcade\nautilus\game\arcade\game\games\smash\kits\KitWitherSkeleton.java:124
+
+[1x] SYMBOL: method setAngry(boolean)
+  -> E:\Houzicore\Code\Arcade\src\main\java\com\houzicore\arcade\nautilus\game\arcade\game\games\smash\kits\KitWolf.java:131
+

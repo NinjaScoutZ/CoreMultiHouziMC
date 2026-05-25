@@ -1,0 +1,12 @@
+name: HouziCore-Shared
+version: 1.21.11
+main: com.houzicore.shared.SharedPlugin
+api-version: '1.21'
+description: HouziCore Shared Library Plugin
+author: HouziCore
+depend: [packetevents]
+softdepend: [LibsDisguises]
+commands:
+  suicide:
+    description: Kill yourself for testing
+    aliases: [killme, die]

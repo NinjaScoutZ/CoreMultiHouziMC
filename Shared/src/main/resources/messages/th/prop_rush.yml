@@ -1,0 +1,465 @@
+prop_rush:
+  game:
+    title: "<gradient:#4de2ff:#0aa2ff><bold>BLOCK HUNT</bold></gradient>"
+    desc:
+      - "ซ่อนเป็นพร็อพ, สลับตำแหน่ง, และเอาตัวรอด"
+      - "ผู้ล่าต้องสแกน, สแกนพื้นที่, และปิดงาน"
+  lobby:
+    status: "สถานะ"
+    loadout: "กระเป๋า"
+    map: "แผนที่"
+    players: "ผู้เล่น"
+    mode: "โหมด"
+    kit: "คิท"
+    team: "ทีม"
+    role: "บทบาท"
+    solo: "เดี่ยว"
+    essence: "เอสเซนซ์"
+    achievement_kit: "คิทความสำเร็จ"
+    loading: "กำลังเตรียมแผนที่..."
+    loading_map: "กำลังโหลด..."
+    starting_in: "เริ่มในอีก "
+    none_selected: "ยังไม่ได้เลือก"
+    ready: "พร้อมเริ่มเกม!"
+    need_more: "ต้องการอีก <count> คน"
+    holo:
+      select: "เลือก"
+      kit: "สายการเล่น"
+      instructions_short: "&8» &eคลิกเพื่อเลือก &3| &dอัพเกรดสกิล &8«"
+  summary:
+    kit_label: "คิท"
+    kit_compact:
+      default: "รอจังหวะปะทะก่อน แล้วค่อยกดสกิลสำคัญ"
+      chameleon: "ช่อง 5 Decoy: หลอกหลังมุม แล้วรีบย้ายจุด"
+      ghost: "ช่อง 5 Phase Shift: เก็บไว้หนีตอนโดน commit จริง"
+      trickster: "ล่อให้แกว่งพลาดก่อน แล้วค่อยหนี"
+      bomb_bug: "ช่อง 5 Bomb Shell: ลงโทษการเช็กโลภด้วยระเบิดปิดงาน"
+      locksmith: "ช่อง 5 Secret Passage: ตัดทางเดา แล้วรีบล็อกใหม่"
+      mimic: "ช่อง 5 Mirror Image: ใช้หลังศัตรูรู้ตำแหน่งแล้ว"
+      tracker: "ช่อง 2 Scanner Pulse: สแกนก่อน แล้วค่อยบุก"
+      destroyer: "ช่อง 2 Flare: บีบให้ออกจากที่กำบังก่อนตี"
+      trapper: "ช่อง 3 Trapper Webs: ปิดมุมหนีก่อนค่อยไล่"
+      bloodhound: "ช่อง 2 Bloodhound Sense: ปักเป้าก่อน แล้วค่อยดัก"
+      saboteur: "ช่อง 2 Smoke Bomb: ใช้ตอนสู้ระยะประชิด"
+      bounty_hunter: "ช่อง 2 Bounty Dash: พุ่งเมื่อเห็นทางหนีชัดแล้ว"
+      exorcist: "ช่อง 2 Purge Pulse: ล้าง utility แล้วค่อยเปิดตัว"
+      falconer: "ช่อง 2 Sky Sweep: ปล่อยเหยี่ยว แล้ววิ่งไล่เป้าเรืองแสง"
+      warden: "ช่อง 2 Echo Sentry: จับคนขยับ แล้วล็อกเลน"
+  menu:
+    status:
+      online: "&a● &aออนไลน์"
+      offline: "&c● &cออฟไลน์"
+  countdown:
+    hunters_release: "ฝ่ายหากำลังถูกปล่อยตัว..."
+    panic_approaching: "เฟสกดดันกำลังจะมา..."
+    chaos_approaching: "เฟสโกลาหลกำลังจะมา..."
+    time_running_out: "เวลาใกล้หมดแล้ว!"
+  phase:
+    prep: "เตรียมตัว"
+    hunt: "ค้นหา"
+    panic: "ตื่นตระหนก"
+    chaos: "โกลาหล"
+  scoreboard:
+    phase: "เฟส"
+    objective: "เป้าหมาย"
+    top_points: "คะแนนสูงสุด"
+    objective_prep_primary: "H: ซ่อนตัว (<props>) | S: ดูทาง"
+    objective_prep_secondary: "ฝ่ายหาจะถูกปล่อยในอีก (<time>) • ฟื้นเลือดได้จาก Gold เท่านั้น"
+    objective_hunt_primary: "จับพร็อพ (<found>/<total>)"
+    objective_hunt_terminal: "H: แฮ็ก Terminal | S: เปิด Relay"
+    objective_hunt_secondary: "Gold ฟื้นเลือด • Relay CD <time>"
+    objective_panic_primary: "เปลี่ยนจุดก่อนโซนอันตรายกวาด (<time>)"
+    objective_panic_danger: "ฝ่าโซนและแย่ง Gold (<time>)"
+    objective_panic_secondary: "ต้องเคลื่อนที่ต่อเนื่อง • Gold คือการฮีลเดียว"
+    objective_chaos_primary: "อยู่ในวงพื้นที่ (<props> พร็อพ)"
+    objective_chaos_secondary: "ไม่มีรีเจน • Pulse ถัดไป (<time>)"
+  bossbar:
+    hider:
+      prep: "เป้าหมาย: ซ่อนตัว ล็อกตำแหน่ง และเอาชีวิตรอด"
+      hunt: "เป้าหมาย: แย่งชิง Gold และหาที่หลบซ่อน"
+      hunt_terminals: "เป้าหมาย: แฮ็ก Terminal เพื่อรบกวนฝ่ายหา"
+      panic: "เป้าหมาย: วางตำแหน่งใหม่ก่อนที่พื้นที่จะลดลง"
+      panic_danger: "เป้าหมาย: ข้ามโซน เก็บ Gold และเอาชีวิตรอด"
+      chaos: "เป้าหมาย: ยึดพื้นที่วงกลมและต่อสู้เพื่อเอาชีวิตรอด"
+    hunter:
+      prep: "เป้าหมาย: จำเส้นทาง Relay และเตรียมตัวล่า"
+      hunt: "เป้าหมาย: ล่าพร็อพและแย่งชิง Gold ตัดกำลัง"
+      hunt_terminals: "เป้าหมาย: เปิด Relay เพื่อสแกนหาผู้ซ่อนตัว"
+      panic: "เป้าหมาย: ดักจับพวกที่หนีโซนอันตรายออกมา"
+      panic_danger: "เป้าหมาย: ดักยิงคนที่พยายามข้ามโซนเก็บ Gold"
+      chaos: "เป้าหมาย: คุมพื้นที่วงกลมและกวาดล้างคนแอบ"
+  ability:
+    scanner_pulse:
+      name: "แสกนเรดาร์"
+      lore:
+        1: "ปล่อยคลื่นเรดาร์กวาดออกไปนาน 5 วินาที"
+        2: "บอกแค่ระยะคร่าว ๆ กับทิศ ไม่เปิดจุดจริง"
+    fake_sound_ping:
+      name: "Fake Sound Ping"
+      lore:
+        1: "สร้างเสียงลวงให้ดังผิดจุด"
+        2: "ทำให้คนหาหลงทิศ"
+    prop_swap:
+      name: "Prop Swap"
+      lore:
+        1: "คลิกเพื่อแปลงเป็นบล็อกที่เล็งอยู่"
+    solidify_lock:
+      name: "Solidify Lock"
+      lore:
+        1: "ล็อกตำแหน่งพร็อพของคุณ"
+        2: "ช่วยให้แนบเนียนเข้ากับฉากมากขึ้น"
+    cat_taunt:
+      name: "Cat Taunt"
+      lore:
+        1: "ส่งเสียงเมี๊ยวล่อคนหา"
+        2: "รอดได้จะรับ +5 แต้ม"
+    signal_flare:
+      name: "Signal Flare"
+      lore:
+        1: "ยิงแฟลร์ขึ้นฟ้าให้ทุกคนเห็น"
+        2: "รับ +2 แต้มจากความกล้า"
+    hider_snowball:
+      name: "Snow Ball"
+      lore:
+        1: "ขว้างเพื่อเฉือนเลือด Hunter ครึ่งหัวใจ"
+        2: "และทำให้ติดหนาวเดินช้า 2 วินาที"
+    sixth_sense:
+      name: "สัมผัสที่หก"
+      lore:
+        1: "ระบุตำแหน่งของผู้ล่าทั้งหมดชั่วครู่"
+        2: "เน้นขอบตัวผู้ล่าเป็นเวลา 10 วินาที"
+    dash:
+      name: "แดชขนนก"
+      lore:
+        1: "พุ่งตัวไปข้างหน้า 3 บล็อกอย่างปลอดภัย"
+        2: "ป้องกันการพุ่งติดกำแพงโดยอัตโนมัติ"
+    tracker_compass:
+      name: "เข็มทิศติดตาม"
+      lore:
+        1: "ชี้ไปทางคนแอบที่อยู่ใกล้ที่สุด"
+        2: "ใช้งานได้ 3 ครั้ง คูลดาวน์ 30 วินาที"
+    flare:
+      name: "Flare"
+      lore:
+        1: "ขว้างแฟลร์เข้าไปกดดันจุดซ่อน"
+        2: "คนแอบที่โดนระยะจะถูกเปิดตัว"
+    bloodhound_sense:
+      name: "Bloodhound Sense"
+      lore:
+        1: "จับเป้าหมายคนแอบใกล้ตัวหนึ่งคน"
+        2: "ช่วยเปิดไลน์ไล่ต่อให้คมขึ้น"
+    smoke_bomb:
+      name: "Smoke Bomb"
+      lore:
+        1: "สร้างควันหนาปิดมุมมอง"
+        2: "ทำให้คนแอบใกล้ ๆ มองเห็นยาก"
+    bounty_dash:
+      name: "Bounty Dash"
+      lore:
+        1: "พุ่งไปด้านหน้าตามทิศที่เล็ง"
+        2: "ได้ความเร็วเสริมช่วงสั้น"
+    purge_pulse:
+      name: "Purge Pulse"
+      lore:
+        1: "ปล่อยคลื่นกวาดพื้นที่เปิดคนแอบ"
+        2: "ล้างกับดักและร่างลวงในระยะ"
+    sky_sweep:
+      name: "Sky Sweep"
+      lore:
+        1: "ปล่อยเหยี่ยวบินวนเหนือหัวนาน 10 วินาที"
+        2: "ทิ้งรอยตามจาง ๆ ไปหาคนแอบ แม้เขาจะหยุดนิ่ง"
+    echo_sentry:
+      name: "Echo Sentry"
+      lore:
+        1: "วาง sentry คุมเลนที่จับคนขยับ"
+        2: "ทำให้ช้าและเปิดตำแหน่งคนที่ข้ามโซน"
+  item:
+    action_suffix: " (คลิกขวา)"
+    cooldown_label: "&7คูลดาวน์พื้นฐาน: &a<seconds> วินาที"
+    cooldown_note: "&7คูลดาวน์อาจเปลี่ยนไปตามสกิล/เฟส"
+  notice:
+    form_changed: "<green><bold>เปลี่ยนร่าง</bold></green>"
+    form_changed_sub: "<white>ตอนนี้คุณคือบล็อก <gold><block></gold>!</white>"
+    wrong_block_hit: "<red>ตีผิดบล็อก</red> - เสียพลังชีวิตครึ่งดวง"
+    terminal_interference_blind: "<red>สัญญาณจาก Terminal ทำให้การมองเห็นของคุณรวน</red>"
+    terminal_hacked: "<green>หน้าจอแฮกสำเร็จ</green> - ระบบแสกนถูกรบกวน"
+    terminal_hacked_reset: "<green>แฮ็ก Terminal สำเร็จ</green> - ระบบ Warden ถูกรบกวน และ Danger Zone ถูกรีเซ็ต"
+    terminal_activated_broadcast: "<aqua><bold><player></bold></aqua><gray> เปิดใช้งาน Terminal</gray>"
+    danger_zone_active: "<red>โซนอันตรายทำงาน</red> - ขยับหรือถูกเปิดตำแหน่ง"
+    danger_zone_caught: "<red>Danger Zone จับคุณได้</red> - ฝ่ายหามองเห็นคุณแล้ว"
+    fake_sound_ping_deployed: "<aqua>ปล่อย Fake Sound Ping แล้ว</aqua>"
+    search_relay_blocked: "<red>Relay ถูกบล็อกด้วยสัญญาณรบกวนจาก Terminal</red>"
+    search_relay_recharging: "<red>Search Relay กำลังชาร์จ</red><gray> - <time></gray>"
+    search_relay_online_found: "<green>Search Relay ทำงาน</green> - เปิดตำแหน่งพร็อพใกล้เคียงแล้ว"
+    search_relay_online_empty: "<green>Search Relay ทำงาน</green> - กวาดเลนนี้แล้ว แต่ยังไม่เจอใคร"
+    search_relay_broadcast: "<aqua><bold><player></bold></aqua><gray> เปิด Search Relay แล้ว</gray>"
+    terminal_already_used: "<red>Terminal นี้ถูกใช้ไปแล้ว</red>"
+    terminal_hold_sneak: "<aqua>ย่อตัวค้าง 4 วินาทีเพื่อแฮ็ก Terminal</aqua>"
+    terminal_channel_interrupted: "<red>การแฮ็ก Terminal ถูกขัดจังหวะ</red>"
+    perfect_placement: "<green>ซ่อนตัวเนียนมาก</green> - ลดการเสีย Nerve และได้ +1 แต้ม"
+    gold_cache_spawned: "<yellow>มี Gold Cache เกิดขึ้นใกล้ ๆ</yellow>"
+    gold_cache_collected: "<white>เก็บ </white><yellow>Gold</yellow><gray> (+2 หัวใจ)</gray>"
+    panic_jump_triggered: "<aqua>Panic Jump ทำงานแล้ว</aqua>"
+    scanner_pulse_cast: "<aqua>Scanner Pulse ทำงานแล้ว</aqua><gray> - กวาดเรดาร์นาน 5 วินาที</gray>"
+    scanner_pulse_ping: "<aqua>คลื่น <pulse>/<total></aqua><gray> - เป้าหมายอยู่ราว <distance> บล็อกทาง<direction></gray>"
+    echo_sentry_detected: "<green>Echo Sentry</green><gray> จับ Hider ที่กำลังขยับ <count> คน</gray>"
+    purge_pulse_result: "<green>Purge Pulse</green><gray> ล้างร่างลวง <purged> จุด และเปิดรอยของคนแอบ <revealed> คน</gray>"
+    purge_pulse_none: "<red>ไม่พบร่องรอยในระยะใกล้</red>"
+    sky_sweep_found: "<green>Sky Sweep</green><gray> เจอรอยซ่อนตัว <count> จุด</gray>"
+    sky_sweep_none: "<red>เหยี่ยวไม่พบรอยของคนแอบ</red>"
+    sky_sweep_cast: "<aqua>ปล่อย Sky Sweep แล้ว</aqua><gray> - ตามรอยจาง ๆ ได้นาน 10 วินาที</gray>"
+    falcon_marked: "<gold><bold>เหยี่ยวปักเป้า!</bold></gold><gray> - เปิดตำแหน่ง Hider ที่กำลังขยับแล้ว</gray>"
+    falcon_spoiled: "<gold><bold>เหยี่ยวทำลายการซ่อน!</bold></gold><gray> - Hider ที่ solidify ถูกบังคับออกมาแล้ว</gray>"
+    warden_interference: "<red>สัญญาณจาก Terminal รบกวนเทคโนโลยี Warden</red>"
+    echo_sentry_deployed: "<green>วาง Echo Sentry แล้ว</green><gray> ล็อกเลนนี้ไว้</gray>"
+    hider_snowball_stock: "<aqua>เติม Snow Ball แล้ว</aqua><gray> - พร้อมใช้ <count> ลูก</gray>"
+    hunter_respawn_wait: "<red>คุณถูกล้ม</red><gray> - กลับเข้าล่าอีกครั้งใน <time> วิ</gray>"
+    hunter_respawn_ready: "<green>พร้อมกลับสู่การล่าแล้ว</green><gray> - กลับเข้าสนามได้</gray>"
+    kit_adjusted: "<yellow>คิทถูกปรับ</yellow><gray> - <white><kit></white><gray> (<reason>)</gray>"
+    kit_swap_reason:
+      team_composition_cap: "เกินลิมิตคิทในทีม"
+      scan_heavy_trio_guardrail: "ทีมสแกนหนักเกินกำหนด"
+      tight_map_bounty_limit: "แมพแคบจำกัด Bounty Hunter"
+  feedback:
+    decoy_empty_space: "<red>คุณต้องยืนในช่องว่างก่อนวาง Decoy!</red>"
+    bomb_shell_clear_space: "<red>ต้องมีพื้นที่ว่างพอสำหรับติดตั้ง Bomb Shell!</red>"
+    bomb_shell_armed: "<yellow><bold>Bomb Shell พร้อมทำงาน!</bold></yellow>"
+    secret_passage_no_route: "<red>มุมนี้ไม่มีทางลับให้เปิด</red>"
+    mirror_image_no_room: "<red>Mirror Image ต้องการพื้นที่มากกว่านี้ในการแยกร่าง</red>"
+    mirror_image_split: "<aqua><bold>Mirror Image แยกร่างลวงออกมา <count> ร่าง!</bold></aqua>"
+    phase_shift_no_route: "<red>Phase Shift หาทางลงที่ปลอดภัยไม่เจอ</red>"
+    cat_taunt_cooldown: "<red>Cat Taunt ยังติดคูลดาวน์! (<time>s)</red>"
+    cat_taunt_ready: "<green><bold>Cat Taunt! รอดให้ครบ 15 วินาทีเพื่อรับโบนัส +5 แต้ม!</bold></green>"
+    signal_flare_cooldown: "<red>Signal Flare ยังติดคูลดาวน์! (<time>s)</red>"
+    signal_flare_launched: "<yellow><bold>+2 แต้ม! ยิง Signal Flare แล้ว!</bold></yellow>"
+    decoy_destroyed: "<green><bold>คุณทำลาย Decoy สำเร็จ!</bold></green>"
+    scanner_pulse_found: "<green><bold>Pulse ตรวจพบ Hider ใกล้เคียง!</bold></green>"
+    scanner_pulse_none: "<red><bold>ไม่พบ Hider ในระยะ</bold></red>"
+    bloodhound_targeted: "<red><bold>Bloodhound จับกลิ่นของคุณได้แล้ว!</bold></red>"
+    bloodhound_found: "<green><bold>พบกลิ่นเป้าหมาย! เปิดตำแหน่งแล้ว</bold></green>"
+    bloodhound_none: "<red><bold>ไม่พบกลิ่นเป้าหมายใกล้ตัว</bold></red>"
+    exorcist_traced: "<red><bold>Exorcist ตามรอยพลังเวทที่ค้างอยู่ของคุณได้!</bold></red>"
+    flare_revealed: "<red><bold>คุณถูกเปิดตำแหน่งด้วย Flare ของฝ่ายหา!</bold></red>"
+    smoke_bomb_blinded: "<red><bold>คุณถูก Smoke Bomb ทำให้มองไม่เห็น!</bold></red>"
+    echo_sentry_locked: "<red><bold>Echo Sentry จับการเคลื่อนไหวของคุณ!</bold></red>"
+    taunt_survived: "<gold><bold>+5 แต้ม! ล้อแล้วรอดสำเร็จ!</bold></gold>"
+    bomb_bug_detonated: "<red><bold>กับดัก Bomb Bug ระเบิดใส่คุณแล้ว!</bold></red>"
+    bomb_shell_connected: "<yellow><bold>Bomb Shell ระเบิดโดน Hunter เต็ม ๆ!</bold></yellow>"
+    hider_snowball_hit: "<aqua><bold>Snow Ball โดนเป้า! เฉือนเลือด 0.5 หัวใจและทำให้ติดหนาว!</bold></aqua>"
+    hider_snowball_taken: "<red><bold>คุณโดน Snow Ball ของ Hider เฉือนเลือด 0.5 หัวใจและเดินช้าลง!</bold></red>"
+  direction:
+    front: "ด้านหน้า"
+    front_left: "หน้าเยื้องซ้าย"
+    left: "ทางซ้าย"
+    back_left: "หลังเยื้องซ้าย"
+    back: "ด้านหลัง"
+    back_right: "หลังเยื้องขวา"
+    right: "ทางขวา"
+    front_right: "หน้าเยื้องขวา"
+  kit:
+    chameleon:
+      name: "Chameleon"
+      desc:
+        - "&7สายพื้นฐานของ Hider ที่ชนะด้วยการเนียนไปกับฉาก"
+        - "&7ใช้ Decoy หลอกให้ Hunter เช็กผิดและเสียจังหวะ"
+        - ""
+        - "&aPros: &fเก่งเรื่องหลอกเช็กห้องและบังคับให้ตีพลาด"
+        - "&cCons: &fถ้าโดนเปิดตำแหน่งแล้วจะหนียาก"
+    ghost:
+      name: "Ghost"
+      desc:
+        - "&7สายวาร์ปหนีที่ตัดเส้นไล่ล่าด้วยการทะลุกำแพง"
+        - "&7เด่นตอนโดนกดดันใกล้ตัวและต้องรีเซ็ต line-of-sight"
+        - ""
+        - "&aPros: &fหนีผ่านมุมแคบและกำแพงได้ดีมาก"
+        - "&cCons: &fเสียงและเอฟเฟกต์ทำให้ยังถูกตามรอยได้"
+    trickster:
+      name: "Trickster"
+      desc:
+        - "&7สายป่วนที่เอาตัวรอดด้วยการเปลี่ยนจังหวะไล่จับ"
+        - "&7วิ่งไว ตีตาบอด แล้วต้องรีบสลับเส้นหนีทันที"
+        - ""
+        - "&aPros: &fความเร็วสูงและตีคนหาให้เสียมุมมองได้"
+        - "&cCons: &fรอยหิมะทำให้วิ่งวนเส้นเดิมแล้วโดนอ่านง่าย"
+    bomb_bug:
+      name: "Bomb Bug"
+      desc:
+        - "&7สายกับดักที่สวน Hunter ได้จริงด้วยระเบิดปิดงาน"
+        - "&7วางเหยื่อในจุดที่ดูน่าตี แล้วปล่อยให้การเช็กโลภจ่ายเลือดจริง"
+        - ""
+        - "&aPros: &fแรงพอจะสวน Hunter ที่เช็กโลภ"
+        - "&cCons: &fต้องวางจุดให้เนียน ไม่งั้นเสียของฟรี"
+    locksmith:
+      name: "Locksmith"
+      desc:
+        - "&7สายเปิดเส้นทางลับที่เด่นกับมุมคับแคบและกำแพงหลอกตา"
+        - "&7เหมาะกับแมพที่หนีด้วย route play มากกว่าวิ่งตรง"
+        - ""
+        - "&aPros: &fตัดเส้นไล่ล่าด้วยทางลัดและการหักมุมได้ดี"
+        - "&cCons: &fถ้าแมพไม่มีช่องให้เล่นจะดึง value ได้น้อย"
+    mimic:
+      name: "Mimic"
+      desc:
+        - "&7สายภาพลวงตาที่หลอกความสนใจแล้วค่อยเปลี่ยนตำแหน่ง"
+        - "&7เด่นเวลาโดนไล่แบบตัวต่อตัวและต้องซื้อเสี้ยววินาทีหนี"
+        - ""
+        - "&aPros: &fดึงสายตา Hunter ออกจากเส้นหนีจริงได้ดี"
+        - "&cCons: &fภาพลวงหมดเร็วถ้าคู่ต่อสู้ไม่รีบ commit"
+    tracker:
+      name: "Tracker"
+      desc:
+        - "&7นักล่าสาย scout ที่ค่อย ๆ บีบพื้นที่ก่อนทีมจะ commit"
+        - "&7ใช้ Scanner Pulse เช็ก sector แล้วหมุนแมพด้วย Double Jump"
+        - ""
+        - "&aPros: &fได้ข้อมูลชัวร์และขึ้นเปลี่ยนชั้นได้คล่อง"
+        - "&cCons: &fถ้าทีมไม่ตามข้อมูลก็ปิดงานเองยาก"
+    destroyer:
+      name: "Destroyer"
+      desc:
+        - "&7นักล่าคุมห้องที่ใช้แรงกดดันเปิดจุดซ่อนต้องสงสัย"
+        - "&7Flare ช่วย reveal เป้าหมายก่อนเดินเข้าเคลียร์พื้นที่"
+        - ""
+        - "&aPros: &fเก่งมากกับห้องแน่นและจุดซ่อนที่อ่านยาก"
+        - "&cCons: &fย้ายจุดช้ากว่าสาย scout"
+    trapper:
+      name: "Trapper"
+      desc:
+        - "&7นักล่าสายคุมเส้นหนีที่ชนะด้วยการปิดทางมากกว่า reveal ตรง"
+        - "&7ใยแมงมุมและธนูทำให้ choke point กลายเป็นจุดตาย"
+        - ""
+        - "&aPros: &fดักจับเก่งมากและไล่ซ้ำหลังติดใยได้ไว"
+        - "&cCons: &fถ้าเปิดไฟต์ในที่โล่งจะบางกว่าสายอื่น"
+    bloodhound:
+      name: "Bloodhound"
+      desc:
+        - "&7นักล่าสายตามรอยที่เปลี่ยนการเห็นครั้งแรกให้เป็นการไล่ต่อเนื่อง"
+        - "&7เด่นมากกับเป้าหมายที่เพิ่งหลุดมุมหรือพยายามรีเซ็ตเส้นหนี"
+        - ""
+        - "&aPros: &fตามติดเป้าหมายเดี่ยวได้โหดและกดดันต่อเนื่อง"
+        - "&cCons: &fไม่เก่งเรื่องเปิดหลายเป้าพร้อมกัน"
+    saboteur:
+      name: "Saboteur"
+      desc:
+        - "&7นักล่าสาย disruption ที่เปิดไฟต์ให้ทีมได้ก่อน"
+        - "&7Smoke Bomb ทำให้ Hider มองไม่เห็นและหนีช้าลงพร้อมกัน"
+        - ""
+        - "&aPros: &fเก่งมากในการเปิดจังหวะบุกและตัดการมองเห็น"
+        - "&cCons: &fถ้าเข้าไม่ถึงหลังใช้สกิลจะเสีย value เยอะ"
+    bounty_hunter:
+      name: "Bounty Hunter"
+      desc:
+        - "&7นักล่าสายปิดงานที่แลกความเร็วกับพลังบีบและเกราะหนา"
+        - "&7เด่นสุดเมื่อทีมเปิดข้อมูลให้แล้วและต้องการคนเข้าเก็บ kill"
+        - ""
+        - "&aPros: &fปิดเป้าหมาย revealed ได้แรงและยืนไฟต์ได้นาน"
+        - "&cCons: &fถ้าไม่มีคนเปิดทางให้จะตามเกมยากมาก"
+    exorcist:
+      name: "Exorcist"
+      desc:
+        - "&7นักล่าสาย counter-utility ที่ล้างร่องรอยสกิลของ Hider"
+        - "&7ยิ่งใช้หลังเจอ decoy หรือ trace ใหม่ ๆ ยิ่งได้ value สูง"
+        - ""
+        - "&aPros: &fล้าง Decoy และเปิดเผยคนที่เพิ่งใช้สกิล"
+        - "&cCons: &fต้องอ่านจังหวะและอยู่ระยะใกล้พอ"
+    falconer:
+      name: "Falconer"
+      desc:
+        - "&7นักล่าสายสอดแนมทางอากาศที่ปล่อยเหยี่ยวไปแท็ก Hider ที่กำลังขยับ"
+        - "&7พอเหยื่อเรืองแสงอยู่ใกล้ตัว คุณจะได้ความเร็วเสริมไว้ปิดงาน"
+        - ""
+        - "&aPros: &fเปิดไล่เป้าหมายที่ขยับหนีได้คมมาก"
+        - "&cCons: &fถ้าเหยื่อไม่ขยับหรือทีมไม่ตามซ้ำ มูลค่าจะตก"
+    warden:
+      name: "Warden"
+      desc:
+        - "&7นักล่าสายคุมเลนที่ลงโทษคนขยับผ่านจุดสำคัญ"
+        - "&7ตั้ง Echo Sentry ไว้ล็อกจุดตัดและทำให้เป้าที่ฝืนผ่านช้าลง"
+        - ""
+        - "&aPros: &fล็อก rotation และบีบเส้นทางหนีได้ชัด"
+        - "&cCons: &fต้องอ่านเส้นทางให้ถูก ไม่งั้นค่า sentry จะหาย"
+  perk:
+    decoy:
+      name: "Decoy"
+      desc:
+        - "คลิกขวาที่ Armor Stand เพื่อสร้างเป้าล่อปลอม"
+        - "เอาไว้หลอกให้พวก Hunter ตีมั่ว หรือปิดบังที่ซ่อนจริงๆ"
+    phase_shift:
+      name: "Phase Shift"
+      desc:
+        - "คลิกขวาที่ Ender Pearl เพื่อย้ายตัวไปจุดลงสั้น ๆ ที่ปลอดภัยที่สุดด้านหน้า"
+        - "เหมาะกับการตัดสายตาโดยไม่วาร์ปเข้าแลนด์จุดเสี่ยงจนโดนแอนตี้ชีตเล่นงาน"
+    trickery:
+      name: "Trickery"
+      desc:
+        - "ได้ Speed I ถาวรเพื่อคุมจังหวะไล่ล่าให้อยู่ในมือ"
+        - "ใช้ความเร็วเปลี่ยนเส้นก่อนที่คนหาจะเล็งหรืออ่านทางได้ทัน"
+    blinding_strike:
+      name: "Blinding Strike"
+      desc:
+        - "การตีประชิดจะทำให้คนหาตาบอดช่วงสั้น ๆ"
+        - "ใช้ก่อนตัดมุมหรือหลุดจากจังหวะไล่ระยะประชิด"
+    bomb_shell:
+      name: "Bomb Shell"
+      desc:
+        - "คลิกขวาที่ Firework Star เพื่อวางกับดักล่อระเบิดหนัก"
+        - "เหมาะกับลงโทษการเช็กโลภด้วยดาเมจหนัก ตาบอด ช้า และกระเด็น"
+    secret_passage:
+      name: "Secret Passage"
+      desc:
+        - "คลิกขวาที่ Tripwire Hook เพื่อมุดผ่านสิ่งกีดขวางใกล้ตัว"
+        - "ใช้ตัดเส้นไล่แล้วไปโผล่อีกฝั่งที่ปลอดภัยกว่า"
+    mirror_image:
+      name: "Mirror Image"
+      desc:
+        - "คลิกขวาที่ Echo Shard เพื่อแยกร่างลวงและทำให้ Hunter ใกล้ตัวหน้ามืดช่วงสั้น"
+        - "ใช้ตอนคนหาเข้าประชิดแล้วและต้องการแค่หนึ่งจังหวะอ่านผิดเพื่อหนี"
+    scanner_pulse:
+      name: "Scanner Pulse"
+      desc:
+        - "คลิกขวาที่ Compass เพื่อปล่อย 5 คลื่นเรดาร์ออกไปไกลสุด 20 บล็อก"
+        - "แต่ละคลื่นจะบอกแค่ระยะกับทิศคร่าว ๆ ไม่เปิดจุดพร็อพตรง ๆ"
+    double_jump:
+      name: "Double Jump"
+      desc:
+        - "กดกระโดดสองครั้งเพื่อพุ่งขึ้นและหมุนตำแหน่งได้ไวขึ้น"
+        - "ใช้ยึดหลังคา หน้าต่าง และทางลัดแนวตั้งก่อนพร็อพจะรีเซ็ตมุมหนี"
+    flare:
+      name: "Flare"
+      desc:
+        - "คลิกขวาที่ Fire Charge เพื่อขว้าง flare reveal"
+        - "ใช้บังคับให้พร็อพออกจากที่ซ่อนก่อนทีมจะเข้าเช็กห้อง"
+    speed_ii:
+      name: "Speed II"
+      desc:
+        - "ได้ Speed II ถาวรเพื่อโยนใยเป็นฟิลด์ก่อนและตามเก็บเป้าหมายที่ติดกับ"
+        - "ใช้ความเร็วเพื่อยึด choke point ก่อนที่ฝ่ายแอบจะอ้อมหนีได้"
+    bloodhound_sense:
+      name: "Bloodhound Sense"
+      desc:
+        - "คลิกขวาที่ Bone เพื่อเปิดตำแหน่ง Hider ใกล้ตัวหนึ่งคน"
+        - "ดีที่สุดหลังเจอเป้าครั้งแรก ตอนอีกฝ่ายพยายามตัดเส้นไล่"
+    smoke_bomb:
+      name: "Smoke Bomb"
+      desc:
+        - "คลิกขวาที่ Gunpowder เพื่อโยนควันซึ่งทำให้ Hider ตาบอดและช้าลง"
+        - "เหมาะกับเปิดจังหวะบุกหรือยุบห้องก่อนที่พร็อพจะกระจายหนี"
+    bounty_dash:
+      name: "Bounty Dash"
+      desc:
+        - "คลิกขวาที่ Crossbow เพื่อพุ่งปิดระยะอย่างหนัก"
+        - "ใช้หลัง reveal เป้าหมาย ตอนอีกฝ่ายเหลือพื้นที่หนีน้อยแล้ว"
+    purge_pulse:
+      name: "Purge Pulse"
+      desc:
+        - "คลิกขวาที่ Amethyst Shard เพื่อล้าง decoy และร่องรอยใกล้ตัว"
+        - "ใช้ทันทีหลังฝ่ายแอบกด utility เพื่อจับรอยที่สดที่สุด"
+    sky_sweep:
+      name: "Sky Sweep"
+      desc:
+        - "คลิกขวาที่ Feather เพื่อปล่อยเหยี่ยวบินวนเหนือหัวนาน 10 วินาที"
+        - "มันจะลากรอยจาง ๆ ไปหา Hider ใกล้ตัว แม้เป้าหมายจะหยุดนิ่งแล้ว"
+    echo_sentry:
+      name: "Echo Sentry"
+      desc:
+        - "คลิกขวาที่ Sculk Sensor เพื่อวาง sentry จับคนที่ขยับผ่านเลน"
+        - "ใช้ชะลอการข้าม ตัด rotation และล็อกหนึ่งฝั่งของห้อง"

@@ -1,0 +1,36 @@
+speedbuilders:
+  scoreboard:
+    title: "&b&lSPEED BUILDERS"
+    stage: "&e&lช่วงการแข่งขัน"
+    stage_warmup: "&aวอร์มอัพ"
+    stage_main: "&eรอบหลัก"
+    stage_sudden: "&cช่วงชี้ชะตา"
+    round: "&e&lรอบที่"
+    time: "&e&lเวลาที่เหลือ"
+    timeLeft: "&f{0} วินาที"
+    rank: "&e&lอันดับ"
+    combo: "&e&lคอมโบ"
+    players: "&e&lผู้เล่น"
+  hologram:
+    completed: "เสร็จสมบูรณ์"
+  perfect: "สร้างเสร็จสมบูรณ์แบบ!"
+  eliminated: "&c{0} &7ถูกลมหายใจมังกรแผดเผาจนมอดไหม้!"
+  speedbonus: "&eโบนัสความเร็ว +{0}!"
+  actionbar:
+    progress: "&aความคืบหน้า: &e{0}% &7| &aโบนัสความเร็ว: &e+{1} คะแนน"
+    perfect: "&a&lสมบูรณ์แบบ! &eคอมโบสตรีค: &d{0}x"
+  chat:
+    score_summary: "&e&lสรุปรอบนี้: &a{0} คะแนน &7(ฐาน: {1}, ความเร็ว: {2}, คอมโบ: x{3})"
+  gui:
+    vote:
+      title: "&8โหวตคะแนนความคิดสร้างสรรค์!"
+      title_voted: "&dโหวตความคิดสร้างสรรค์แล้ว!"
+      currently_selected: "&a✔ เลือกแล้ว"
+      item_name: "&e{0}"
+      item_lore:
+        - "&7คลิกเพื่อโหวตความคิดสร้างสรรค์ของพวกเขา!"
+        - "&8───────────"
+        - "&fคะแนนโหวต: &b{0}"
+      already_voted: "&cคุณได้โหวตให้ {0} ไปแล้ว!"
+      success: "&aคุณโหวตให้ {0} เรียบร้อยแล้ว!"
+      ended: "&cหมดเวลาสำหรับการโหวตแล้ว"

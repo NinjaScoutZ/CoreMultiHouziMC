@@ -1,0 +1,220 @@
+package com.houzicore.extension.module.message.bubble.service;
+
+import com.google.inject.Inject;
+import com.google.inject.Singleton;
+import it.unimi.dsi.fastutil.objects.ObjectArrayList;
+import lombok.RequiredArgsConstructor;
+import com.houzicore.extension.config.Message;
+import com.houzicore.extension.execution.pipeline.MessagePipeline;
+import com.houzicore.extension.execution.scheduler.TaskScheduler;
+import com.houzicore.extension.model.entity.FPlayer;
+import com.houzicore.extension.model.event.message.context.MessageContext;
+import com.houzicore.extension.module.message.bubble.BubbleModule;
+import com.houzicore.extension.module.message.bubble.model.Bubble;
+import com.houzicore.extension.module.message.bubble.model.ModernBubble;
+import com.houzicore.extension.module.message.bubble.render.BubbleRender;
+import com.houzicore.extension.processing.converter.ColorConverter;
+import com.houzicore.extension.util.generator.RandomGenerator;
+import com.houzicore.extension.util.constant.MessageFlag;
+import com.houzicore.extension.util.file.FileFacade;
+import org.jspecify.annotations.NonNull;
+
+import java.util.List;
+import java.util.Map;
+import java.util.Queue;
+import java.util.UUID;
+import java.util.concurrent.ConcurrentHashMap;
+import java.util.concurrent.ConcurrentLinkedQueue;
+import java.util.concurrent.locks.ReentrantLock;
+
+@Singleton
+@RequiredArgsConstructor(onConstructor = @__(@Inject))
+public class BubbleService {
+
+    private final Map<UUID, PlayerBubbleState> playerBubbleStates = new ConcurrentHashMap<>();
+    private final FileFacade fileFacade;
+    private final BubbleRender bubbleRender;
+    private final ColorConverter colorConverter;
+    private final TaskScheduler taskScheduler;
+    private final RandomGenerator randomUtil;
+    private final MessagePipeline messagePipeline;
+
+    public void startTicker() {
+        taskScheduler.runPlayerRegionTimer(fPlayer -> {
+            PlayerBubbleState state = playerBubbleStates.get(fPlayer.uuid());
+            if (state == null) return;
+
+            processBubbleQueue(fPlayer.uuid(), state);
+        }, 1L);
+    }
+
+    public void addMessage(@NonNull FPlayer sender, @NonNull String message, List<FPlayer> receivers) {
+        if (!bubbleRender.isCorrectPlayer(sender)) return;
+
+        PlayerBubbleState state = playerBubbleStates.computeIfAbsent(
+                sender.uuid(),
+                uuid -> new PlayerBubbleState(new ConcurrentLinkedQueue<>(), new ConcurrentLinkedQueue<>(), new ReentrantLock())
+        );
+
+        MessageContext messageContext = messagePipeline.createContext(sender, message)
+                .addFlags(
+                        new MessageFlag[]{MessageFlag.PLAYER_MESSAGE, MessageFlag.MENTION_MODULE, MessageFlag.INTERACTIVE_CHAT_COMPAT, MessageFlag.QUESTIONANSWER_MODULE, MessageFlag.ITEM_DETECTION, MessageFlag.OBJECT_SPRITE_PROCESSING, MessageFlag.OBJECT_PLAYER_HEAD_PROCESSING, MessageFlag.OBJECT_TEXTURE_PROCESSING, MessageFlag.REMOVE_DISABLED_TAGS, MessageFlag.URL_PROCESSING},
+                        new boolean[]{true, false, false, false, false, false, false, false, false, false}
+                );
+
+        List<Bubble> bubbles = splitMessageToBubbles(sender, messagePipeline.buildPlain(messageContext), receivers);
+
+        state.waitingQueue.addAll(bubbles);
+    }
+
+    private List<Bubble> splitMessageToBubbles(@NonNull FPlayer sender, @NonNull String message, List<FPlayer> receivers) {
+        int id = randomUtil.nextInt(Integer.MAX_VALUE);
+
+        // default bubble
+        Message.Bubble config = fileFacade.message().bubble();
+
+        long duration = calculateDuration(message);
+        float elevation = config.elevation();
+        float interactionHeight = config.interaction().height();
+
+        boolean useModernBubble = bubbleRender.isModern();
+        boolean useInteractionRiding = bubbleRender.isInteractionRiding();
+
+        String wordBreakHint = config.wordBreakHint();
+
+        // modern bubble
+        Message.Bubble.Modern configModern = config.modern();
+
+        boolean hasShadow = configModern.hasShadow();
+        boolean seeThrough = configModern.seeThrough();
+        int background = colorConverter.parseHexToArgb(configModern.background());
+        int animationTime = configModern.animationTime();
+        float scale = configModern.scale();
+        BubbleModule.Billboard billboard = configModern.billboard();
+
+        int maxLength = fileFacade.message().bubble().maxLength();
+
+        List<Bubble> bubbles = new ObjectArrayList<>();
+
+        StringBuilder line = new StringBuilder();
+        for (char symbol : message.toCharArray()) {
+            line.append(symbol);
+            if (line.length() < maxLength) continue;
+
+            boolean isLetter = Character.isLetter(symbol);
+            if (!isLetter && line.length() < maxLength + 5) continue;
+
+            String newMessage = isLetter ? line + wordBreakHint : line.toString().trim();
+            bubbles.add(buildBubble(
+                    id, sender, newMessage, duration, elevation, interactionHeight,
+                    useInteractionRiding, useModernBubble, hasShadow, seeThrough, background,
+                    animationTime, scale, billboard, receivers
+            ));
+
+            line.setLength(0);
+        }
+
+        if (!line.isEmpty()) {
+            bubbles.add(buildBubble(
+                    id, sender, line.toString(), duration, elevation, interactionHeight,
+                    useInteractionRiding, useModernBubble, hasShadow, seeThrough, background,
+                    animationTime, scale, billboard, receivers
+            ));
+        }
+
+        return bubbles;
+    }
+
+    private Bubble buildBubble(int id, FPlayer sender, String message, long duration, float elevation, float interactionHeight,
+                               boolean interactionRiding, boolean useModern, boolean hasShadow, boolean seeThrough, int background,
+                               int animationTime, float scale, BubbleModule.Billboard billboard, List<FPlayer> receivers) {
+        Bubble.BubbleBuilder<?, ?> builder = useModern
+                ? ModernBubble.builder()
+                .hasShadow(hasShadow)
+                .seeThrough(seeThrough)
+                .background(background)
+                .animationTime(animationTime)
+                .scale(scale)
+                .billboard(billboard)
+                : Bubble.builder();
+
+        return builder
+                .id(id)
+                .sender(sender)
+                .rawMessage(message)
+                .duration(duration)
+                .elevation(elevation)
+                .interactionHeight(interactionHeight)
+                .interactionRiding(interactionRiding)
+                .viewers(receivers)
+                .build();
+    }
+
+    private void processBubbleQueue(UUID playerUuid, PlayerBubbleState bubbleState) {
+        if (!bubbleState.lock.tryLock()) return;
+
+        try {
+            bubbleState.activeBubbles.removeIf(bubble -> {
+                if (!bubble.isExpired()) return false;
+                bubbleRender.removeBubbleIf(filterBubble -> filterBubble.equals(bubble));
+                return true;
+            });
+
+            int maxCount = fileFacade.message().bubble().maxCount();
+            if (bubbleState.activeBubbles.size() >= maxCount) {
+                return;
+            }
+
+            Bubble nextBubble = bubbleState.waitingQueue.poll();
+            if (nextBubble != null && !nextBubble.isCreated()) {
+                bubbleRender.renderBubble(nextBubble);
+                bubbleState.activeBubbles.add(nextBubble);
+            }
+
+            if (bubbleState.waitingQueue.isEmpty() && bubbleState.activeBubbles.isEmpty()) {
+                playerBubbleStates.remove(playerUuid);
+            }
+        } finally {
+            bubbleState.lock.unlock();
+        }
+    }
+
+    public void clear(FPlayer fPlayer) {
+        PlayerBubbleState state = playerBubbleStates.remove(fPlayer.uuid());
+        if (state == null) return;
+
+        clearBubbleState(state);
+    }
+
+    public void clear() {
+        playerBubbleStates.forEach((uuid, state) -> clearBubbleState(state));
+        playerBubbleStates.clear();
+        bubbleRender.removeAllBubbles();
+    }
+
+    private void clearBubbleState(PlayerBubbleState state) {
+        state.lock.lock();
+        try {
+            state.waitingQueue.clear();
+            state.activeBubbles.forEach(bubble -> bubbleRender.removeBubbleIf(filterBubble -> filterBubble.equals(bubble)));
+            state.activeBubbles.clear();
+        } finally {
+            state.lock.unlock();
+        }
+    }
+
+    private long calculateDuration(String message) {
+        Message.Bubble config = fileFacade.message().bubble();
+
+        int countWords = message.split(" ").length;
+        return (long) (((countWords + config.handicapChars()) / config.readSpeed()) * 60) * 1000L;
+    }
+
+    private record PlayerBubbleState(
+            Queue<Bubble> waitingQueue,
+            Queue<Bubble> activeBubbles,
+            ReentrantLock lock
+    ) {
+    }
+
+}

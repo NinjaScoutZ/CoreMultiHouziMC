@@ -1,0 +1,226 @@
+package com.houzicore.arcade.nautilus.game.arcade.game.games.runner;
+
+import java.util.HashMap;
+import java.util.Map;
+
+import org.bukkit.Effect;
+import org.bukkit.Location;
+import org.bukkit.Material;
+import org.bukkit.block.Block;
+import org.bukkit.block.BlockFace;
+import org.bukkit.entity.Arrow;
+import org.bukkit.entity.Entity;
+import org.bukkit.entity.FallingBlock;
+import org.bukkit.entity.LivingEntity;
+import org.bukkit.entity.Player;
+import org.bukkit.event.EventHandler;
+import org.bukkit.event.entity.EntityChangeBlockEvent;
+import org.bukkit.event.entity.EntityDamageEvent.DamageCause;
+import org.bukkit.event.entity.ProjectileHitEvent;
+
+import com.mineplex.anticheat.checks.move.Glide;
+import com.mineplex.anticheat.checks.move.HeadRoll;
+import com.mineplex.anticheat.checks.move.Speed;
+
+import com.houzicore.shared.core.Managers;
+import com.houzicore.shared.core.antihack.AntiHack;
+import com.houzicore.shared.common.Pair;
+import com.houzicore.shared.common.util.C;
+import com.houzicore.shared.common.util.MapUtil;
+import com.houzicore.shared.common.util.UtilBlock;
+import com.houzicore.shared.common.util.UtilEnt;
+import com.houzicore.shared.common.util.UtilPlayer;
+import com.houzicore.shared.common.util.UtilTime;
+import com.houzicore.shared.core.projectile.IThrown;
+import com.houzicore.shared.core.projectile.ProjectileUser;
+import com.houzicore.shared.updater.UpdateType;
+import com.houzicore.shared.updater.event.UpdateEvent;
+
+import com.houzicore.arcade.ArcadeManager;
+import com.houzicore.arcade.GameType;
+import com.houzicore.arcade.nautilus.game.arcade.game.SoloGame;
+import com.houzicore.arcade.nautilus.game.arcade.game.games.runner.kits.KitArcher;
+import com.houzicore.arcade.nautilus.game.arcade.game.games.runner.kits.KitFrosty;
+import com.houzicore.arcade.nautilus.game.arcade.game.games.runner.kits.KitLeaper;
+import com.houzicore.arcade.nautilus.game.arcade.game.modules.CompassModule;
+import com.houzicore.arcade.nautilus.game.arcade.kit.Kit;
+import com.houzicore.arcade.nautilus.game.arcade.managers.chat.ChatStatData;
+import com.houzicore.arcade.nautilus.game.arcade.stats.DistanceTraveledStatTracker;
+
+public class Runner extends SoloGame implements IThrown
+{
+
+	private static final String[] DESCRIPTION =
+			{
+					C.cGreen + "Blocks Fall" + C.Reset + " from underneath you.",
+					C.cAqua + "Keep Running" + C.Reset + " to stay alive.",
+					"Avoid " + C.cRed + "Falling Blocks" + C.Reset + " from above.",
+					C.cYellow + "Last Player" + C.Reset + " alive wins!"
+			};
+	private static final long BLOCK_DECAY = 600;
+	private static final long BLOCK_LIFETIME = 1200;
+
+	private final Map<Block, Long> _blocks = new HashMap<>();
+
+	public Runner(ArcadeManager manager)
+	{
+		super(manager, GameType.Runner, new Kit[]
+				{
+						new KitLeaper(manager),
+						new KitArcher(manager),
+						new KitFrosty(manager)
+				}, DESCRIPTION);
+
+		DamagePvP = false;
+		HungerSet = 20;
+		WorldWaterDamage = 4;
+		PrepareFreeze = false;
+		NightVision = true;
+
+		new CompassModule()
+				.register(this);
+
+		registerStatTrackers(
+				new DistanceTraveledStatTracker(this, "MarathonRunner")
+		);
+
+		registerChatStats(
+				new ChatStatData("MarathonRunner", "Distance ran", true),
+				BlankLine,
+				new ChatStatData("kit", "Kit", true)
+		);
+
+		AntiHack antiHack = Managers.get(AntiHack.class);
+		antiHack.addIgnoredCheck(Speed.class);
+		antiHack.addIgnoredCheck(Glide.class);
+		antiHack.addIgnoredCheck(HeadRoll.class);
+	}
+
+	@EventHandler
+	public void arrowDamage(ProjectileHitEvent event)
+	{
+		Entity entity = event.getEntity();
+
+		if (!(entity instanceof Arrow) || !IsLive())
+		{
+			return;
+		}
+
+		Manager.runSyncLater(() ->
+		{
+			Block block = UtilEnt.getHitBlock(entity);
+
+			double radius = 2.5;
+
+			for (Block other : UtilBlock.getInRadius(block.getLocation().add(0.5, 0.5, 0.5), radius).keySet())
+			{
+				addBlock(other);
+			}
+
+			entity.remove();
+		}, 0);
+	}
+
+	private void addBlock(Block block)
+	{
+		if (block == null || block.getType() == Material.AIR || block.getType() == Material.BEDROCK || block.isLiquid() || block.getRelative(BlockFace.UP).getTypeId() != 0 || _blocks.containsKey(block))
+		{
+			return;
+		}
+
+		_blocks.put(block, System.currentTimeMillis());
+		MapUtil.QuickChangeBlockAt(block.getLocation(), Material.STAINED_CLAY, (byte) 14);
+	}
+
+	@EventHandler
+	public void blockBreak(UpdateEvent event)
+	{
+		if (event.getType() != UpdateType.TICK || !IsLive())
+		{
+			return;
+		}
+
+		for (Player player : GetPlayers(true))
+		{
+			Pair<Location, Location> box = UtilEnt.getSideStandingBox(player);
+			Location min = box.getLeft(), max = box.getRight();
+
+			for (int x = min.getBlockX(); x <= max.getBlockX(); x++)
+			{
+				for (int z = min.getBlockZ(); z <= max.getBlockZ(); z++)
+				{
+					addBlock(player.getLocation().add(x, -0.5, z).getBlock());
+				}
+			}
+		}
+
+		_blocks.entrySet().removeIf(entry ->
+		{
+			Block block = entry.getKey();
+			long time = entry.getValue();
+
+			if (!UtilTime.elapsed(time, BLOCK_DECAY))
+			{
+				return false;
+			}
+
+			MapUtil.QuickChangeBlockAt(block.getLocation(), Material.AIR);
+			FallingBlock ent = block.getWorld().spawnFallingBlock(block.getLocation(), Material.STAINED_CLAY, (byte) 14);
+			Manager.GetProjectile().AddThrow(ent, null, this, BLOCK_LIFETIME, true, false, false, false, 0.3F);
+			return true;
+		});
+	}
+
+	@EventHandler
+	public void blockForm(EntityChangeBlockEvent event)
+	{
+		blockSmash(event.getEntity());
+		event.setCancelled(true);
+	}
+
+	private void blockSmash(Entity entity)
+	{
+		if (!(entity instanceof FallingBlock))
+		{
+			return;
+		}
+
+		if (Math.random() < 0.3)
+		{
+			FallingBlock block = (FallingBlock) entity;
+			block.getWorld().playEffect(block.getLocation(), Effect.STEP_SOUND, Material.REDSTONE_BLOCK);
+		}
+
+		entity.remove();
+	}
+
+	@Override
+	public void Collide(LivingEntity target, Block block, ProjectileUser data)
+	{
+		if (target == null || UtilPlayer.isSpectator(target) || target.getLocation().getY() > data.getThrown().getLocation().getY() + 0.5)
+		{
+			return;
+		}
+
+		Manager.GetDamage().NewDamageEvent(target, data.getThrower(), null, DamageCause.ENTITY_ATTACK, 6, true, true, false, "Falling Block", "Falling Block");
+		blockSmash(data.getThrown());
+	}
+
+	@Override
+	public void Idle(ProjectileUser data)
+	{
+
+	}
+
+	@Override
+	public void Expire(ProjectileUser data)
+	{
+		data.getThrown().remove();
+	}
+
+	@Override
+	public void ChunkUnload(ProjectileUser data)
+	{
+		data.getThrown().remove();
+	}
+}

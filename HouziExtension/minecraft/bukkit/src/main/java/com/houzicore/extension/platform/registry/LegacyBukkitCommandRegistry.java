@@ -1,0 +1,125 @@
+package com.houzicore.extension.platform.registry;
+
+import com.google.inject.Inject;
+import com.google.inject.Singleton;
+import com.houzicore.extension.execution.scheduler.TaskScheduler;
+import com.houzicore.extension.model.entity.FPlayer;
+import com.houzicore.extension.platform.handler.CommandExceptionHandler;
+import com.houzicore.extension.processing.mapper.FPlayerMapper;
+import com.houzicore.extension.processing.resolver.ReflectionResolver;
+import com.houzicore.extension.util.file.FileFacade;
+import org.bukkit.plugin.Plugin;
+import org.incendo.cloud.Command;
+import org.incendo.cloud.CommandManager;
+import org.incendo.cloud.exception.ArgumentParseException;
+import org.incendo.cloud.exception.CommandExecutionException;
+import org.incendo.cloud.exception.InvalidSyntaxException;
+import org.incendo.cloud.exception.NoPermissionException;
+import org.incendo.cloud.execution.ExecutionCoordinator;
+import org.incendo.cloud.paper.LegacyPaperCommandManager;
+import org.incendo.cloud.setting.ManagerSetting;
+
+import java.util.function.Function;
+
+@Singleton
+public class LegacyBukkitCommandRegistry implements CommandRegistry {
+
+    private final FileFacade fileFacade;
+    private final Plugin plugin;
+    private final ReflectionResolver reflectionResolver;
+    private final TaskScheduler taskScheduler;
+    private final FPlayerMapper fPlayerMapper;
+    private final CommandExceptionHandler commandExceptionHandler;
+
+    protected LegacyPaperCommandManager<FPlayer> manager;
+
+    @Inject
+    public LegacyBukkitCommandRegistry(FileFacade fileFacade,
+                                       CommandExceptionHandler commandExceptionHandler,
+                                       Plugin plugin,
+                                       ReflectionResolver reflectionResolver,
+                                       TaskScheduler taskScheduler,
+                                       FPlayerMapper fPlayerMapper) {
+        this.fileFacade = fileFacade;
+        this.plugin = plugin;
+        this.fPlayerMapper = fPlayerMapper;
+        this.taskScheduler = taskScheduler;
+        this.reflectionResolver = reflectionResolver;
+        this.commandExceptionHandler = commandExceptionHandler;
+    }
+
+    @Override
+    public void init() {
+        this.manager = new LegacyPaperCommandManager<>(plugin, ExecutionCoordinator.asyncCoordinator(), fPlayerMapper);
+
+        manager.settings().set(ManagerSetting.ALLOW_UNSAFE_REGISTRATION, true);
+
+        manager.exceptionController().registerHandler(ArgumentParseException.class, commandExceptionHandler::handleArgumentParseException);
+        manager.exceptionController().registerHandler(InvalidSyntaxException.class, commandExceptionHandler::handleInvalidSyntaxException);
+        manager.exceptionController().registerHandler(NoPermissionException.class, commandExceptionHandler::handleNoPermissionException);
+        manager.exceptionController().registerHandler(CommandExecutionException.class, commandExceptionHandler::handleCommandExecutionException);
+    }
+
+    @Override
+    public void registerCommand(Function<CommandManager<FPlayer>, Command.Builder<FPlayer>> builder) {
+        Command<FPlayer> command = builder.apply(manager).build();
+
+        // root name
+        String commandName = command.rootComponent().name();
+
+        boolean isCloudCommand = manager.commands().stream()
+                .anyMatch(fPlayerCommand -> fPlayerCommand.rootComponent().name().equals(commandName));
+
+        boolean needUnregister = plugin.getServer().getPluginCommand(commandName) != null
+                || fileFacade.config().command().unregisterOnReload() && isCloudCommand;
+
+        if (needUnregister) {
+            unregisterCommand(commandName);
+        } else if (isCloudCommand) {
+            return;
+        }
+
+        // register new command
+        if (reflectionResolver.isPaper()) {
+            registerCommand(command);
+        } else {
+            taskScheduler.runSync(() -> registerCommand(command));
+        }
+    }
+
+    @Override
+    public void unregisterCommand(String name) {
+        if (reflectionResolver.isPaper()) {
+            deleteRootCommand(name);
+        } else {
+            taskScheduler.runSync(() -> deleteRootCommand(name));
+        }
+    }
+
+    @Override
+    public void reload() {
+        if (!fileFacade.config().command().unregisterOnReload()) return;
+
+        if (reflectionResolver.isPaper()) {
+            unregisterCommands();
+        } else {
+            taskScheduler.runSync(this::unregisterCommands);
+        }
+    }
+
+    public void deleteRootCommand(String name) {
+        manager.deleteRootCommand(name);
+    }
+
+    public void registerCommand(Command<FPlayer> command) {
+        manager.command(command);
+    }
+
+    public void unregisterCommands() {
+        manager.commands().stream()
+                .map(command -> command.rootComponent().name())
+                .toList() // fix concurrent modification
+                .forEach(this::unregisterCommand);
+    }
+
+}

@@ -1,0 +1,621 @@
+compass:
+  name: "&aReturn to Hub"
+  lore.1: ""
+  lore.2: "&7Click while holding this"
+  lore.3: "&7to return to the Hub."
+
+afk:
+  kick: "&e[AFK] &7You were kicked for being AFK for 5 minutes."
+  warning_title: "&cᴀꜰᴋ ᴡᴀʀɴɪɴɢ!"
+  warning_subtitle: "&7Kick in {0}s"
+  warning_chat: "&cYou will be kicked in &l{0}s&c if there is no movement!"
+# -----------------------------------------------------------
+# Scoreboard labels
+# -----------------------------------------------------------
+scoreboard:
+  label.player: "&e&lPlayer"
+  label.level: "&b&lLevel"
+  label.rank: "&6&lRank"
+  label.coins: "&e&lCoins"
+  label.gems: "&a&lGems"
+  label.server: "&3&lServer"
+  label.online: "&5&lOnline"
+
+# -----------------------------------------------------------
+# Hub Hotbar Items & HubManager messages
+# -----------------------------------------------------------
+hub:
+  item.game_menu: "<GRADIENT:#10A0FF,#1055FF> ɢᴀᴍᴇ ᴍᴇɴᴜ </GRADIENT>"
+  item.game_menu.lore1: "§7Right-click to open the"
+  item.game_menu.lore2: "§7server selector and play minigames."
+  item.profile: "<GRADIENT:#55FF55,#00AA00> ᴍʏ ᴘʀᴏғɪʟᴇ </GRADIENT>"
+  item.lobby_menu: "<GRADIENT:#FFD700,#FF6B00> ʟᴏʙʙʏ ᴍᴇɴᴜ </GRADIENT>"
+
+  join.title: "<gradient:#FFE259:#FFA751:#FF5E62><bold>✦  ❖   {1}   ❖  ✦</bold></gradient>"
+  join.subtitle: "<color:#F5F5F5>Welcome,</color> <gradient:#00E5FF:#2575FC><bold>{0}</bold></gradient> <color:#F5F5F5>to the server network!</color>"
+  welcome_chat.line1: "<gradient:#FFE259:#FFA751:#FF5E62><bold>━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━</bold></gradient>"
+  welcome_chat.line2: ""
+  welcome_chat.line3: "<gradient:#FFE259:#FFA751:#FF5E62><bold>✦ ᴡᴇʟᴄᴏᴍᴇ ᴛᴏ ᴛʜᴇ {1} ɴᴇᴛᴡᴏʀᴋ ✦</bold></gradient>"
+  welcome_chat.line4: "<gray>ʙᴇᴛᴀ ᴠᴇʀꜱɪᴏɴ 1</gray>"
+  welcome_chat.line5: ""
+  welcome_chat.line6: "<color:#F5F5F5>We hope you enjoy your stay! If you need any help,</color>"
+  welcome_chat.line7: "<color:#F5F5F5>please don't hesitate to ask our community or staff.</color>"
+  welcome_chat.line8: ""
+  welcome_chat.line9: "<click:open_url:'https://discord.gg/houzicore'><hover:show_text:'<color:#7289DA>Join our Discord Server</color>'><color:#7289DA><bold>✦ ᴅɪꜱᴄᴏʀᴅ</bold></color></hover></click> <dark_gray>│</dark_gray> <click:open_url:'https://{2}'><hover:show_text:'<color:#FFD700>Visit our Website</color>'><color:#FFD700><bold>✦ ᴡᴇʙꜱɪᴛᴇ</bold></color></hover></click> <dark_gray>│</dark_gray> <click:open_url:'https://store.{2}'><hover:show_text:'<color:#FF6B6B>Support us on the Store</color>'><color:#FF6B6B><bold>✦ ꜱᴛᴏʀᴇ</bold></color></hover></click> <dark_gray>│</dark_gray> <click:open_url:'https://{2}/wiki'><hover:show_text:'<color:#55FF55>Browse our Wiki</color>'><color:#55FF55><bold>✦ ᴡɪᴋɪ</bold></color></hover></click>"
+  welcome_chat.line10: ""
+  welcome_chat.line11: "<click:open_url:'https://{2}/changelog'><hover:show_text:'<color:#00E5FF>View the latest changes & updates!</color>'><gradient:#00E5FF:#2575FC><bold>» ᴠɪᴇᴡ ᴠᴇʀꜱɪᴏɴ ᴄʜᴀɴɢᴇʟᴏɢ «</bold></gradient></hover></click>"
+  welcome_chat.line12: ""
+  welcome_chat.line13: "<gradient:#FFE259:#FFA751:#FF5E62><bold>━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━</bold></gradient>"
+  quit.message: "&c{0} left the network."
+  chat.spawn_lock: "§7You must leave spawn before you can chat!"
+  chat.spawn_lock_pm: "§7You must leave spawn before you can send private messages!"
+
+# -----------------------------------------------------------
+# Tutorial
+# -----------------------------------------------------------
+tutorial:
+  started: "&aTutorial&7: You started &e{0}&7."
+  completed: "&aTutorial&7: You completed &e{0}&7!"
+  reward: "&aGem&7: You received &e{0} Gems&7."
+
+# -----------------------------------------------------------
+# Poll
+# -----------------------------------------------------------
+poll:
+  thanks: "&aThanks for your response!"
+  reward: "&aGem&7: You received &e{0} Gems!"
+  error: "&cThere was an error processing your poll request."
+  listing: "&eListing Polls:"
+  click_view: "&7Click a poll to view responses!"
+  invalid_int: "&cInvalid Integer: &e{0}"
+  not_found: "&cCould not find a poll with that id. Try again!"
+  fetching: "&eFetching Poll Stats..."
+  question: "&eQuestion: &f{0}"
+  enabled: "&eEnabled: &f{0}"
+  poll_id: "&ePoll Id: &f{0}"
+  reward_amount: "&eReward: &f{0}"
+  display_type: "&eDisplay Type: &f{0}"
+  failed_parse: "&cFailed to parse your response. Please try again later."
+  expired: "&cThat poll no longer exists. Sorry!"
+  total: "&eTotal Responses: &f{0}"
+
+# -----------------------------------------------------------
+# Server Game Menu — game descriptions (ServerGameMenu)
+# -----------------------------------------------------------
+game_menu:
+  title: "&ePick a Game"
+  join_players: "&a►► &e{0} &aplayers online"
+  status.online: "§a● §aOnline"
+  status.offline: "§c● §cOffline"
+
+  bridges.name: "<GRADIENT:#FFD700,#FF6B00> ᴛʜᴇ ʙʀɪᴅɢᴇs </GRADIENT>"
+  bridges.desc.1: "&7Island empires divided by the abyss."
+  bridges.desc.2: "&7After 10 minutes, &bThe Bridges &7emerge."
+  bridges.desc.3: "&cCross and leave no survivors."
+
+  sg.name: "<GRADIENT:#FFD700,#FF6B00> sᴜʀᴠɪᴠᴀʟ ɢᴀᴍᴇs </GRADIENT>"
+  sg.desc.1: "&7Scavenge &eLoot Chests &7as the world collapses."
+  sg.desc.2: "&7Craft, fight, and outlast everyone else."
+  sg.desc.3: "&cBe the last one standing."
+
+  skywars.name: "<GRADIENT:#FFD700,#FF6B00> sᴋʏᴡᴀʀs </GRADIENT>"
+  skywars.desc.1: "&7The void beckons. Don't fall."
+  skywars.desc.2: "&7Loot &eIsland Chests &7and bridge the abyss."
+  skywars.desc.3: "&cEliminate all and conquer the skies."
+
+  uhc.name: "<GRADIENT:#FFD700,#FF6B00> ᴜʟᴛʀᴀ ʜᴀʀᴅᴄᴏʀᴇ </GRADIENT>"
+  uhc.desc.1: "&7No natural healing. &eGolden Apples &7only."
+  uhc.desc.2: "&7Mine, craft, and survive."
+  uhc.desc.3: "&cBeware the shrinking &bWorld Border&c."
+
+  wizards.name: "<GRADIENT:#FFD700,#FF6B00> ᴡɪᴢᴀʀᴅs </GRADIENT>"
+  wizards.desc.1: "&7Wield powerful magical wands."
+  wizards.desc.2: "&7A free-for-all brawl of elemental"
+  wizards.desc.3: "&7destruction. &cLast wizard wins."
+
+  castle_siege.name: "<GRADIENT:#FFD700,#FF6B00> ᴄᴀsᴛʟᴇ sɪᴇɢᴇ </GRADIENT>"
+  castle_siege.desc.1: "&7Defenders vs Undead. Protect the &eKing"
+  castle_siege.desc.2: "&7from endless waves until the"
+  castle_siege.desc.3: "&7morning sun rises!"
+
+  block_hunt.name: "<GRADIENT:#FFD700,#FF6B00> ᴘʀᴏᴘ ʀᴜsʜ </GRADIENT>"
+  block_hunt.desc.1: "&7Hide in plain sight as any block,"
+  block_hunt.desc.2: "&7or hunt the hidden props down."
+  block_hunt.desc.3: "&cMassive combat ability selections."
+
+  minestrike.name: "<GRADIENT:#FFD700,#FF6B00> ᴍɪɴᴇ-sᴛʀɪᴋᴇ </GRADIENT>"
+  minestrike.desc.1: "&7Tactical team-based shooter."
+  minestrike.desc.2: "&7Defend bomb sites or plant the &eC4."
+  minestrike.desc.3: "&cStrategy is key."
+
+  drawmything.name: "<GRADIENT:#FFD700,#FF6B00> ᴅʀᴀᴡ ᴍʏ ᴛʜɪɴɢ </GRADIENT>"
+  drawmything.desc.1: "&7Draw random words, others guess."
+  drawmything.desc.2: "&7Earn points for correct guesses."
+  drawmything.desc.3: "&aCreative chaos for everyone."
+
+  dominate.name: "<GRADIENT:#FFD700,#FF6B00> ᴅᴏᴍɪɴᴀᴛᴇ </GRADIENT>"
+  dominate.desc.1: "&7Customize your combat loadout."
+  dominate.desc.2: "&7Battle to capture control points"
+  dominate.desc.3: "&7spanning the entire map."
+
+  tdm.name: "<GRADIENT:#FFD700,#FF6B00> ᴛᴇᴀᴍ ᴅᴇᴀᴛʜᴍᴀᴛᴄʜ </GRADIENT>"
+  tdm.desc.1: "&7Classic Team Deathmatch."
+  tdm.desc.2: "&7Pick a champion and battle to crush"
+  tdm.desc.3: "&cthe enemy team's lives."
+
+  master_builders.name: "<GRADIENT:#FFD700,#FF6B00> ᴍᴀsᴛᴇʀ ʙᴜɪʟᴅᴇʀs </GRADIENT>"
+  master_builders.desc.1: "&7Creative building contest."
+  master_builders.desc.2: "&7Build a masterpiece, then let the"
+  master_builders.desc.3: "&7community &avote &7on your art!"
+
+  arcade.name: "<GRADIENT:#FFD700,#FF6B00> ᴀʀᴄᴀᴅᴇ ᴜɴɪᴠᴇʀsᴇ </GRADIENT>"
+  arcade.desc.intro: "&7Fast-paced micro-games:"
+  arcade.cycle.micro_battles: "&aMicro Battles"
+  arcade.cycle.turf_wars: "&aTurf Wars"
+  arcade.cycle.runner: "&aRunner"
+  arcade.cycle.dragon_escape: "&aDragon Escape"
+  arcade.cycle.death_tag: "&aDeath Tag"
+
+  arcade.map_vote_ends: "Map voting ends in &a{0} seconds&r!"
+  arcade.map_vote_winner: "Map voting has ended! Winner: &a{0}"
+  arcade.map_generate: "Generating game map in &a{0} seconds&r!"
+  arcade.lobby.loading: "Preparing world..."
+  arcade.lobby.starting_in: "Starting in "
+  arcade.trait.no_traits: "&cThis kit has no traits available yet."
+
+  player_servers.name: "<GRADIENT:#FFD700,#FF6B00> ᴘʟᴀʏᴇʀ sᴇʀᴠᴇʀs </GRADIENT>"
+  player_servers.desc.1: "&7Host your own game instance."
+  player_servers.desc.2: "&7Invite friends and curate custom"
+  player_servers.desc.3: "&7lobbies to play what you want."
+
+# -----------------------------------------------------------
+# Preferences Page
+# -----------------------------------------------------------
+prefs:
+  title: "Preferences"
+  language.name: "Server Language"
+  language.desc.1: "Selected: {0}"
+  language.desc.2: "Click to switch to {0}"
+  visibility.name: "Player Visibility"
+  chat.name: "Player Chat"
+  pm.name: "Private Messaging"
+  party.name: "Party Requests"
+  friend.name: "Pending Friend Requests"
+  stacker.name: "Hub Stacker"
+  radio.name: "Music Radio"
+  status.enabled: "Enabled"
+  status.disabled: "Disabled"
+  click.enable: "Click to Enable"
+  click.disable: "Click to Disable"
+  close: "\u2716 Close"
+
+# -----------------------------------------------------------
+# Cosmetics Page
+# -----------------------------------------------------------
+cosmetic:
+  title: "Cosmetics"
+  particles: "Particle Effects"
+  gadgets: "Gadgets"
+  morphs: "Morphs"
+  mounts: "Mounts"
+  pets: "Pets"
+  costumes: "Costumes"
+  music: "Music"
+  sprays: "Sprays"
+  auras: "Auras"
+  wineffects: "Win Effects"
+  banners: "Banners"
+  active_preview: "Active Cosmetics"
+  click_deactivate: "Click to deactivate"
+  active: "ACTIVE"
+  unlocked: "UNLOCKED"
+  locked: "LOCKED"
+  cost: "Cost: "
+  coins: " Coins"
+  treasure_found: "Found in Treasure Chests"
+  free: "Free"
+  ammo: "Ammo: "
+  right_click_buy: "Right-Click to buy more"
+  deactivate: "Click to deactivate"
+  activate: "Click to activate"
+  purchase: "Click to purchase"
+  unlock_info: "Open Treasure Chests to unlock"
+  claim_free: "Click to claim for free"
+  not_enough_coins: "Not enough Coins"
+  dismount: "Click to dismount"
+  mount: "Click to mount"
+  put_away_pet: "Click to put away pet"
+  summon_pet: "Click to summon pet"
+  go_back: "Go Back"
+
+# -----------------------------------------------------------
+# Prop Rush / Block Hunt Kits & Game
+# -----------------------------------------------------------
+hideseek:
+  desc.1: "Hide as blocks/animals, upgrade your"
+  desc.2: "weapon and fight to survive against"
+  desc.3: "the Hunters!"
+
+
+
+
+
+
+
+
+
+
+# -----------------------------------------------------------
+# GUIs (Lobby)
+# -----------------------------------------------------------
+# GUIs (Lobby) - Additional Game Menu Items
+# -----------------------------------------------------------
+gui:
+  treasure.title: "Open Treasure"
+  treasure.select_chest: "Select a Chest"
+  treasure.click_open_this: "Click to Open This Chest"
+  profile.title: "My Profile"
+  queue.title: "Server Queue"
+  notification.title: "Notifications"
+
+# -----------------------------------------------------------
+# Game Menu Items (Hotbar & Navigation)
+# -----------------------------------------------------------
+item:
+  game_menu.name: "Game Menu"
+  game_menu.lore.1: "Right-click to open the"
+  game_menu.lore.2: "server selector and play minigames."
+  
+  profile.name: "My Profile"
+  lobby_menu.name: "Lobby Menu"
+  
+  compass.name: "Return to Hub"
+  compass.lore.1: ""
+  compass.lore.2: "Click while holding this"
+  compass.lore.3: "to return to the Hub."
+
+# -----------------------------------------------------------
+# Shop & Store Items
+# -----------------------------------------------------------
+shop:
+  processing: "Processing"
+  ok: "OK"
+  cancel: "CANCEL"
+  error: "ERROR"
+  error_too_many_invalid: "You have attempted too many invalid transactions."
+  error_wait_retry: "Please wait 10 seconds before retrying."
+  error_processing: "There was an error processing your request."
+  error_already_owns: "You already own this package."
+  error_insufficient_funds: "Your account has insufficient funds."
+  success: "Your purchase was successful."
+  inventory_full: "Your inventory is full!"
+# -----------------------------------------------------------
+# Treasure Chests
+# -----------------------------------------------------------
+treasure:
+  old_chest.name: "Old Chest"
+  old_chest.lore.1: "&7A relic of forgotten times, discovered"
+  old_chest.lore.2: "&7deep within abandoned strongholds."
+  old_chest.lore.3: "&7Its rusted latches hide &eunknown"
+  old_chest.lore.4: "&7treasures waiting to be unearthed."
+
+  ancient_chest.name: "Ancient Chest"
+  ancient_chest.lore.1: "&7Unearthed by the bravest adventurers"
+  ancient_chest.lore.2: "&7from ancient, hidden temples."
+  ancient_chest.lore.3: "&7Pulsing with a strange &emagical &7aura,"
+  ancient_chest.lore.4: "&7what mysteries unfold from within?"
+
+  mythical_chest.name: "Mythical Chest"
+  mythical_chest.lore.1: "&7Legends speak of a chest so powerful,"
+  mythical_chest.lore.2: "&7many have perished seeking its glory."
+  mythical_chest.lore.3: "&7Forged by the &egods &7themselves,"
+  mythical_chest.lore.4: "&7only the worthy may claim its prize."
+
+  chest.click_open: "&a►► Click to Open!"
+  chest.click_purchase: "&e►► Click to Purchase for "
+  chest.purchase_admin: "or Purchase at: "
+  chest.admin: "an administrator"
+  chest.owned.old: "Old Chests Owned"
+  chest.owned.ancient: "Ancient Chests Owned"
+  chest.owned.mythical: "Mythical Chests Owned"
+  wait_current: "&7Please wait for the current chest to finish."
+  no_chests: "&7You do not have any chests to open!"
+  select_four: "&7Select 4 chests to open!"
+  open_announce: "{0} &7is opening a {1}"
+  found_announce: "{0} &7found {1}{2} {3}"
+
+# -----------------------------------------------------------
+# Profile Stats
+# -----------------------------------------------------------
+profile:
+  general.name: "General Statistics"
+  general.games_played: "&7Games Played: &a{0}"
+  general.time_in_game: "&7Time In-Game: &a{0} Hours"
+  general.essence_earned: "&7Essence Earned: &a{0}"
+
+  arcade.name: "Arcade Wins"
+  arcade.sg_wins: "&7Survival Games Wins: &a{0}"
+  arcade.sk_wins: "&7Skywars Wins: &a{0}"
+  arcade.master_wins: "&7Master Builders Wins: &a{0}"
+  arcade.bridge_wins: "&7Bridges Wins: &a{0}"
+  arcade.uhc_wins: "&7UHC Wins: &a{0}"
+
+  account.name: "Account Information"
+  account.rank: "&7Rank: {0}"
+  account.essence: "&7Essence: &a{0}"
+  account.coins: "&7Coins: &6{0}"
+
+  social.name: "Social"
+  social.friends: "&7Friends: &a{0}"
+  social.party: "&7Party Status: &c{0}"
+  social.none: "None"
+# -----------------------------------------------------------
+# Party Module
+# -----------------------------------------------------------
+party:
+  invite_offline: "{0} did not reply to the party invite."
+  invite_declined: "{0} is already in the party."
+  invite_declined_other: "{0} has already been invited."
+  invited: "{0} was invited to your party."
+  invited_you: "{0} invited you to their party."
+  invited_instruction_1: "Type /party leave then followed by /party {0} to join."
+  invited_instruction_2: "Type /party {0} to join."
+  created: "You created a new party."
+  joined: "{0} joined the party!"
+  kicked: "{0} was kicked from the party."
+  left: "{0} left the party."
+  leadership_passed: "Party Leadership passed to {0}"
+  leadership_returned: "Party Leadership returned to {0}."
+  command_help_title: "Party Commands:"
+  command_help_join: "Join/Create/Invite Player"
+  command_help_leave: "Leave current party"
+  command_help_kick: "Kick player from party"
+  not_in_party: "You are not in a party."
+  cannot_kick_self: "You cannot kick yourself from the party."
+  not_leader: "You are not the party leader."
+  cannot_party_self: "You cannot party with yourself."
+  disabled_requests: "You cannot party with {0}! They have disabled party requests."
+  party_full: "Your party cannot exceed 16 players."
+  suggest_invite: "{0} suggested inviting {1} to the party."
+  suggest_invite_cmd: "Type /party {0} to invite them."
+  ui_create_name: "Create Party"
+  ui_create_lore_1: "Creates a new party."
+  ui_create_lore_2: "You will be the Party Leader!"
+  ui_kick_lore: "Click to Kick from party."
+  ui_leave_name: "Leave Party"
+  ui_leave_lore: "Leave your current party."
+  ui_invite_name: "Invite Players"
+  ui_invite_lore_1: "Click to open prompt"
+  ui_invite_lore_2: "to invite a player."
+  ui_invite_prompt: "Type /party <player> to invite a player!"
+# -----------------------------------------------------------
+# Gadget Module
+# -----------------------------------------------------------
+gadget:
+  enabled: "&7You enabled {0}"
+  disabled: "&7You disabled {0}"
+  equipped: "&7You equipped {0}"
+  unequipped: "&7You unequipped {0}"
+  morphed: "&7You morphed into {0}"
+  unmorphed: "&7You un-morphed from {0}"
+  none_left: "&7You have no {0} &7left."
+  not_activated: "&7Not activated yet: {0}"
+  insufficient_essence: "&7You have insufficient Essence."
+  insufficient_coins: "&7You have insufficient Coins."
+  used_skill: "&7You used {0}"
+  threw: "&7You threw {0}"
+  amount: "&fAmount: &e"
+  near_portal: "&7You cannot use {0} near the portal"
+  morph_block_error: "&7You cannot morph into a block here."
+  throw_announce_essence: "&a&l{0} &f&lthrew {1}&f&l!"
+  throw_announce_coin: "&e&l{0} &f&lthrew {1}&f&l!"
+music:
+  already_playing: "&7A song is already playing here."
+  near_portal: "&7You cannot play music near a portal."
+  cannot_place: "&7You cannot place a jukebox here."
+
+mount:
+  despawned: "&7You despawned {0}."
+  spawned: "&7You spawned {0}."
+  not_yours: "&7This is not your Mount!"
+  not_enabled: "&7{0} is not enabled."
+
+teleport:
+  tp_to_player: "Teleport to Player"
+  undo_tp: "Undo Teleports"
+  tp_to_self: "Teleport Player to Self"
+  tp_player_to_player: "Teleport Player to Player"
+  tp_to_loc: "Teleport to Location"
+  tp_all: "Teleport All to Self"
+  invalid_loc: "Invalid Location [{0},{1},{2}]."
+  no_history: "{0} has no teleport history."
+  tp_you_to_player: "You teleported to {0}."
+  tp_them_to_you: "{0} teleported you to themself."
+  tp_you_to_them: "You teleported {0} to yourself."
+  tp_them_to_other: "{0} teleported you to {1}."
+  tp_you_to_other: "You teleported {0} to {1}."
+  tp_you_to_loc: "You teleported to {0}."
+  tp_them_to_loc: "{0} teleported you to {1}."
+  invalid_amt: "Invalid Amount [{0}]. Defaulting to [1]."
+locate:
+  missing_arg: "Player argument missing."
+  same_server: " [{0}] is in the same server!"
+  located: "Located [{0}] at "
+  failed: "Failed to locate [{0}]."
+spawn:
+  added: "You added a Spawn Node."
+  cleared: "You cleared all Spawn Nodes."
+  add_help: "Add Location as Spawn"
+  clear_help: "Remove All Spawns"
+npc:
+  saved_auto: "NPC {0} saved to database automatically."
+  spawned_temp: "Spawned temporary NPC. (Use /adminbuilder to save to DB)"
+  del_help: "Right click NPC to delete."
+  home_help: "Teleport NPCs to home locations."
+  clear_help: "Deletes all NPCs."
+  refresh_help: "Refresh NPCs from database."
+  refreshed: "Refreshed NPCs."
+  home_tp: "Npcs teleported to home locations."
+  right_click_del: "Now right click npc."
+  cleared: "Cleared NPCs."
+  builder_enable: "Admin Builder Mode &aENABLED&7. NPCs spawned will now be saved to the database."
+  builder_op: "You have been granted &aOP&7 and &aCreative Mode&7 to bypass world protections."
+  builder_disable: "Admin Builder Mode &cDISABLED&7. NPCs spawned will NOT be saved to the database."
+  builder_revoke: "Your OP permissions and Creative Mode have been &crevoked&7."
+  builder_rejoin: "&bRejoin the server to restore your lobby items."
+message:
+  patient: "&5Please be patient if he does not reply instantly."
+  err: "&cErr...something went wrong?"
+  offline_target: "{0} is no longer online."
+  no_reply: "You have not messaged anyone recently."
+  no_admin_reply: "You have not admin messaged anyone recently."
+  missing_arg: "Player argument missing."
+  missing_msg_arg: "Message argument missing."
+  no_staff: "There are no Staff Members online."
+friend:
+  cannot_add_self: "&7You cannot add yourself as a friend."
+  denied: "&a{0}&7 has denied your friend request."
+  already_friends: "You are already friends with &a{0}"
+  pending: "&a{0}&7 has yet to respond to your friend request."
+  now_friends: "You and &a{0}&7 are now friends!"
+  added: "Added &a{0}&7 to your friends list!"
+  deleted: "Deleted &a{0}&7 from your friends list!"
+  page_title: "Friends"
+  left_click_tp: "&eLeft-click &7to teleport"
+  right_click_remove: "&cRight-click &7to remove friend"
+  status_offline: "&7Status: &cOffline"
+  status_online: "&7Status: &aOnline"
+  requested: "&eRequested friendship with you"
+  left_click_accept: "&aLeft-click &7to accept"
+  right_click_deny: "&cRight-click &7to deny"
+  awaiting_response: "&7Awaiting their response..."
+  right_click_cancel: "&cRight-click &7to cancel request"
+ignore:
+  cannot_ignore_self: "&7You cannot ignore yourself."
+  already_ignored: "&a{0}&7 has already been ignored."
+  now_ignoring: "Now ignoring &a{0}"
+  no_longer_ignoring: "No longer ignoring &a{0}&7!"
+furniture:
+  item_name: "&e&lFurniture: &f{0}"
+  lore_1: "&7BDEngine Furniture"
+  lore_2: "&7Right-click block to &ePlace Furniture"
+  lore_3: "&aPlaceable Model"
+quest:
+  completed: "You completed &a{0}&7 and earned &b{1}&7 Essence!"
+server:
+  portal.cooldown: "&cYou can't join a server for another &a{0}&c!"
+  portal.no_servers: "&cThere are currently no servers available to join!"
+  selector.quick_match.name: "Quick Match"
+  selector.quick_match.desc.1: "Find the best available server"
+  selector.quick_match.desc.2: "and join it automatically."
+  selector.select_server.name: "Select Server"
+  selector.select_server.desc.1: "Open the server browser so you"
+  selector.select_server.desc.2: "can pick a server manually."
+  npc.lore.game: "&7Game: &e{0}"
+  npc.lore.map: "&7Map: &e{0}"
+  npc.lore.players: "&7Players: &b{0}/{1}"
+  npc.lore.click_join: "&aClick to join"
+  npc.lore.in_progress: "&eGame in progress."
+  npc.lore.click_spectate: "&eClick to spectate"
+  npc.lore.wait_next: "&7Wait for the next game!"
+  npc.lore.restarting: "&7This server will be open shortly!"
+  npc.lore.get_ultra: "&cGet Ultra to join full servers!"
+  npc.lore.beta_ultra: "&cGet Ultra to join Tournament servers!"
+  npc.lore.survival_locked.1: "&7Full Survival Primal Game servers"
+  npc.lore.survival_locked.2: "&7cannot be joined."
+  npc.in_progress_count: "&b{0} game(s) in progress"
+  npc.server_label: "Server {0}"
+  npc.queue_timer: "Queue Timer"
+  npc.queue_time_remaining: "&7Time remaining: &f{0}"
+  npc.queue_wait: "&7Please wait while a server is being prepared..."
+  npc.private_host: "&eHost: &f{0}"
+  npc.private_staff: "&aHosted by a Staff Member"
+  tournament.title: "Tournament Servers"
+  tournament.desc.1: "Ultra and Hero players have"
+  tournament.desc.2: "access to our Tournament servers!"
+  tournament.link: "Visit an administrator for access!"
+  rank_required: "Only players with {0}&7+ can host private servers"
+  create_info: "This will create a Player Server for you."
+  play_friends: "Here you can play your favorite games with friends!"
+  click_create_hover: "&7Click to Create Server"
+  click_here: "CLICK HERE"
+  confirm: " to confirm you want to do this."
+  lobby.go_back: "Go Back"
+portal:
+  sent: "You have been sent from &6{0}&7 to &6{1}"
+  is_full: "&6{0}&c is full!"
+
+# -----------------------------------------------------------
+# Arena PVP
+# -----------------------------------------------------------
+arena:
+  actionbar_hp: "&f⚔ &aYour HP: &a{0}/20  &7│  &cOpponent: &c{1}/20"
+  win_3_title: "&6&l★ 3 WINS ★"
+  win_3_sub: "&7Unstoppable Blood!"
+  win_streak_title: "&6&l🔥 {0} WINS 🔥"
+  win_streak_sub: "&7Godlike!"
+  win_title: "&6&l⚔ Victory!"
+  win_sub: "&7You have claimed the arena"
+  lose_title: "&c&l✘ Defeat"
+  lose_sub: ""
+  broadcast_win: "&6{0} won!"
+  countdown_title: "{0}&lStarting in {1}"
+  fight_title: "&6&lFIGHT!"
+  forfeit_win: "&aOpponent left. You won!"
+  sneak_exit: "&eHold sneak for 3 seconds to exit the arena"
+  arena_empty: "&a▐▐▐▐▐▐ ⚔ ARENA EMPTY ▐▐▐▐▐▐"
+  arena_occupied: "&e▐▐▐▐▐▐ ⚔ {0} IS WAITING ▐▐▐▐▐▐"
+  arena_countdown: "&6▐▐▐▐▐▐ ⚔ MATCHING ▐▐▐▐▐▐"
+  arena_fighting: "&c▐▐▐▐▐▐ ⚔ {0} VS {1} ▐▐▐▐▐▐"
+  streak_holo_5plus: "&6&l🔥 {0} WINS 🔥"
+  streak_holo_3: "&6&l⚔ {0} WINS ⚔"
+  streak_holo_2: "&e&l{0} WINS"
+hub.gadget.toggle: "&f&lGadgets/Mounts &7are now {0}"
+hub.gadget.enabled: "&aEnabled"
+hub.gadget.disabled: "&cDisabled"
+hub.poll.thanks: "&aThank you for your answer!"
+hub.poll.reward: "&7You have received {0} Essence!"
+hub.poll.error: "&cError processing your poll"
+hub.poll.list: "&7Poll list;"
+hub.poll.click_to_view: "&7Click a poll to view its result!"
+hub.poll.invalid_number: "&cInvalid number: {0}"
+hub.poll.not_found: "&cPoll with this ID not found. Please try again!"
+hub.poll.total_respondents: "&7Total respondents: {0}"
+hub.poll.cannot_process: "&cCannot process your answer. Please try again later"
+hub.poll.no_longer_exists: "&cThis poll no longer exists. Sorry!"
+hub.poll.invalid_answer: "&cThat is not a valid answer for this poll"
+hub.poll.disabled_poll: "&cThis poll is disabled!"
+hub.poll.already_answered: "&cYou have already answered this poll!"
+hub.poll.click_in_chat: "&cPlease click in chat to answer!"
+
+hub.party.leader_only: "&cOnly the party leader can join games."
+hub.party.leave_hint: "&7Type &a/party leave&7 to leave the party."
+
+hub.item.daily_login: "<GRADIENT:#FFD700,#FF6B00> ᴅᴀɪʟʏ ʀᴇᴡᴀʀᴅ </GRADIENT>"
+hub.item.daily_login.lore1: "§7Right-click to claim"
+hub.item.daily_login.lore2: "§7your daily streak reward!"
+
+# -----------------------------------------------------------
+# Achievement Chat & UI Renderer Fallbacks
+# -----------------------------------------------------------
+achievement.chat.complete: "Complete!"
+achievement.chat.levelup: "LEVEL UP!"
+achievement.chat.tocomplete: "to Complete"
+achievement.chat.tonextlevel: "to Next Level"
+achievement.ui.complete: "Complete!"
+
+# -----------------------------------------------------------
+# Arcade Texts
+# -----------------------------------------------------------
+arcade:
+  map_vote_ends: "Voting ends in &c{0}&r seconds!"
+  map_vote_winner: "Map &a{0}&r won the vote!"
+  map_vote_winner_title: "&a&lMAP SELECTED!"
+  map_vote_winner_subtitle: "&e{0} &7(Built by: {1})"
+  map_author: "Built by: &e{0}"
+  kit_select_item: "&a&lSelect Kit"
+  kit_select_item_lore: "§7Right-click to select a Kit"
+  kit_select_gui_title: "Select Kit"
+  team_floor_hologram: "&l{0} TEAM"
+  team_floor_hologram_queue: "&7[{0}/{1}]"
+  team_full: "&cThis team is full!"

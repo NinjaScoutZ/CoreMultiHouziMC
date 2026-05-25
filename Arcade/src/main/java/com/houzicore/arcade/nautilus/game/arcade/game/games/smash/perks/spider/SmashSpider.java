@@ -1,0 +1,154 @@
+package com.houzicore.arcade.nautilus.game.arcade.game.games.smash.perks.spider;
+
+import java.util.HashMap;
+import java.util.Map;
+
+import org.bukkit.Sound;
+import org.bukkit.attribute.Attribute;
+import org.bukkit.block.Block;
+import org.bukkit.entity.LivingEntity;
+import org.bukkit.entity.Player;
+import org.bukkit.event.EventHandler;
+import org.bukkit.event.EventPriority;
+import org.bukkit.event.entity.EntityDamageEvent.DamageCause;
+
+import com.houzicore.shared.common.util.UtilBlock;
+import com.houzicore.shared.common.util.UtilParticle;
+import com.houzicore.shared.common.util.UtilParticle.ParticleType;
+import com.houzicore.shared.common.util.UtilParticle.ViewDist;
+import com.houzicore.shared.common.util.UtilServer;
+import com.houzicore.shared.core.damage.CustomDamageEvent;
+
+import com.houzicore.arcade.nautilus.game.arcade.game.games.smash.perks.SmashUltimate;
+
+public class SmashSpider extends SmashUltimate
+{
+	private Map<LivingEntity, Double> _preHealth = new HashMap<>();
+
+	public SmashSpider()
+	{
+		super("Spider Nest", new String[] {}, Sound.ENTITY_SPIDER_DEATH, 0);
+	}
+
+	@Override
+	public void activate(Player player)
+	{
+		super.activate(player);
+
+		// Nest
+		Map<Block, Double> blocks = UtilBlock.getInRadius(player.getLocation().getBlock(), 16);
+
+		for (Block block : blocks.keySet())
+		{
+			if (blocks.get(block) > 0.07)
+			{
+				continue;
+			}
+
+			if (!UtilBlock.airFoliage(block))
+			{
+				continue;
+			}
+
+			if (block.getY() > player.getLocation().getY() + 10)
+			{
+				continue;
+			}
+
+			if (block.getY() < player.getLocation().getY() - 10)
+			{
+				continue;
+			}
+
+			Manager.GetBlockRestore().Add(block, 30, (byte) 0, (int) (getLength() + 5000 * Math.random()));
+		}
+
+		// Regen
+		Manager.GetCondition().Factory().Regen(GetName(), player, player, getLength() / 1000, 2, false, false, false);
+	}
+
+	@EventHandler(priority = EventPriority.HIGH)
+	public void damagePre(CustomDamageEvent event)
+	{
+		if (event.IsCancelled())
+		{
+			return;
+		}
+
+		if (event.GetCause() != DamageCause.ENTITY_ATTACK && event.GetCause() != DamageCause.PROJECTILE && event.GetCause() != DamageCause.CUSTOM)
+		{
+			return;
+		}
+		
+		Player damager = event.GetDamagerPlayer(true);
+
+		if (damager == null)
+		{
+			return;
+		}
+
+		LivingEntity damagee = event.GetDamageeEntity();
+
+		if (damagee == null)
+		{
+			return;
+		}
+
+		if (!isUsingUltimate(damager))
+		{
+			return;
+		}
+
+		_preHealth.put(damagee, damagee.getHealth());
+	}
+
+	@EventHandler(priority = EventPriority.MONITOR)
+	public void damagePost(CustomDamageEvent event)
+	{
+		if (event.IsCancelled())
+			return;
+
+		Player damager = event.GetDamagerPlayer(true);
+
+		if (damager == null)
+		{
+			return;
+		}
+
+		LivingEntity damagee = event.GetDamageeEntity();
+
+		if (damagee == null)
+		{
+			return;
+		}
+
+		if (!isUsingUltimate(damager))
+		{
+			return;
+
+		}
+		if (!_preHealth.containsKey(damagee))
+		{
+			return;
+		}
+		
+		double diff = (_preHealth.remove(damagee) - damagee.getHealth()) / 2;
+
+		if (diff <= 0)
+		{
+			return;
+		}
+		
+		damager.getAttribute(Attribute.MAX_HEALTH).setBaseValue(Math.min(30, damager.getAttribute(Attribute.MAX_HEALTH).getValue() + diff));
+
+		UtilParticle.PlayParticle(ParticleType.HEART, damager.getLocation().add(0, 1, 0), 0, 0, 0, 0, 1, ViewDist.LONG, UtilServer.getPlayers());
+
+		UtilParticle.PlayParticle(ParticleType.RED_DUST, damagee.getLocation().add(0, 1, 0), 0.4f, 0.4f, 0.4f, 0, 12, ViewDist.LONG, UtilServer.getPlayers());
+
+		if (event.GetCause() == DamageCause.ENTITY_ATTACK)
+		{
+			damager.getWorld().playSound(damager.getLocation(), Sound.ENTITY_SPIDER_AMBIENT, 1.5f, 1f);
+		}
+	}
+	
+}

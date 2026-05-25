@@ -1,0 +1,69 @@
+treasure:
+  ui:
+    page:
+      main_title: "คลังสมบัติ"
+      detail_title: "รายละเอียดกล่อง"
+      buy_title: "ซื้อกล่อง"
+    title: "&6&lสมบัติ"
+    subtitle: "เลือกกล่องเพื่อดูรายละเอียดหรือเปิดใช้งาน"
+    coin_balance: "ยอดเหรียญของคุณ"
+    bundles: "1x / 5x / 10x"
+    inventory_title: "คลังกล่อง"
+    info_title: "ข้อมูลกล่อง"
+    labels:
+      tier: "ระดับ"
+      owned: "มีอยู่"
+      price: "ราคา"
+      price_each: "ราคาต่อใบ"
+      starting_at: "ราคาเริ่มต้น"
+      bundles: "ชุดซื้อ"
+      available: "กล่องที่มีอยู่"
+      chests_owned: "จำนวนกล่องที่คุณมี"
+      quantity: "จำนวน"
+      total_cost: "ราคารวม"
+      chest: "กล่อง"
+      buy_hint: "เลือกจำนวนที่ต้องการซื้อด้านล่าง"
+      buy_or_open_hint: "กดซื้อหรือเปิดกล่องด้านล่าง"
+    actions:
+      view_details: "คลิกเพื่อดูรายละเอียด"
+      choose_quantity: "คลิกเพื่อเลือกจำนวน"
+      click_purchase: "คลิกเพื่อซื้อ"
+      click_open: "คลิกเพื่อเปิด"
+      open_chest: "เปิดกล่อง"
+      buy_chest: "ซื้อกล่อง"
+      back: "กลับ"
+      back_to_selection: "กลับหน้าเลือกกล่อง"
+      back_to_detail: "กลับไปหน้ารายละเอียด"
+    state:
+      no_chests_title: "ไม่มีกล่อง"
+      no_chests_line_1: "คุณยังไม่มีกล่องชนิดนี้"
+      no_chests_line_2: "ซื้อก่อนแล้วค่อยเปิด"
+    odds:
+      header: "โอกาสได้รับ:"
+      common: "ธรรมดา"
+      uncommon: "ไม่ธรรมดา"
+      rare: "หายาก"
+      legendary: "เลเจนด์"
+      mythical: "ตำนาน"
+    hologram:
+      open: "เปิดสมบัติ"
+      ready_total: "พร้อมเปิด {0} กล่อง"
+      none_ready: "ยังไม่มีกล่องพร้อมเปิด"
+      ready_types: "พร้อมเปิด: {0}"
+      none_types: "ซื้อกล่องก่อนแล้วค่อยเริ่มเปิด"
+      more_types: "อีก {0} แบบ"
+    notify:
+      vault_name: "คลังสมบัติ"
+      ready_title: "สมบัติพร้อมเปิด"
+      ready_subtitle: "พร้อม {0} กล่อง • กล่องเด่น: {1}"
+      ready_chat: "ตอนนี้คุณมีกล่องพร้อมเปิด {0} กล่องที่คลังสมบัติ"
+      ready_single_chat: "ตอนนี้ {0} พร้อมให้คุณเปิดที่คลังสมบัติ"
+  types:
+    old:
+      name: "หีบโบราณ"
+    ancient:
+      name: "หีบทองแดง"
+    legendary:
+      name: "หีบเลเจนด์"
+    mythical:
+      name: "หีบตำนาน"

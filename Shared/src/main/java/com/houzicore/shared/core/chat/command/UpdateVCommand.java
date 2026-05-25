@@ -1,0 +1,206 @@
+package com.houzicore.shared.core.chat.command;
+
+import org.bukkit.entity.Player;
+
+import com.houzicore.shared.common.Rank;
+import com.houzicore.shared.common.util.C;
+import com.houzicore.shared.common.util.UtilPlayer;
+import com.houzicore.shared.core.chat.Chat;
+import com.houzicore.shared.core.command.CommandBase;
+
+public class UpdateVCommand extends CommandBase<Chat> {
+
+	// =========================================================================
+	// AI AGENT WORKFLOW RULE:
+	// Every time you make changes to HouziCore and deploy them to the servers, 
+	// you MUST update the LATEST_VERSION_DATE and LATEST_UPDATE_LOG strings 
+	// below so that players and admins know exactly what was changed in game 
+	// by typing /updatev!
+	// =========================================================================
+	
+	public static final String LATEST_VERSION_DATE = "24/05/2026";
+	public static final String[] LATEST_UPDATE_LOG = {
+		"§8▸ §eSpeed Builders Score-Based Elimination Rework",
+		"§7- ปรับโหมดการเล่น Speed Builders เป็นแบบสะสมคะแนน (Score-Based Elimination) แทนการคัดออกรายรอบ",
+		"§7- เพิ่มระบบแบ่งช่วงการเล่น (Warm-up 60วิ ไม่มีคัดออก, Main Game 45วิ คัดออกรอบ 6, 9 และ Sudden Death 30วิ คัดออกทุกรอบ x2 คะแนน)",
+		"§7- ปรับการคำนวณคะแนนตามสัดส่วนความถูกต้อง (Base Score) ป้องกันสูตรวางบล็อกมั่วหากทำความถูกต้องไม่ถึง 30% จะได้ 0 คะแนน",
+		"§7- เพิ่มโบนัสความเร็ว (Speed Bonus) สูงสุด 50 คะแนน และตัวคูณคอมโบ (Combo Multiplier x1.0 -> x2.0) เมื่อทำเสร็จสมบูรณ์แบบต่อเนื่อง",
+		"§7- เพิ่มระบบโหวตสเปกเตเตอร์ (Ghost Judge) ผ่าน Nether Star ในช่องฮ็อตบาร์ โดยสเปกเตเตอร์สามารถโหวตคะแนนสร้างสรรค์ให้ผู้เล่นที่ยังอยู่ (+10 คะแนน จำกัดสูงสุด +30 ต่อรอบ) พร้อมระบุสถานะเรลไทม์ (ไอคอนผู้เล่นที่โหวตแล้วจะเรืองแสง Glow และมีเครื่องหมาย ✔ ใน GUI)",
+		"§7- ปรับการตัดสินของมังกร (Focused Judging) ให้บินตรงไปพ่นลมหายใจตามสีผลลัพธ์ (แดง=คัดออก, ฟ้า=ผ่าน, ทอง=สมบูรณ์แบบ/ชนะรอบ) พร้อมเสียงคำรามและคำอธิบายชื่อผู้เล่นที่กำลังตัดสินเพื่อเพิ่มความตื่นเต้น",
+		"§7- ปรับปรุงแถบสถานะ (Action Bar) แสดงคะแนนความสอดคล้อง โบนัสความเร็ว และเวลาเรียลไทม์ และระบบโฮโลแกรมบอกคะแนนสะสมและคอมโบสะสมของเกาะ",
+		"§7- รักษาสปอยล์ด้วยการแสดงกระดานคะแนนกึ่งซ่อน (Semi-Hidden Scoreboard) บอกเฉพาะลำดับเหรียญทอง/เงิน/ทองแดงและคอมโบแทนคะแนนดิบ",
+		"",
+		"§8▸ §eBlock Hunt Scoreboard Colors, XP Bar & Actionbar Patches",
+		"§7- ปรับสีชื่อมินิเกมและกระดานคะแนนสำหรับ Prop Rush ให้เป็นธีม Aqua/Blue/White (น้ำเงินฟ้าขาว) แทนมรกตและม่วงเดิม",
+		"§7- เพิ่มการแสดงผลเปอร์เซ็นต์ความคืบหน้าการ Solidify ในหลอด XP และเลเวล (0-100%) เพื่อเป็นไฟสะท้อนเวลาแอบนิ่งๆ โดยพอร์ตระบบจากเวอร์ชัน 2018",
+		"§7- แก้ไขปัญหา Actionbar แสดงผลทับซ้อนและกะพริบระหว่างป้ายสถานะ Solid Block (Locked) กับหน้าจอแสดงระดับ NERVE โดยการรวมศูนย์และเลือกแสดงตามเงื่อนไขความอันตราย",
+		"§7- แก้ไขและบังคับใช้ระบบอมตะชั่วคราว (Damage Grace Period) 1.5 วินาทีหลังจากหลุดจากสถานะบล็อกแข็ง (Solidified) สำหรับทุกการโจมตีรวมถึงการโจมตีที่ทำลายบล็อก",
+		"§7- แก้ไขปัญหาบล็อกผีค้างหน้าจอ (Block Decoy) หลังจากหลุดสถานะ Solidified โดยปรับให้เซิร์ฟเวอร์เปลี่ยนสถานะเป็นเคลื่อนที่ก่อนส่งแพ็กเก็ตอัปเดตบล็อก (sendBlockChange) ทันทีและหน่วงเวลา 1 tick เพื่อล้างแคช Client ให้หมดจด",
+		"§7- ปรับปรุง Hitbox ของผู้เล่นแอบที่แปลงร่างเป็นบล็อก โดยคำนวณขนาดกว้าง/ยาว/สูงของกล่องชน (Interaction Entity) ตามชนิดของบล็อกจริง (เช่น Carpet=0.0625, Slab=0.5, Flower Pot=0.375) ป้องกันการเกิด Hitbox ลอยหรือยื่นเกินบล็อก",
+		"§7- ปรับปรุงการซ่อนเอฟเฟกต์ยา (Potion Particles) ของผู้เล่นที่แปลงร่างเป็นสัตว์ โดยการดึงเวอร์ชันโปรโตคอลและกรองปิดอนุภาคสี (Potion Color) และปิดการแสดงผล Particle ในแพ็กเก็ต ENTITY_METADATA แบบอัตโนมัติ",
+		"",
+		"§8▸ §eScoreboard & Disguise Hitbox/Scale Refinements",
+		"§7- ปรับปรุงการแสดงผล Scoreboard ของเกม Speed Builders ให้แสดงผล Animated Title แบบ CamelCase ('Speed Builders') ตรงกับ Waiting Lobby โดยการยกเลิก Hardcoded Uppercase",
+		"§7- แก้ไขปัญหา Hitbox ของการแปลงร่างเป็นบล็อก (Block Hunt) โดยการใช้ Server-side AABB slab raycast ตรวจจับการโจมตีของ Hunter แทนการพึ่งพากล่อง Interaction และป้องกัน wrong-block penalty เมื่อโจมตีโดนบล็อกแอบ",
+		"§7- แก้ไขปัญหาสเกลการแปลงร่างเป็น Monster/Creature มีขนาดเล็ก (Baby) สำหรับผู้เล่นอื่น โดยการใช้ PacketEvents ตรวจจับและแทรก metadata index 16 (หรือ index 17 สำหรับ Piglin) เป็นค่า Boolean false เพื่อบังคับแสดงผลขนาดตัวเต็มวัย (Adult) ตามแต่ละโปรโตคอลเวอร์ชันของเซิร์ฟเวอร์",
+		"",
+		"§8▸ §eConsole Command Safety & Database Schema Fixes",
+		"§7แก้ไขปัญหาเซิร์ฟเวอร์แจ้งข้อผิดพลาด ClassCastException เมื่อกด Tab Complete ใน Command-line ผ่าน Console",
+		"§7- ปรับปรุงการตรวจสอบชนิดของ CommandSender ใน UpdateRank, CoinCommand, EssenceCommand, และ PunishCommand ให้ทำงานได้ถูกต้องปลอดภัยทั้งผู้เล่นและคอนโซล",
+		"§7- ติดตั้งและตั้งค่าระบบฐานข้อมูล Redis (พอร์ต 6379) และ MariaDB (พอร์ต 3306) แบบไร้รหัสผ่านเสร็จสมบูรณ์",
+		"§7- สร้างฐานข้อมูล account, queue, houzi และอิมพอร์ตโครงสร้างตารางครบถ้วน พร้อมทั้งเพิ่มตาราง clans และ clanMembers ที่หายไปเพื่อแก้ปัญหา SQL Table doesn't exist",
+		"§7- แก้ไขหัวข้อ Scoreboard ของ Speed Builders ในช่วงจำบล็อก (Viewing) ไม่แสดงผล โดยเปลี่ยนมาใช้หัวข้อตัวพิมพ์เล็ก sᴘᴇᴇᴅ ʙᴜɪʟᴅᴇʀs แทนค่าว่าง",
+		"",
+		"§8▸ §eSpeed Builders ProtocolLib Incompatibility & NMS Packet Bypass Workaround",
+		"§7แก้ไขปัญหาเซิร์ฟเวอร์ค้าง/แครชและผู้เล่นหลุดตอนเริ่มเกม Speed Builders จากบั๊กความไม่เข้ากันของ ProtocolLib กับเวอร์ชัน 1.21.1",
+		"§7- แก้ไข ClassCastException (DataItem -> DataValue) โดยการบายพาสการส่งแพ็กเก็ต ENTITY_METADATA ผ่าน ProtocolLib และส่งแพ็กเก็ต NMS (ClientboundSetEntityDataPacket) ตรงหาผู้เล่นทาง connection.send ด้วย Java Reflection แทน",
+		"§7- แก้ไข ExceptionInInitializerError (WrappedAttribute) โดยการบายพาสการส่งแพ็กเก็ต UPDATE_ATTRIBUTES ผ่าน ProtocolLib และส่งแพ็กเก็ต NMS (ClientboundUpdateAttributesPacket) ตรงหาผู้เล่นด้วย Java Reflection หลีกเลี่ยงคลาส WrappedRegistry ที่มีบั๊ก",
+		"",
+		"§8▸ §eSpeed Builders Smooth Judge Flight & Demolition Patches",
+		"§7แก้ไขปัญหาไม่สามารถทลายบล็อกหรือโต้ตอบ (เปิด/ปิดประตู, กล่อง ฯลฯ) บริเวณขอบสนามได้ (ขึ้นข้อความ Cannot build outside your area ค้าง)",
+		"§7โดยปรับปรุงระบบตรวจจับ PlayerInteractEvent ให้แยกแยะการโต้ตอบบล็อก (Interactable) หากไม่ได้ย่อตัว (Sneak) เพื่อให้เปิดประตูขอบสนามได้แม้มือถือบล็อกอยู่",
+		"§7เพิ่มระบบแจ้งเตือน Cannot build outside your area สำรองใน BlockPlaceEvent เมื่อการวางบล็อกภายนอกถูกยกเลิก",
+		"§7เพิ่มระบบสลับผู้จัดสินมินิเกม Speed Builders (USE_ARMOR_STAND_JUDGE = true) ให้ใช้ ArmorStand สวมหัวมังกร ซึ่ง Client จะขยับแอนิเมชันแบบเคลื่อนที่ได้ลื่นไหลไร้รอยต่อ แทนการใช้ EnderDragon แบบวานิลลาที่ขยับกระตุกในเวอร์ชัน 1.21",
+		"§7ปรับปรุงระบบ Hologram แสดงชื่อผู้เล่นเกาะ โดยทำการปัดทศนิยมลง (Math.floor) และขยับความสูงขึ้น (+1.5) เพื่อลดการบั๊กจมบล็อกหรือเหลื่อมตำแหน่ง",
+		"§7ปรับปรุงความปลอดภัยในลูปการทลายเกาะ (breakAndDropItems) โดยทำการข้ามครึ่งบนของบล็อก Bisected (เช่น ประตู) เพื่อป้องกัน Exception และลบทิ้งแบบเป็นคู่ (เช่น เตียง ประตู) รวมถึงการยิงแพ็กเก็ตอัปเดตบล็อกอากาศส่งตรงผู้เล่นทุกคน (sendBlockChange) ป้องกันการเกิดบล็อกผี (Ghost Blocks) ค้างหน้าจอ",
+		"",
+		"§8▸ §eBlock Hunt Hiders Visibility & Interaction Fixes",
+		"§7แก้ไขปัญหาผู้เล่นแอบ (Hiders) ที่แปลงร่างเป็นสัตว์ (Creatures) แล้วล่องหนมองไม่เห็นสำหรับ Hunter โดยการยกเลิกการส่งแพ็กเก็ตเอฟเฟกต์ล่องหน (PotionTypes.INVISIBILITY) ไปยัง Client ของผู้อื่น",
+		"§7แก้ไขปัญหาไม่สามารถโจมตีหรือคลิกโดนผู้เล่นแอบที่แปลงร่างเป็นบล็อก (Block Display) ได้ โดยการเขียน Entity ID ในแพ็กเก็ต INTERACT_ENTITY ฝั่ง Client ใหม่ให้ชี้ไปยังตัวผู้เล่นจริง ทำให้ Spigot จัดการดาเมจ แรงผลัก และคูลดาวน์ดาเมจตามระบบวานิลลาได้อย่างสมบูรณ์",
+		"§7คงระบบการตีเพื่อทำลายสถานะแข็งตัว (Solidified) ในการคลิกครั้งแรกโดยไม่สร้างดาเมจให้กับผู้เล่นแอบ",
+		"",
+		"§8▸ §eBlock Hunt Scoreboard Color De-duplication",
+		"§7แก้ไขปัญหาสีกระดานคะแนน (Scoreboard) ของ Block Hunt ซ้ำกับ Survival Games",
+		"§7ปรับปรุงไอคอนทีม Props (Hiders) จากเดิมสีเขียว ให้เป็นสีฟ้า (AQUA) เพื่อความเป็นเอกลักษณ์ของทีมแอบ",
+		"§7ปรับข้อความแสดงจำนวนตัวละครที่เหลืออยู่บน Scoreboard ของทีม Props เป็นสีฟ้า (AQUA) และทีม Hunters เป็นสีแดง (RED) แทนสีเขียวแบบเดิม",
+		"",
+		"§8▸ §eSpeed Builders Ender Dragon Judge & Block Fixes",
+		"§7เปลี่ยนตัวผู้ตัดสินมินิเกม Speed Builders จาก ElderGuardian (Houmi) เป็น EnderDragon (Houra)",
+		"§7เพิ่มแอนิเมชันการบินวนรอบสนามแบบวงกลม (Orbit Movement) ด้วยระบบมุมองศามังกรแบบไดนามิก",
+		"§7เพิ่มเอฟเฟกต์การพ่นละอองไฟสีแดงสลับม่วง (Dragon Breath / Flame) และเสียงคำรามคำร้องใส่เกาะผู้เล่นที่แพ้",
+		"§7แก้ไขปัญหาบล็อกจำลองก่อนสร้าง (Preview Blocks) ตกค้างและไม่ยอมหายไป (Ghost Blocks)",
+		"§7โดยเปลี่ยนจากการใช้ MapUtil.QuickChangeBlockAt ไปเรียก API setType(Material.AIR, true) โดยตรงเพื่อส่งแพ็กเก็ตอัปเดตให้ Client ครบถ้วน",
+		"§7แก้ไขปัญหาบล็อกบางชนิด (เช่น กระจก, แร่เรดสโตน) เมื่อระเบิดเกาะทำลายแล้วไม่มีไอเทมดรอปให้ผู้เล่น",
+		"",
+		"§8▸ §eDynamic Branding & Server Name Config",
+		"§7ปรับแต่งข้อความแบรนด์และชื่อเซิร์ฟเวอร์ให้อิงตามไฟล์ houzicore-branding.properties ทั้งหมด",
+		"§7รองรับการดึงข้อมูล server.name และ server.website ผ่าน BrandConfig.mainServerName() และ BrandConfig.website()",
+		"§7แก้ไขปัญหากระดานคะแนน (Scoreboard) ในห้องเกม Arcade สลับปนกับชื่อเซิร์ฟเวอร์หลัก",
+		"",
+		"§8▸ §eChat Redesign & Title System (ฉายา)",
+		"§7ออกแบบรูปแบบแชทใหม่ให้เหมือน Hypixel SkyBlock: [★Level] [Rank] PlayerName [Clan]: Message",
+		"§7โดยระบบจะแสดงไอคอนเลเวล ★ เป็นรูปแบบเดียวทุกเลเวลและระบายสีตามขั้นเลเวลอย่างสวยงาม",
+		"§7เพิ่มระบบฉายา (Title System) สำหรับล็อบบี้หลัก มีฉายาเริ่มต้น 10 รูปแบบ ทั้งแบบฟรี เลเวล และยศ",
+		"§7ติดตั้งระบบร้านค้าฉายาแบบสองภาษา (TH/EN) แสดงปุ่มสถานะสีต่างๆ (เขียว=ปลดล็อก, เหลือง=ติดตั้ง, แดง=ล็อค)",
+		"§7ปรับแต่ง nameplate ใน Lobby ให้แสดงผลเฉพาะฉายาที่ติดตั้งโดยไม่มีการใส่ตัวประดับเลเวล/ยศทับซ้อน",
+		"",
+		"§8▸ §eSingle-Sidebar Scoreboard Rework (Sprint 7)",
+		"§7ปรับปรุงโครงสร้าง Scoreboard ใน Arcade และ Shared ใหม่หมด ให้ใช้เพียง Sidebar เดียวตลอดเซสชันของผู้เล่น",
+		"§7สร้าง Sidebar เพียงครั้งเดียวเมื่อผู้เล่น Join และลบเมื่อ Quit ป้องกันการเกิดอาการหน้าจอกะพริบหรือบอร์ดหาย",
+		"§7ปรับให้สลับเนื้อหาจาก Lobby สู่ห้องเกม (In-Game) ผ่านระบบ ScoreboardDataProvider โดยไม่ทำลาย Sidebar Wrapper",
+		"§7ปรับปรุงการลบหมายเลขแดงท้ายแถวโดยใช้ฟังก์ชัน lineWithoutScore(...) เป็นค่าเริ่มต้น",
+		"§7รองรับโมดูล Lobby เดิม (Arena, Fishing ฯลฯ) ผ่าน DefaultScoreboardDataProvider แบบไร้รอยต่อ",
+		"",
+		"§8▸ §eArcade Scoreboard & Loading Stability",
+		"§7แก้ปัญหาผู้เล่นคนแรกที่เข้าเซิร์ฟเวอร์ Arcade แล้ว Scoreboard หรือ Sidebar ไม่แสดงผลเนื่องจากการส่งแพ็กเก็ตเริ่มเกมทับซ้อนและเร็วกว่าตัวเกมจะโหลดเสร็จ",
+		"§7ปรับให้ระบบสร้าง Scoreboard หน่วงเวลา 20 ticks (1 วินาที) เมื่อผู้เล่น Join เพื่อรอให้ Client เชื่อมต่อสมบูรณ์",
+		"§7เพิ่มระบบเช็คความทับซ้อน (Deduplication) ของ Scoreboard เพื่อป้องกันการสร้างซ้ำซ้อนหรือเกิดปัญหา Memory Leak ขณะสลับห้อง/เปลี่ยนแผนที่",
+		"",
+		"§8▸ §eScoreboard & Client-side Team Stability",
+		"§7แก้ไขปัญหา Rank Icon ไม่แสดงผลใน Lobby ใหญ่ โดยปรับให้ CustomIconManager โหลดไฟล์ไอคอนจากทั้งโฟลเดอร์หลักและโฟลเดอร์แชร์ของ Shared",
+		"§7แก้ปัญหาผู้เล่นหลุดแล้วเชื่อมต่อใหม่ ทำให้ระบบส่งแพ็กเก็ตลบทีมซ้ำซ้อนจนตัวเกมแคลช (java.lang.IllegalStateException: Player is either on another team or not on any team)",
+		"§7แก้ปัญหาผู้เล่นที่เข้าเซิร์ฟเวอร์มินิเกม Arcade เร็วกว่าปกติในช่วง Loading สกรีน แล้ว Scoreboard ไม่ยอมโหลดขึ้น โดยการเพิ่มตัวเช็คหน่วงเวลา 40 ticks ในการโหลด Scoreboard อีกครั้งเพื่อความปลอดภัย",
+		"",
+		"§8▸ §eInteractive Toys & Crazy Mounts",
+		"§7พอร์ตของเล่นเชิงปฏิสัมพันธ์ (Interactive Item Gadgets) ขั้นสูงจาก Mineplex 2018",
+		"§7เพิ่ม ItemFleshHook: ตะขอเกี่ยวผู้เล่นให้ปลิวเข้ามาหาตัว",
+		"§7เพิ่ม ItemFreezeCannon: ปืนแช่แข็งเสกบล็อกน้ำแข็งจำลองครอบเท้าเป้าหมาย",
+		"§7พอร์ตระบบพาหนะขั้นสูง (Crazy Mounts) ประเภทเดินมีเอฟเฟกต์",
+		"§7เพิ่ม MountNightmareSteed: ม้าโครงกระดูกแห่งฝันร้ายที่สร้างรอยเท้าแห่งเปลวเพลิงทุกก้าวเดิน",
+		"",
+		"§8▸ §eLobby Cosmetics & Admin Rocket Punch",
+		"§7พอร์ตระบบวิถีธนู (Arrow Trails / Tracers) และ ดับเบิ้ลจัมป์ (Double Jump) เพิ่มเติมจาก Mineplex 2018",
+		"§7เพิ่ม Tracers: Rainbow, Frost Lord, Storm, Enchant (รวมถึง Heart)",
+		"§7เพิ่ม Double Jumps: Cupid's Wings, Firecracker Leap, Rainbow Leap (รวมถึง Slime)",
+		"§7เพิ่มระบบ Admin Rocket Punch เปิด/ปิดผ่านคำสั่ง /mystery หรือ /rocketpunch สำหรับแอดมินเซิร์ฟเวอร์",
+		"",
+		"§8▸ §eWinEffect & Cosmetics Porting",
+		"§7พอร์ตระบบ WinEffect และ Schematic-based gadgets จาก Mineplex 2018 ลงสู่ Shared",
+		"§7เพิ่มเอฟเฟกต์ชัยชนะใหม่ 3 รายการ: Halloween, Love is a Battlefield และ Winter Warfare",
+		"§7ปรับให้ระบบสามารถวางแบบจำลอง Schematic และจำลองเอฟเฟกต์รอบตัวผู้ชนะได้อย่างถูกต้องลื่นไหล",
+		"",
+		"§8▸ §eArchitecture Framework (Sprint 1)",
+		"§7วางโครงสร้าง Shared API (Loadout, Feature Gate, Snapshot)",
+		"§7แก้บั๊กแรงค์ Admin ไม่สามารถอัปเดตแรงค์จาก /updaterank",
+		"§7ปลดล็อกไอเทม Cosmetic ทั้งหมดให้ซื้อได้ด้วย Essence",
+		"",
+		"§8▸ §eMajor Engine Upgrade (Sprint 2)",
+		"§7อัปเดตระบบ Disguise ในเซิร์ฟเวอร์ Arcade ให้ทันสมัยร้อยเปอร์เซ็นต์",
+		"§7ลบช่องโหว่ทางเทคนิคที่ทำให้เซิร์ฟเวอร์กระตุก (Memory Leak)",
+		"§7ระบบ Cosmetic (Mount, Pet, Gadget) ถูกเปลี่ยนเป็นระบบ Intent",
+		"§7เมื่อผู้เล่นเข้าเล่น Arena ใน Lobby ของตกแต่งจะหยุดแสดผลชั่วคราวและกลับมาเอง",
+		"§7จัดการระบบคืนไอเทมที่ปลอดภัย ไร้บั๊ก ลบคำสั่งป่วนทิ้งทั้งหมด",
+		"§cHotfix: §7แก้ปัญหาเซิร์ฟเวอร์แครชตอนเข้าเกม (Attribute API Error) ใน Paper 1.21.3+",
+		"§cHotfix: §7แก้บั๊กเมนู Cosmetic (Cannot get ID of Modern Material) และ ItemMeta",
+		"§cHotfix: §7แก้บั๊กผู้เล่นตกค้างอาวุธ Arena ออกมา และบั๊กกล่อง Cosmetic หายตอนเดินออก",
+		"§cHotfix: §7นำข้อความ Welcome ที่เกะกะในช่องแชทและ Title ออก",
+		"§cHotfix: §7แก้บั๊กเกิดใต้ดินใน Lobby แผนที่เก่า ด้วยระบบ Auto-Highest Block และ MapBuilder",
+		"",
+		"§8▸ §eMapBuilder Tool Upgrades (Sprint 3)",
+		"§7เพิ่มฟีเจอร์ /mb edit ให้โหลดจุดเกิดจุดเดิมมาแก้ไขใหม่ได้ทันทีผ่านคำสั่งเดียว",
+		"§7แก้บั๊กจุดเหยียบขอบบล็อก ให้ตัวละครเกิดกลางจุดตลอดเวลาแทนมุมบล็อกเพื่อลดอาการบั๊กติดกำแพง",
+		"§7จัดการระบบล้าง Entity ป้ายจุดต่างๆ อัตโนมัติ ป้องกันจุดตกค้างหลงเหลือหลังยกเลิกและ Export แมพลงเซิร์ฟเวอร์",
+		"",
+		"§8▸ §eGameplay Polish (Sprint 4)",
+		"§7อัปเกรดความสมจริงของระบบตกปลา (Fishing) โหมด Lobby ให้เหมือนจริงที่สุด",
+		"§7ปลาว่ายหนีได้ลื่นไหล มีเอฟเฟคตีน้ำและให้ปลาดึงทุ่นแทนที่จะเป็นภาพลอยแข็งๆ",
+		"",
+		"§8▸ §eCosmetic & UI Polish",
+		"§7ปรับสมดุลระดับความหายาก (Rarity) ของ Cosmetic ใหม่ทั้งหมด (5 ระดับ: Common, Rare, Epic, Legendary, Mythic)",
+		"§7ปรับราคาใหม่ให้สอดคล้องกับระดับความหายาก เพื่อลดความซ้ำซากของไอเทมระดับ Common",
+		"",
+		"§8▸ §eProp Rush Modularization (Sprint 5)",
+		"§7ปรับโครงสร้างโค้ดสกิลของ Prop Rush ให้เป็นระบบ Trait",
+		"§7ลบโค้ดผูกมัดไอเทมแบบเก่าใน HideSeek ออกทั้งหมด",
+		"§7ระบบ Loadout ของ Hider และ Seeker ถูกเชื่อมกับ PropRushKitLoadoutService สมบูรณ์",
+		"§cHotfix: §7แก้ไขระบบ Taunt แบบซ้ายคลิกให้ถูกต้องตามโครงสร้างใหม่",
+		"",
+		"§8▸ §eArcade Game Menu & Fixes",
+		"§7เพิ่มคำแปลและแก้ไขปัญหาข้อความเมนู Arcade หายไป",
+		"§cHotfix: §7แก้บั๊กเซิร์ฟเวอร์ค้างตอนวางบล็อก/ใช้ TNT ใน Survival Games และ Skywars",
+		"",
+		"§8▸ §eLobby & NPC Polish (Sprint 6)",
+		"§7แก้ปัญหา Hologram ชื่อเซิร์ฟเวอร์และ NPC หายไปเมื่อผู้เล่นสลับเซิร์ฟเวอร์ไปมา",
+		"§7ปรับให้ชาวบ้าน (Villager NPC) จำค่าตัวเองไว้ได้ ไม่ลบตัวเองทิ้งเวลา Chunk ถูก Unload",
+		"§7ป้องกันบัคสกินผู้เล่นแบบ PacketNPC หายวับไปหลังจากผู้เล่นยืนในเซิร์ฟเวอร์ครบ 2 วินาที",
+		"§7ระบบโหลดตัวหนังสือโฮโลแกรมใหม่แบบอัตโนมัติทันทีที่ผู้เล่นเดินกลับมาที่ Lobby",
+		"",
+		"§8▸ §eArcade Command & Games Update",
+		"§7พอร์ตระบบมินิเกม Master Builders จาก Plugins 2018 ลงสู่ Arcade ยุคใหม่สำเร็จ",
+		"§7อัปเดตระบบ GameType ให้ตรงกับมินิเกมที่มีอยู่จริง และรองรับมินิเกมทั้งหมดในหมวด Event",
+		"§7ปรับปรุงคำสั่ง /game set ให้สามารถกดปุ่ม Tab เพื่อเลือกชื่อมินิเกม และชื่อแมพได้ถูกต้องแล้ว",
+		"§cHotfix: §7แก้ไข Tablist และ Nametag ใน Arcade Lobby ให้แสดงผลถูกต้องเหมือนใน Lobby Main แล้ว",
+		"",
+		"§8▸ §eTreasure UI & Visual Overhaul",
+		"§7ยกเครื่องระบบเปิดกล่องสุ่มกาชา (Treasure) ใหม่ทั้งหมด",
+		"§7ลบอนิเมชั่นเปลี่ยนพื้นเป็นกระจก/ดินเหนียวออก เพื่อรักษาสภาพแวดล้อมให้สวยงาม",
+		"§7เพิ่มเอฟเฟกต์กล่องระเบิดสุดอลังการ (AnimatedExplosion) เมื่อจบรอบเปิดกล่อง"
+	};
+
+	public UpdateVCommand(Chat plugin) {
+		super(plugin, Rank.ALL, "updatev", "changelog", "updates");
+	}
+
+	@Override
+	public void Execute(Player caller, String[] args) {
+		UtilPlayer.message(caller, "");
+		UtilPlayer.message(caller, C.cGold + C.Bold + com.houzicore.shared.core.common.BrandConfig.mainServerName().toUpperCase(java.util.Locale.ROOT) + " LATEST UPDATE " + C.cGray + "(" + LATEST_VERSION_DATE + ")");
+		UtilPlayer.message(caller, "");
+		
+		for (String line : LATEST_UPDATE_LOG) {
+			UtilPlayer.message(caller, "  " + line);
+		}
+		
+		UtilPlayer.message(caller, "");
+	}
+}

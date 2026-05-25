@@ -1,0 +1,297 @@
+primal_games:
+  game:
+    title: "§6§l⚡ §f§lꜱᴜʀᴠɪᴠᴀʟ ɢᴀᴍᴇꜱ §6§l⚡"
+    desc:
+      - "§7A collapsing world where §eloot tempo§7 decides every fight."
+      - ""
+      - "§7Open §eSupply Chests§7, mine key upgrades,"
+      - "§7and spike your gear with powerful §bRunes§7."
+      - "§7Survive the §dDisasters§7 and outlast the final collapse."
+      - ""
+      - "§aOne survivor. No reset button."
+    desc_teams:
+      - "§7A collapsing world where only the best duo survives."
+      - ""
+      - "§7Raid §eSupply Chests§7, mine fast upgrades,"
+      - "§7and stack your gear with powerful §bRunes§7."
+      - "§7Rotate through §dDisasters§7 and close out as the last team."
+      - ""
+      - "§aStay together, loot faster, finish harder."
+
+  scoreboard:
+    phase: "ᴘʜᴀsᴇ"
+    time: "ᴛɪᴍᴇ"
+    alive: "ᴀʟɪᴠᴇ"
+    teams: "ᴛᴇᴀᴍs"
+    gas_area: "ɢᴀs ᴀʀᴇᴀ"
+    gas_zone: "ɢᴀs ᴢᴏɴᴇ"
+    airdrop: "ᴀɪʀᴅʀᴏᴘ"
+    deathmatch: "ᴅᴇᴀᴛʜᴍᴀᴛᴄʜ"
+    disaster: "ᴅɪsᴀsᴛᴇʀ"
+    kills: "ᴋɪʟʟs"
+    phase_survive: "SURVIVE"
+    phase_border_closing: "BORDER CLOSING"
+    phase_deathmatch: "DEATHMATCH"
+    game_end: "Game End"
+    top_killers: "ᴛᴏᴘ ᴋɪʟʟᴇʀs"
+    border: "ʙᴏʀᴅᴇʀ"
+    no_kills: "---"
+
+  disaster:
+    # Tier 1
+    acid_rain:
+      name: "Acid Rain"
+      warning: "§e§l⚠ 🌧️ Acid Rain incoming!"
+      active: "§c§l🌧️ Acid Rain — Take cover!"
+      ended: "§a✓ Acid Rain has ended."
+      tip: "§7Wear a helmet to reduce damage!"
+    dense_fog:
+      name: "Dense Fog"
+      warning: "§e§l⚠ 🌫️ Dense Fog incoming!"
+      active: "§c§l🌫️ Dense Fog — Visibility reduced!"
+      ended: "§a✓ Dense Fog has cleared."
+      tip: "§7Stay close to allies — reduced vision!"
+    # Tier 2
+    meteor_shower:
+      name: "Meteor Shower"
+      warning: "§c§l⚠ ☄️ Meteor Shower incoming!"
+      active: "§c§l☄️ Meteor Shower — Run!"
+      ended: "§a✓ Meteor Shower has ended."
+      tip: "§7Avoid the impact zone!"
+      location: "§e  ➤ §fImpact zone: X:{x} Z:{z}"
+    sinkhole:
+      name: "Sinkhole"
+      warning: "§c§l⚠ 🕳️ Sinkhole incoming!"
+      active: "§c§l🕳️ Sinkhole — Ground collapsing!"
+      ended: "§a✓ Sinkhole has settled."
+      tip: "§7Move away from the collapse zone!"
+      location: "§e  ➤ §fDanger zone: X:{x} Z:{z}"
+    # Tier 1 (additional)
+    toxic_gas:
+      name: "Toxic Gas"
+      warning: "§e§l⚠ ⚗ Toxic Gas incoming! Find shelter!"
+      active: "§c§l⚗ Toxic Gas — Take cover!"
+      ended: "§a✓ Toxic Gas has cleared."
+      tip: "§7Stay indoors — gas affects outdoor areas!"
+    # Tier 3
+    tornado:
+      name: "Tornado"
+      warning: "§c§l⚠ 🌪️ Tornado incoming!"
+      active: "§c§l🌪️ Tornado — Stay away!"
+      ended: "§a✓ Tornado has dissipated."
+      tip: "§7You'll be pulled in and launched!"
+      location: "§e  ➤ §fX:{x} Z:{z}"
+    lightning_storm:
+      name: "Lightning Storm"
+      warning: "§c§l⚠ ⚡ Lightning Storm incoming!"
+      active: "§c§l⚡ Lightning Storm — Danger!"
+      ended: "§a✓ Lightning Storm has passed."
+      tip: "§7Lightning targets nearby players!"
+
+  bossbar:
+    border_phase1: "§a§l🌍 Border — {size}m | Closes in {time}"
+    border_phase2: "§e§l⚠ Border Closing — {size}m | {time} left"
+    deathmatch: "§c§l🔴 DEATHMATCH — Border {size}m"
+    disaster_toxic_gas: "§5§l⚗ Toxic Gas — Find shelter!"
+    disaster_generic: "§5§l{icon} {name} — Active!"
+
+  actionbar:
+    deathmatch: "§c§l🔴 DEATHMATCH! §7 | §e{alive} Alive"
+    border_warn: "§e§l⚠ Border Closing! §7 | §eTurn back!"
+    border_closing_info: "§6⚔ {kills} Kills§7 | §e{alive} Alive§7 | §c⚠ Border: {size}m"
+    normal: "§6⚔ {kills} Kills§7 | §e{alive} Alive§7 | §a🌍 Border: {size}m"
+
+  title:
+    prepare_go: "§c§lGO!"
+    prepare_subtitle: "§7Loot fast, route smart, and stay alive."
+    game_start: "§6§lSURVIVAL GAMES"
+    game_start_subtitle: "§cLoot, rotate, and survive the collapse"
+    survive: "§6§lSURVIVE"
+    survive_subtitle: "§fOpen chests, craft upgrades, and win the collapse"
+    deathmatch: "§c§lDEATHMATCH"
+    deathmatch_subtitle: "§eDanger zone!"
+    airdrop: "§6§lAIRDROP"
+    airdrop_subtitle: "§fSupply crate has landed"
+    death: "§c✦ HEART STOPPED ✦"
+    death_killed_by: "§7Killed by §e{killer}"
+
+  announce:
+    header: "§c§l⚡ ꜱᴜʀᴠɪᴠᴀʟ ɢᴀᴍᴇꜱ §8| §f"
+    game_started: "§f  ⚔ §6§lSurvival Games§f has begun!"
+    tip_explore: "§e • Open chests early, then pivot into mining and late-game routes."
+    tip_runes: "§e • Runes turn average gear into real win conditions."
+    tip_gas: "§e • Disasters and the border will force fights. Move before panic starts."
+    first_blood: "§c§l🩸 FIRST BLOOD — §e{killer}§f!"
+    rampage: "§6⚡ §e{killer}§7 is on a rampage!"
+    death_location: "§e§l☠ {player} died at X:{x} Z:{z}"
+    border_phase2: "§c§l⚠ Safe zone is shrinking to 100x100!"
+    border_phase3: "§c§l⚔ DEATHMATCH! Safe zone shrinking to 30x30!"
+    dm_started: "§a§l{player} started Deathmatch!"
+    dm_starting: "§a§lDeathmatch starting in {seconds} seconds..."
+    dm_countdown: "§c§lDeathmatch in {seconds}..."
+    dm_live: "§c§l⚔ Deathmatch has begun!"
+    chest_refilled: "§6§lThe chests have been refilled!"
+    chest_refill_timer: "§6§lThe chests will be refilled in {time}"
+    supply_drop: "§e§l📦 Supply drop incoming! ({location})"
+    airdrop_location: "§e§l📦 Airdrop incoming near X: {x} Z: {z}!"
+    toxic_cave_warning: "§c§l☠ Toxic gas will fill caves below Y=50 in 1 minute!"
+    toxic_cave_active: "§c§l☠ Toxic gas has filled the caves! Get above Y=50!"
+    toxic_cave_actionbar: "§c§l☠ Toxic gas! Get above Y=50!"
+
+  deathmatch:
+    countdown_pre: "§a§lDeathmatch starting in {seconds} seconds..."
+    countdown_live: "§c§lDeathmatch in {seconds}..."
+    started: "§c§l⚔ Deathmatch has begun!"
+
+  item:
+    bandage_name: "§e§lBandage"
+    bandage_lore_use: "§7Right-Click to consume"
+    bandage_lore_effect: "§7Grants Regeneration II for 5 seconds."
+    bandage_used: "§aYou used a §eBandage§a."
+    compass_name: "§fPlayer Tracker"
+    compass_uses: "§9Uses remaining: §f{uses}"
+    compass_lore1: "§7Use this to find the location and"
+    compass_lore2: "§7distance of the nearest player!"
+    compass_located: "Located {player} {distance} blocks away"
+    compass_uses_remaining: "{uses} use(s) of the compass remaining."
+    compass_no_uses: "No remaining uses! Next use will break it!"
+    compass_broken: "The compass breaks! No remaining uses!"
+    compass_no_target: "Can't find anyone! Pointing to spawn!"
+    tnt_name: "Throwing TNT"
+    tnt_cooldown: "You cannot use §eThrowing TNT§f yet."
+    tnt_blocked: "You cannot use §eThrowing TNT§f here."
+
+  rune:
+    vampiric_name: "§c§lVampiric Rune"
+    vampiric_tag: "§c[Vampiric]"
+    venom_name: "§a§lVenom Rune"
+    venom_tag: "§a[Venom]"
+    frost_name: "§b§lFrost Rune"
+    frost_tag: "§b[Frost]"
+    flame_name: "§6§lFlame Rune"
+    flame_tag: "§6[Flame]"
+    lore_drag: "§7Drag and drop this onto a"
+    lore_target: "§7Sword, Axe, or Bow to enchant it!"
+    applied: "§aYou applied a {rune}§a to your weapon."
+    already_has: "§cThis weapon already has the {rune}§c!"
+
+  trader:
+    name: "§6§lWandering Trader §7(Right Click)"
+    menu_title: "§6Wandering Trader"
+
+  kit:
+    miner:
+      name: "Miner"
+      desc:
+        - "§7Start with a strong pickaxe and fast mining speed"
+        - "§7to gather ores quickly!"
+        - ""
+        - "§aPros: §fFast resource gathering, strong early tools"
+        - "§cCons: §fNo combat advantage at start"
+    lumberjack:
+      name: "Lumberjack"
+      desc:
+        - "§7Start with a powerful axe and the ability"
+        - "§7to chop trees faster than anyone."
+        - ""
+        - "§aPros: §fStrong axe, fast wood gathering"
+        - "§cCons: §fAxe attacks are slower than swords"
+    assassin:
+      name: "Assassin"
+      desc:
+        - "§7A master of stealth and quick escapes."
+        - "§7Killing an enemy grants you temporary speed"
+        - "§7and invisibility."
+        - ""
+        - "§aPros: §fStealth after kills, reduced nametag range"
+        - "§cCons: §fNo starting items"
+    axeman:
+      name: "Axeman"
+      desc:
+        - "§7A brutal warrior who starts with a stone axe."
+        - "§7Deals bonus damage with axes."
+        - ""
+        - "§aPros: §fStrong melee damage with axes"
+        - "§cCons: §fSlower attack speed"
+    archer:
+      name: "Archer"
+      desc:
+        - "§7A ranged specialist who starts with a bow"
+        - "§7and a small supply of arrows."
+        - ""
+        - "§aPros: §fRanged advantage from the start"
+        - "§cCons: §fLimited arrows, weak in melee"
+    knight:
+      name: "Knight"
+      desc:
+        - "§7A heavily armored fighter who starts with"
+        - "§7leather armor and a stone sword."
+        - ""
+        - "§aPros: §fEarly armor advantage"
+        - "§cCons: §fSlower movement speed"
+    brawler:
+      name: "Brawler"
+      desc:
+        - "§7A fist-fighting champion who deals extra"
+        - "§7knockback with melee attacks."
+        - ""
+        - "§aPros: §fHigh knockback, strong in close quarters"
+        - "§cCons: §fLow damage without weapons"
+    horseman:
+      name: "Horseman"
+      desc:
+        - "§7A mounted warrior who can tame and ride horses."
+        - "§7Gains speed and damage bonuses while mounted."
+        - ""
+        - "§aPros: §fMobility and mounted combat bonuses"
+        - "§cCons: §fUseless without a horse to tame"
+    bomber:
+      name: "Bomber"
+      desc:
+        - "§7An explosives expert who starts with extra TNT"
+        - "§7and deals more blast damage."
+        - ""
+        - "§aPros: §fExtra TNT, strong area denial"
+        - "§cCons: §fCan hurt yourself with explosions"
+    beastmaster:
+      name: "Beastmaster"
+      desc:
+        - "§7A wild tamer who commands wolves in battle."
+        - "§7Your wolves fight alongside you."
+        - ""
+        - "§aPros: §fCompanion wolves for extra damage"
+        - "§cCons: §fWolves can be killed easily"
+    looter:
+      name: "Looter"
+      desc:
+        - "§7A scavenger who finds more loot in every chest."
+        - "§7Extra items give you an economic advantage."
+        - ""
+        - "§aPros: §fMore items from chests"
+        - "§cCons: §fNo combat perks"
+    barbarian:
+      name: "Barbarian"
+      desc:
+        - "§7A berserker who gains strength as health drops."
+        - "§7The lower your HP, the harder you hit."
+        - ""
+        - "§aPros: §fDamage increases when injured"
+        - "§cCons: §fRisky playstyle, easy to finish off"
+    necromancer:
+      name: "Necromancer"
+      desc:
+        - "§7A dark mage who summons undead minions"
+        - "§7from the bones of fallen enemies."
+        - ""
+        - "§aPros: §fSummon skeletons after kills"
+        - "§cCons: §fWeak without kills to fuel summons"
+
+  help:
+    line1: "§aUse the Compass to track and eliminate enemies!"
+    line2: "§aYou get Speed II debuff when you attack first!"
+    line3: "§bAvoid enemies with better gear than you!"
+
+  misc:
+    game_no_player: "You are not in the game."
+    dm_cannot_start: "Deathmatch cannot be started now."
+    spectator_blocked: "§cSpectators cannot join the game."

@@ -1,0 +1,17 @@
+package com.houzicore.extension.util.constant;
+
+public enum CacheName {
+
+    COOLDOWN,
+    DIALOG_CLICK,
+    OFFLINE_PLAYERS,
+    MODERATION,
+    LEGACY_COLOR_MESSAGE,
+    MENTION_MESSAGE,
+    SWEAR_MESSAGE,
+    REPLACEMENT_MESSAGE,
+    REPLACEMENT_IMAGE,
+    TRANSLATE_MESSAGE,
+    PROFILE_PROPERTY
+
+}

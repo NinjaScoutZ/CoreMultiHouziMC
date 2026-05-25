@@ -1,0 +1,19 @@
+# ==========================================
+# HouziCore Cosmetics Configuration
+# Set Enabled: false to completely disable a gadget from the server.
+# Cost settings can be configured via DBPool (Not inside this file).
+# ==========================================
+
+Gadgets:
+  ItemBatGun:
+    Enabled: true
+  OutfitRaveSuit:
+    Enabled: true
+  ParticleHelix:
+    Enabled: true
+  WinEffectDragonRise:
+    Enabled: true
+  TornadoDeath:
+    Enabled: true
+  EmojiTaunt:
+    Enabled: true

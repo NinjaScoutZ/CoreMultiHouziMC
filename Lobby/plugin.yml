@@ -1,0 +1,5 @@
+name: HouziCoreLobby
+main: com.houzicore.lobby.HouziCoreLobby
+version: 1.21.11
+author: HouziCore
+api-version: '26.1.2'

@@ -1,0 +1,235 @@
+package com.houzicore.shared.core.game.kit;
+
+import java.util.Optional;
+import com.houzicore.shared.core.achievement.Achievement;
+import com.houzicore.shared.core.game.GameDisplay;
+
+public enum GameKit
+{
+	NULL_PLAYER,
+	NULL_SPACER,
+	ALIEN_INVASION_PLAYER,
+	BACON_BRAWL_PIG,
+	BACON_BRAWL_MAMA_PIG,
+	BACON_BRAWL_SHEEP,
+	BACON_BRAWL_CHRIS_P_BACON,
+	BARBARIANS_BRUTE,
+	BARBARIANS_ARCHER,
+	BARBARIANS_BOMBER,
+	BASKET_BALL_PLAYER,
+	BRIDGES_APPLER,
+	BRIDGES_BERSERKER,
+	BRIDGES_BRAWLER,
+	BRIDGES_ARCHER,
+	BRIDGES_MINER,
+	BRIDGES_BOMBER,
+	BRIDGES_DESTRUCTOR,
+	BUILD_BUILDER,
+	CAKE_WARS_WARRIOR,
+	CAKE_WARS_ARCHER,
+	CAKE_WARS_BUILDER,
+	CAKE_WARS_FROSTING,
+	BED_WARS_WARRIOR,
+	BED_WARS_ARCHER,
+	BED_WARS_BUILDER,
+	BED_WARS_FROSTING,
+	CASTLE_ASSAULT_ALCHEMIST,
+	CASTLE_ASSAULT_ARCHER,
+	CASTLE_ASSAULT_DEMO,
+	CASTLE_ASSAULT_FIGHTER,
+	CASTLE_ASSAULT_TANK,
+	CASTLE_SIEGE_WOLF,
+	CASTLE_SIEGE_HUMAN_MARKSMAN,
+	CASTLE_SIEGE_HUMAN_KNIGHT,
+	CASTLE_SIEGE_HUMAN_PALADIN,
+	CASTLE_SIEGE_UNDEAD_GHOUL,
+	CASTLE_SIEGE_UNDEAD_ARCHER,
+	CASTLE_SIEGE_UNDEAD_ZOMBIE,
+	CASTLE_SIEGE_UNDEAD_SUMMONER,
+	CHAMPIONS_BRUTE,
+	CHAMPIONS_ARCHER,
+	CHAMPIONS_KNIGHT,
+	CHAMPIONS_MAGE,
+	CHAMPIONS_ASSASSIN,
+	CHRISTMAS_CHAOS_PLAYER,
+	DEATH_TAG_BASHER,
+	DEATH_TAG_ARCHER,
+	DEATH_TAG_TRAITOR,
+	DEATH_TAG_ALPHA_CHASER,
+	DEATH_TAG_CHASER,
+	DRAGON_ESCAPE_LEAPER,
+	DRAGON_ESCAPE_DISRUPTOR,
+	DRAGON_ESCAPE_WARPER,
+	DRAGON_ESCAPE_DIGGER,
+	DRAGONS_COWARD,
+	DRAGONS_MARKSMAN,
+	DRAGONS_PYROTECHNIC,
+	DRAW_ARTIST,
+	EVOLUTION_ABILITY,
+	EVOLUTION_EVOLVE_SPEED,
+	EVOLUTION_HEALTH,
+	GLADIATORS_PLAYER,
+	GRAVITY_PLAYER,
+	HALLOWEEN_FINN,
+	HALLOWEEN_ROBIN_HOOD,
+	HALLOWEEN_THOR,
+	HIDE_AND_SEEK_SWAPPER,
+	HIDE_AND_SEEK_QUICK,
+	HIDE_AND_SEEK_SHOCKER,
+	HIDE_AND_SEEK_INFESTOR,
+	HIDE_AND_SEEK_LEAPER,
+	HIDE_AND_SEEK_TNT,
+	HIDE_AND_SEEK_RADAR,
+	BOMB_LOBBERS_JUMPER,
+	BOMB_LOBBERS_ARMORER,
+	BOMB_LOBBERS_PITCHER,
+	BOMB_LOBBERS_WALLER,
+	MICRO_ARCHER,
+	MICRO_WORKER,
+	MICRO_FIGHTER,
+	MILK_THE_COW_LEAP,
+	MILK_THE_COW_COW,
+	MC_LEAGUE_PLAYER,
+	MINESTRIKE_PLAYER,
+	BAWK_BAWK_PLAYER,
+	MONSTER_MAZE_JUMPER,
+	MONSTER_MAZE_SLOW_BALL,
+	MONSTER_MAZE_BODY_BUILDER,
+	MONSTER_MAZE_REPULSOR,
+	PAINTBALL_RIFLE,
+	PAINTBALL_SHOTGUN,
+	PAINTBALL_MACHINE_GUN,
+	PAINTBALL_SNIPER,
+	OITQ_LEAPER,
+	OITQ_BRAWLER,
+	OITQ_SLAM_SHOOTER,
+	OITQ_ENCHANTER,
+	OITQ_NINJA,
+	OITQP_BERSERKER,
+	OITQP_NINJA,
+	OITQP_BARRAGE,
+	OITQP_SKY_WARRIOR,
+	OITQP_PYROMANCER,
+	OITQP_NECROMANER,
+	RUNNER_LEAPER,
+	RUNNER_ARCHER,
+	RUNNER_FROSTY,
+	SHEEP_QUEST_BESERKER,
+	SHEEP_QUEST_ARCHER,
+	SHEEP_QUEST_BRUTE,
+	SKYFALL_SPEEDER,
+	SKYFALL_BOOSTER,
+	SKYFALL_JOUSTER,
+	SKYFALL_STUNNER,
+	SKYFALL_AERONAUGHT,
+	SKYFALL_DEADEYE,
+	SKYWARS_ICE,
+	SKYWARS_FIRE,
+	SKYWARS_AIR,
+	SKYWARS_METAL,
+	SKYWARS_EARTH,
+	SSM_SKELETON,
+	SSM_GOLEM,
+	SSM_SPIDER,
+	SSM_SLIME,
+	SSM_CREEPER,
+	SSM_ENDERMAN,
+	SSM_SNOWMAN,
+	SSM_WOLF,
+	SSM_MAGMA_CUBE,
+	SSM_BLAZE,
+	SSM_WITCH,
+	SSM_CHICKEN,
+	SSM_SKELETON_HORSE,
+	SSM_PIG,
+	SSM_SQUID,
+	SSM_WITHER_SKELETON,
+	SSM_ZOMBIE,
+	SSM_COW,
+	SSM_GUARDIAN,
+	SSM_SHEEP,
+	SSM_VILLAGER,
+	SNAKE_SPEED,
+	SNAKE_INVULNERABLE,
+	SNAKE_REVERSE,
+	SNEAKY_ASSASSINS_ESCAPE_ARTIST,
+	SNEAKY_ASSASSINS_ASSASSIN,
+	SNEAKY_ASSASSINS_REVEALER,
+	SNEAKY_ASSASSINS_BRIBER,
+	SNOW_FIGHT_SPORTSMAN,
+	SNOW_FIGHT_TACTICIAN,
+	SNOW_FIGHT_MEDIC,
+	SPLEEF_SNOWBALLER,
+	SPLEEF_BRAWLER,
+	SPLEEF_ARCHER,
+	SQUID_SHOOTER,
+	SG_AXEMAN,
+	SG_KNIGHT,
+	SG_ARCHER,
+	SG_BRAWLER,
+	SG_ASSASSIN,
+	SG_BEASTMASTER,
+	SG_BOMBER,
+	SG_NECROMANCER,
+	SG_BARBARIAN,
+	SG_HORSEMAN,
+	TUG_ARCHER,
+	TUG_SMASHER,
+	TUG_LEAPER,
+	TURF_WARS_MARKSMAN,
+	TURF_WARS_INFILTRATOR,
+	TURF_WARS_SHREDDER,
+	TYPE_WARS_TYPER,
+	UHC_PLAYER,
+	VALENTINES_PLAYER,
+	WITHER_ASSAULT_ARCHER,
+	WITHER_ASSAULT_MEDIC,
+	WITHER_ASSAULT_EDITOR,
+	WITHER_ASSAULT_WITHER,
+	WIZARDS_MAGE,
+	WIZARDS_SORCERER,
+	WIZARDS_MYSTIC,
+	WIZARDS_WITCH_DOCTOR,
+	ZOMBIE_SURVIVAL_KNIGHT,
+	ZOMBIE_SURVIVAL_ROUGE,
+	ZOMBIE_SURVIVAL_ARCHER,
+	ZOMBIE_SURVIVAL_ALPHA,
+	ZOMBIE_SURVIVAL_UNDEAD;
+
+	private final int _id;
+	private final String _displayName;
+	private final String _internalName;
+
+	GameKit()
+	{
+		_id = ordinal() % 100;
+		_displayName = name().replace('_', ' ');
+		_internalName = name().toLowerCase();
+	}
+
+	public static String[] noLore() { return new String[0]; }
+	public static String leapRaw() { return "Leap"; }
+	public static String leap() { return "Leap"; }
+	public static String doubleJumpRaw() { return "Double Jump"; }
+	public static String doubleJump() { return "Double Jump"; }
+	public static String receiveItem(String item, int amount) { return item; }
+	public static String receiveArrow(int amount, double per, int max) { return "Arrows"; }
+	public static String receiveItem(String item, int amount, double time, int max) { return item; }
+	public static String click(boolean left, String comp) { return comp; }
+	public static String reduceCooldown(String perk, double time) { return perk; }
+	public static String increaseNumber(String perk, String increasing, double value, String data) { return perk; }
+	public static String increase(String perk, String increasing, double percentage) { return perk; }
+	public static String increase(String increasing, double value) { return increasing; }
+	public static String heart(int amount) { return amount + " Hearts"; }
+
+	public final boolean isChampionsKit() { return name().startsWith("CHAMPIONS_"); }
+	public final int getId() { return _id; }
+	public final GameDisplay getDisplay() { return GameDisplay.Event; }
+	public final Optional<String> getLegacyName() { return Optional.empty(); }
+	public final String getInternalName() { return _internalName; }
+	public String getDisplayName() { return _displayName; }
+	public String getFormattedName() { return _displayName; }
+	public String[] getDescription() { return new String[0]; }
+	public int getCost() { return 0; }
+	public Achievement[] getAchievements() { return new Achievement[0]; }
+}

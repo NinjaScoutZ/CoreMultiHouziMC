@@ -1,0 +1,175 @@
+package com.houzicore.arcade.nautilus.game.arcade.kit.perks;
+
+import org.bukkit.Material;
+import org.bukkit.Sound;
+import org.bukkit.block.Block;
+import org.bukkit.entity.Entity;
+import org.bukkit.entity.Item;
+import org.bukkit.entity.LivingEntity;
+import org.bukkit.entity.Player;
+import org.bukkit.event.EventHandler;
+import org.bukkit.event.EventPriority;
+import org.bukkit.event.block.Action;
+import org.bukkit.event.entity.EntityDamageEvent.DamageCause;
+import org.bukkit.event.player.PlayerInteractEvent;
+import org.bukkit.event.player.PlayerPickupItemEvent;
+import org.bukkit.inventory.ItemStack;
+import org.bukkit.util.Vector;
+
+import com.houzicore.shared.common.util.C;
+import com.houzicore.shared.common.util.F;
+import com.houzicore.shared.common.util.UtilAction;
+import com.houzicore.shared.common.util.UtilBlock;
+import com.houzicore.shared.common.util.UtilEnt;
+import com.houzicore.shared.common.util.UtilMath;
+import com.houzicore.shared.common.util.UtilParticle;
+import com.houzicore.shared.common.util.UtilParticle.ViewDist;
+import com.houzicore.shared.common.util.UtilPlayer;
+import com.houzicore.shared.common.util.UtilParticle.ParticleType;
+import com.houzicore.shared.common.util.UtilServer;
+import com.houzicore.shared.core.itemstack.ItemStackFactory;
+import com.houzicore.shared.core.projectile.IThrown;
+import com.houzicore.shared.core.projectile.ProjectileUser;
+import com.houzicore.shared.recharge.Recharge;
+import com.houzicore.arcade.nautilus.game.arcade.kit.SmashPerk;
+
+public class PerkPigBaconBounce extends SmashPerk implements IThrown
+{
+	public PerkPigBaconBounce() 
+	{
+		super("Bouncy Bacon", new String[] 
+				{ 
+				C.cYellow + "Right-Click" + C.cGray + " with Axe to " + C.cGreen + "Bouncy Bacon",
+				});
+	}
+		
+	@EventHandler
+	public void Skill(PlayerInteractEvent event)
+	{
+		if (event.isCancelled())
+			return;
+
+		if (event.getAction() != Action.RIGHT_CLICK_AIR && event.getAction() != Action.RIGHT_CLICK_BLOCK)
+			return;
+
+		if (UtilBlock.usable(event.getClickedBlock()))
+			return;
+
+		if (event.getPlayer().getItemInHand() == null)
+			return;
+
+		if (!event.getPlayer().getItemInHand().getType().toString().contains("_AXE"))
+			return;
+
+		Player player = event.getPlayer();
+
+		if (!Kit.HasKit(player))
+			return;
+		
+		float energy = 0.2f;
+		
+		// Check if the player is currently disguised as PigZombie via the bridge.
+		boolean isPigZombie = Manager.GetDisguise().getService()
+				.getActiveSession(player.getUniqueId())
+				.map(s -> "PIGLIN_BRUTE".equals(s.request().variantKey()) || "PIG_ZOMBIE".equals(s.request().variantKey()) || "ZOMBIFIED_PIGLIN".equals(s.request().variantKey()))
+				.orElse(false);
+		if (isPigZombie)
+			energy = energy * 0.7f;
+
+		//Energy
+		if (player.getExp() < energy)
+		{
+			UtilPlayer.message(player, F.main("Energy", "Not enough Energy to use " + F.skill(GetName()) + "."));
+			return;
+		}
+			
+		//Recharge
+		if (!Recharge.Instance.use(player, GetName(), 100, false, false))
+			return;
+	
+		//Use Energy
+		player.setExp(Math.max(0f, player.getExp() - energy));
+		
+		//Launch
+		Item ent = player.getWorld().dropItem(player.getEyeLocation(), ItemStackFactory.Instance.CreateStack(Material.PORKCHOP));
+		UtilAction.velocity(ent, player.getLocation().getDirection(), 1.2, false, 0, 0.2, 10, false);
+// Manager.getDamager().AddThrow(ent, player, this, -1, true, true, true, false, 0.4f);
+		ent.setPickupDelay(9999);
+		
+		//Sound
+		player.getWorld().playSound(player.getLocation(), Sound.ENTITY_PIG_AMBIENT, 2f, 1.5f);
+		
+		//Inform
+		UtilPlayer.message(player, F.main("Skill", "You used " + F.skill(GetName()) + "."));
+	}
+	
+	@Override
+	public void Collide(LivingEntity target, Block block, ProjectileUser data) 
+	{
+		Rebound(data.GetThrower(), data.GetThrown());
+		
+		if (target == null)
+			return;
+
+		//Damage Event
+		Manager.GetDamage().NewDamageEvent(target, data.GetThrower(), null,
+				DamageCause.CUSTOM, 4, true, true, false,
+				UtilEnt.getName(data.GetThrower()), GetName());
+		
+		Item item = (Item)data.GetThrown();
+		item.setItemStack(new ItemStack(Material.COOKED_PORKCHOP));
+	}
+
+	@Override
+	public void Idle(ProjectileUser data) 
+	{
+		Rebound(data.GetThrower(), data.GetThrown());
+	}
+
+	@Override
+	public void Expire(ProjectileUser data) 
+	{
+		Rebound(data.GetThrower(), data.GetThrown());
+	}
+	
+	public void Rebound(LivingEntity player, Entity ent)
+	{
+		ent.getWorld().playSound(ent.getLocation(), Sound.ENTITY_ITEM_PICKUP, 1f, 0.5f);
+		
+		double mult = 0.5 + (0.035 * UtilMath.offset(player.getLocation(), ent.getLocation()));
+		
+		//Velocity
+		ent.setVelocity(player.getLocation().toVector().subtract(ent.getLocation().toVector()).normalize().add(new Vector(0, 0.4, 0)).multiply(mult));
+		
+		//Ticks
+		if (ent instanceof Item)
+			((Item)ent).setPickupDelay(5);
+	}
+	
+	@EventHandler(priority = EventPriority.LOWEST)
+	public void Pickup(PlayerPickupItemEvent event)
+	{
+		if (!Kit.HasKit(event.getPlayer()))
+			return;
+		
+		if (event.getItem().getItemStack().getType() != Material.PORKCHOP && event.getItem().getItemStack().getType() != Material.COOKED_PORKCHOP)
+			return;
+		
+		//Remove
+		event.getItem().remove();
+		
+		//Restore Energy
+		event.getPlayer().setExp(Math.min(0.999f, event.getPlayer().getExp() + 0.05f));
+		
+		//Sound
+		event.getPlayer().getWorld().playSound(event.getPlayer().getLocation(), Sound.ENTITY_GENERIC_EAT, 2f, 1f);
+		
+		//Heal
+		if (event.getItem().getItemStack().getType() == Material.COOKED_PORKCHOP)
+		{
+			UtilPlayer.health(event.getPlayer(), 1);
+			UtilParticle.PlayParticle(ParticleType.HEART, event.getPlayer().getLocation().add(0, 0.5, 0), 0.2f, 0.2f, 0.2f, 0, 4,
+					ViewDist.LONG, UtilServer.getPlayers());
+		}
+	}
+}

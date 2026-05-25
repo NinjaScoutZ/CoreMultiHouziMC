@@ -1,0 +1,13 @@
+# Maven / Java build output
+**/target/
+**/target.old/
+*.class
+*.tmp
+
+# JVM crash logs and replay files
+hs_err_pid*.log
+replay_pid*.log
+
+# Logs
+*.log
+*.lck

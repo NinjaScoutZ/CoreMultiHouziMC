@@ -1,0 +1,69 @@
+treasure:
+  ui:
+    page:
+      main_title: "Treasure Vault"
+      detail_title: "Treasure Details"
+      buy_title: "Buy Chests"
+    title: "&6&lTreasure"
+    subtitle: "Select a chest to inspect or open."
+    coin_balance: "Your coin balance"
+    bundles: "1x / 5x / 10x"
+    inventory_title: "Chest Storage"
+    info_title: "Chest Info"
+    labels:
+      tier: "Tier"
+      owned: "Owned"
+      price: "Price"
+      price_each: "Price each"
+      starting_at: "Starting at"
+      bundles: "Bundles"
+      available: "Available"
+      chests_owned: "Chests owned"
+      quantity: "Quantity"
+      total_cost: "Total cost"
+      chest: "Chest"
+      buy_hint: "Choose a quantity below"
+      buy_or_open_hint: "Buy or open a chest below"
+    actions:
+      view_details: "Click to view details"
+      choose_quantity: "Click to choose quantity"
+      click_purchase: "Click to purchase"
+      click_open: "Click to open"
+      open_chest: "Open Chest"
+      buy_chest: "Buy Chest"
+      back: "Back"
+      back_to_selection: "Return to chest selection"
+      back_to_detail: "Return to detail page"
+    state:
+      no_chests_title: "No Chests Available"
+      no_chests_line_1: "You have no chests of this type."
+      no_chests_line_2: "Buy some first."
+    odds:
+      header: "Drop odds:"
+      common: "Common"
+      uncommon: "Uncommon"
+      rare: "Rare"
+      legendary: "Legendary"
+      mythical: "Mythical"
+    hologram:
+      open: "OPEN TREASURE"
+      ready_total: "{0} Chests Ready"
+      none_ready: "No chests ready"
+      ready_types: "Ready: {0}"
+      none_types: "Buy a chest to begin opening."
+      more_types: "+{0} more"
+    notify:
+      vault_name: "Treasure Vault"
+      ready_title: "TREASURE READY"
+      ready_subtitle: "{0} ready • Top chest: {1}"
+      ready_chat: "{0} chests are ready to open at the Treasure Vault."
+      ready_single_chat: "{0} is ready to open at the Treasure Vault."
+  types:
+    old:
+      name: "Old Chest"
+    ancient:
+      name: "Copper Chest"
+    legendary:
+      name: "Legendary Chest"
+    mythical:
+      name: "Mythical Chest"

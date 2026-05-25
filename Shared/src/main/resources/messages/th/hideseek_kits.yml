@@ -1,0 +1,28 @@
+hideseek:
+  kit.chameleon.desc: '&7สายพรางตัวสุดคลาสสิค เน้นวางตัวปลอมหลอกตาคน'
+  kit.chameleon.pros: มีสกิลวางร่างโคลน (Decoy)
+  kit.chameleon.cons: ไม่มีสกิลหนีตาย
+  kit.ghost.desc: '&7สายวาร์ปหนี สามารถทะลุกำแพงได้'
+  kit.ghost.pros: วาร์ปหนีทะลุกำแพง 4 บล็อก
+  kit.ghost.cons: เสียงดังและมักทิ้งร่องรอยให้ตามง่าย
+  kit.trickster.desc: '&7สายป่วน วิ่งเร็วตลอดเวลาและตีคนล่าให้ตาบอดได้'
+  kit.trickster.pros: วิ่งไว (Speed I) & โจมตีติด Blind
+  kit.trickster.cons: มีฝุ่นหิมะตกตามตัวตลอดเวลา
+  kit.tracker.desc: '&7นักล่าสายมาตรฐาน พกเข็มทิศเรดาร์หาคน'
+  kit.tracker.pros: เข็มทิศชี้ทางไปหาคนแอบ
+  kit.tracker.cons: ความสามารถต่อสู้แบบพื้นฐาน
+  kit.destroyer.desc: '&7ผู้เชี่ยวชาญการระเบิด ทำลายล้างจุดซ่อนตัว'
+  kit.destroyer.pros: มีปาระเบิด TNT เคลียร์จุดซ่อน
+  kit.destroyer.cons: เดินอืด (Slowness I)
+  kit.trapper.desc: '&7จ้าวแห่งกับดัก หยุดคนแอบด้วยใยแมงมุม'
+  kit.trapper.pros: ปาใยแมงมุมดักทาง & มีธนู
+  kit.trapper.cons: เกราะหนังอ่อนแอที่สุด
+  kit.bloodhound.desc: '&7หมาล่าเนื้อแกะรอยเลือด วิ่งไวมาก'
+  kit.bloodhound.pros: วิ่งไว (Speed I) & เห็นรอยเลือด
+  kit.bloodhound.cons: ไม่มีอาวุธระยะไกล
+  kit.saboteur.desc: '&7วางกับดักหลอกคนแอบ และส่องแสงเปิดเผนตำแหน่ง'
+  kit.saboteur.pros: ธนูเผยตัว & วางบล็อกกับดัก
+  kit.saboteur.cons: ไม่มีอาวุธระยะประชิด
+  kit.bountyhunter.desc: '&7นักล่าล่าค่าหัว ตัวแทงค์หนาปราบเรียบ'
+  kit.bountyhunter.pros: เกราะเพชร & โจมตีอย่างหนัก
+  kit.bountyhunter.cons: เดินช้ามาก (Slowness II)

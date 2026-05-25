@@ -1,0 +1,15 @@
+task dumpMethods {
+    doLast {
+        def url = configurations.compileClasspath.files.find { it.name.contains('packetevents') }
+        if (url != null) {
+            println "Found packetevents: " + url
+            def cl = new java.net.URLClassLoader([url.toURI().toURL()] as java.net.URL[], this.class.classLoader)
+            def pInfo = cl.loadClass("com.github.retrooper.packetevents.wrapper.play.server.WrapperPlayServerPlayerInfoUpdate\$PlayerInfo")
+            pInfo.getDeclaredMethods().each { println it }
+            def pData = cl.loadClass("com.github.retrooper.packetevents.wrapper.play.server.WrapperPlayServerPlayerInfo\$PlayerData")
+            pData.getDeclaredMethods().each { println it }
+        } else {
+            println "packetevents jar not found"
+        }
+    }
+}

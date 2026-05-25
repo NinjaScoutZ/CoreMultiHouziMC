@@ -1,0 +1,25 @@
+package com.houzicore.shared.api.context;
+
+public enum PlayerContextId {
+    LOBBY_FREE,
+    LOBBY_MENU,
+    LOBBY_SOCIAL_UI,
+    LOBBY_ARENA_QUEUE,
+    LOBBY_ARENA_PREP,
+    LOBBY_ARENA_LIVE,
+    LOBBY_ARENA_POST,
+    LOBBY_ACTIVITY,
+    LOBBY_FISHING,
+    LOBBY_FARM,
+    LOBBY_PARKOUR,
+    ARCADE_LOBBY,
+    ARCADE_VOTE,
+    ARCADE_RECRUIT,
+    ARCADE_PREP,
+    ARCADE_LIVE,
+    ARCADE_DEAD,
+    ARCADE_SPECTATOR,
+    ARCADE_POSTGAME,
+    MAP_EDIT,
+    MAP_PREVIEW
+}

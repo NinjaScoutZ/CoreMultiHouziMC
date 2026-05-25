@@ -1,0 +1,53 @@
+package com.houzicore.arcade.nautilus.game.arcade.game.games.smash.perks.skeletalhorse;
+
+import org.bukkit.Material;
+import org.bukkit.Sound;
+import org.bukkit.entity.Player;
+
+import com.houzicore.arcade.nautilus.game.arcade.game.games.smash.perks.SmashUltimate;
+import com.houzicore.arcade.nautilus.game.arcade.kit.Perk;
+
+public class SmashSkeletalHorse extends SmashUltimate
+{
+
+	public SmashSkeletalHorse()
+	{
+		super("Bone Storm", new String[] {}, Sound.ENTITY_SKELETON_HORSE_DEATH, 0);
+	} 
+	
+	@Override
+	public void activate(Player player)
+	{
+		super.activate(player);
+		
+		player.getInventory().remove(Material.IRON_SHOVEL);
+		player.getInventory().remove(Material.IRON_AXE);
+		
+		for (Perk perk : Kit.GetPerks())
+		{
+			if (perk instanceof PerkBoneRush)
+			{
+				PerkBoneRush boneRush = (PerkBoneRush) perk;
+				
+				boneRush.activate(player);
+			}
+		}
+	}
+	
+	@Override
+	public void cancel(Player player)
+	{
+		super.cancel(player);
+		
+		for (Perk perk : Kit.GetPerks())
+		{
+			if (perk instanceof PerkBoneRush)
+			{
+				PerkBoneRush boneRush = (PerkBoneRush) perk;
+				
+				boneRush.deactivate(player);
+			}
+		}
+	}
+
+}

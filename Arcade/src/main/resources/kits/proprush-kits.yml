@@ -1,0 +1,79 @@
+# PropRush Kit Definitions
+bloodhound:
+  name: "Bloodhound"
+  availability: "Gem"
+  cost: 4000
+  entity-type: "WOLF"
+  display-item: "BONE"
+bomb_bug:
+  name: "Bomb Bug"
+  availability: "Gem"
+  cost: 6500
+  entity-type: "SILVERFISH"
+  display-item: "FIREWORK_STAR"
+bounty_hunter:
+  name: "Bounty Hunter"
+  availability: "Gem"
+  cost: 8000
+  entity-type: "PILLAGER"
+  display-item: "CROSSBOW"
+destroyer:
+  name: "Destroyer"
+  availability: "Gem"
+  cost: 4000
+  entity-type: "WITHER_SKELETON"
+  display-item: "FIRE_CHARGE"
+exorcist:
+  name: "Exorcist"
+  availability: "Gem"
+  cost: 7000
+  entity-type: "EVOKER"
+  display-item: "AMETHYST_SHARD"
+falconer:
+  name: "Falconer"
+  availability: "Gem"
+  cost: 7000
+  entity-type: "PARROT"
+  display-item: "FEATHER"
+ghost:
+  name: "Ghost"
+  availability: "Gem"
+  cost: 4000
+  entity-type: "ENDERMAN"
+  display-item: "ENDER_PEARL"
+locksmith:
+  name: "Locksmith"
+  availability: "Gem"
+  cost: 6500
+  entity-type: "ALLAY"
+  display-item: "TRIPWIRE_HOOK"
+mimic:
+  name: "Mimic"
+  availability: "Gem"
+  cost: 6500
+  entity-type: "FOX"
+  display-item: "ECHO_SHARD"
+saboteur:
+  name: "Saboteur"
+  availability: "Gem"
+  cost: 6000
+  entity-type: "CREEPER"
+  display-item: "GUNPOWDER"
+trapper:
+  name: "Trapper"
+  availability: "Gem"
+  cost: 6000
+  entity-type: "ZOMBIE"
+  display-item: "LEATHER_BOOTS"
+trickster:
+  name: "Trickster"
+  availability: "Gem"
+  cost: 6000
+  entity-type: "RABBIT"
+  display-item: "FEATHER"
+warden:
+  name: "Warden"
+  availability: "Gem"
+  cost: 8000
+  entity-type: "WARDEN"
+  display-item: "SCULK_SENSOR"

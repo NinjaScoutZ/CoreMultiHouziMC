@@ -1,0 +1,98 @@
+package com.houzicore.extension.platform.sender;
+
+import com.google.inject.Inject;
+import com.google.inject.Singleton;
+import lombok.RequiredArgsConstructor;
+import com.houzicore.extension.config.setting.PermissionSetting;
+import com.houzicore.extension.data.repository.CooldownRepository;
+import com.houzicore.extension.execution.dispatcher.EventDispatcher;
+import com.houzicore.extension.execution.pipeline.MessagePipeline;
+import com.houzicore.extension.model.entity.FEntity;
+import com.houzicore.extension.model.entity.FPlayer;
+import com.houzicore.extension.model.event.message.MessageSendEvent;
+import com.houzicore.extension.model.event.message.context.MessageContext;
+import com.houzicore.extension.model.util.Cooldown;
+import com.houzicore.extension.platform.formatter.TimeFormatter;
+import com.houzicore.extension.util.checker.CooldownChecker;
+import com.houzicore.extension.util.checker.PermissionChecker;
+import com.houzicore.extension.util.constant.ModuleName;
+import com.houzicore.extension.util.file.FileFacade;
+import net.kyori.adventure.text.Component;
+import org.incendo.cloud.type.tuple.Pair;
+
+import java.util.Optional;
+
+/**
+ * Sends cooldown messages to players and checks cooldown bypass permissions.
+ *
+ * <p><b>Usage example:</b>
+ * <pre>{@code
+ * CooldownSender cooldownSender = houzicorePulse.get(CooldownSender.class);
+ *
+ * Cooldown cooldown = new Cooldown(5000, true); // 5 second cooldown
+ * PermissionSetting permissionByPass = new PermissionSetting("myplugin.bypass", false);
+ *
+ * if (cooldownSender.sendIfCooldown(player, Pair.of(cooldown, permissionByPass))) {
+ *     // Player is on cooldown, action should be blocked
+ * }
+ * }</pre>
+ *
+ * @author HouziCore Development
+ * @since 1.6.0
+ */
+@Singleton
+@RequiredArgsConstructor(onConstructor = @__(@Inject))
+public class CooldownSender {
+
+    private final PermissionChecker permissionChecker;
+    private final CooldownChecker cooldownChecker;
+    private final CooldownRepository cooldownRepository;
+    private final MessagePipeline messagePipeline;
+    private final TimeFormatter timeFormatter;
+    private final EventDispatcher eventDispatcher;
+    private final FileFacade fileFacade;
+
+    /**
+     * Checks if an entity is on cooldown and sends a cooldown message if applicable.
+     * Only sends messages to players, not other entities.
+     *
+     * @param entity the entity to check
+     * @param optionalCooldown optional pair of cooldown and permission settings
+     * @param cooldownOwner name of the owner that checks cooldown
+     * @return true if cooldown message was sent, false otherwise
+     */
+    public boolean sendIfCooldown(FEntity entity, Optional<Pair<Cooldown, PermissionSetting>> optionalCooldown, String cooldownOwner) {
+        return optionalCooldown
+                .filter(pair -> sendIfCooldown(entity, pair, cooldownOwner))
+                .isPresent();
+    }
+
+    /**
+     * Checks if a player is on cooldown and sends a formatted cooldown message.
+     *
+     * @param entity the entity to check
+     * @param cooldownPermission pair of cooldown settings and bypass permission
+     * @param cooldownOwner name of the owner that checks cooldown
+     * @return true if cooldown message was sent, false otherwise
+     */
+    public boolean sendIfCooldown(FEntity entity, Pair<Cooldown, PermissionSetting> cooldownPermission, String cooldownOwner) {
+        Cooldown cooldown = cooldownPermission.first();
+        if (cooldown == null || !cooldown.enable()) return false;
+
+        // skip message for entities
+        if (!(entity instanceof FPlayer fPlayer)) return false;
+
+        if (permissionChecker.check(fPlayer, cooldownPermission.second())) return false;
+        if (!cooldownChecker.check(fPlayer.uuid(), cooldown, cooldownOwner)) return false;
+
+        long timeLeft = cooldownRepository.getTimeLeft(fPlayer.uuid(), cooldown, cooldownOwner);
+        String cooldownMessage = timeFormatter.format(fPlayer, timeLeft, fileFacade.localization(entity).cooldown());
+        MessageContext cooldownContext = messagePipeline.createContext(fPlayer, cooldownMessage);
+        Component component = messagePipeline.build(cooldownContext);
+
+        eventDispatcher.dispatch(new MessageSendEvent(ModuleName.ERROR, fPlayer, component));
+
+        return true;
+    }
+
+}

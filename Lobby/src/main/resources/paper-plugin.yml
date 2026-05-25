@@ -1,0 +1,11 @@
+name: HouziCore-Lobby
+version: 1.21.11
+main: com.houzicore.lobby.hub.Hub
+api-version: '1.21'
+description: HouziCore Lobby Hub Plugin
+dependencies:
+  server:
+    HouziCore-Shared:
+      load: BEFORE
+      required: true
+      join-classpath: true
