@@ -1,1 +1,0 @@
-import org.joml.*; public class JomlReflectionTest { public static void main(String[] args) { Matrix4f m = new Matrix4f().scale(-1, 1, 1).rotate((float)Math.toRadians(45), 0, 1, 0); Vector3f s = new Vector3f(); Quaternionf q = new Quaternionf(); m.getScale(s); m.getUnnormalizedRotation(q); System.out.println(\"Scale: \" + s); System.out.println(\"Rot: \" + q); } }  

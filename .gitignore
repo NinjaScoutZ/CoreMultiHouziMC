@@ -20,3 +20,15 @@ KitTester/
 MapBuilder/
 config/
 
+# Temporary / Junk Files
+Bench.json
+Bench_decoded.json
+Bench_matrix.txt
+Code.rar
+Code.zip
+JomlMatrixParseTest.java
+JomlMatrixTranslationTest.java
+JomlReflectionTest.java
+JomlTest.java
+Test.java
+bench_dump.json
