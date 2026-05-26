@@ -11,3 +11,12 @@ replay_pid*.log
 # Logs
 *.log
 *.lck
+
+# Excluded modules (untracked locally)
+Bungeecord/
+Gateway/
+HouziExtension/
+KitTester/
+MapBuilder/
+config/
+
