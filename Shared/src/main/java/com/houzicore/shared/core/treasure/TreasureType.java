@@ -38,16 +38,29 @@ public enum TreasureType {
 	}
 
 	public String getName() {
-		return _colorPrefix + _engName;
+		return getFormattedName(_engName);
 	}
 
 	public String getDisplayName(Player player) {
 		boolean isThai = com.houzicore.shared.core.lang.LangManager.get().isThai(player);
-		return _colorPrefix + (isThai ? _thaiName : _engName);
+		return getFormattedName(isThai ? _thaiName : _engName);
 	}
 
 	public String getDisplayName(boolean isThai) {
-		return _colorPrefix + (isThai ? _thaiName : _engName);
+		return getFormattedName(isThai ? _thaiName : _engName);
+	}
+
+	private String getFormattedName(String text) {
+		if (_colorPrefix.startsWith("§")) {
+			return _colorPrefix + text;
+		}
+		if (_colorPrefix.contains("gradient")) {
+			return _colorPrefix + text + "</gradient>";
+		}
+		if (_colorPrefix.contains("rainbow")) {
+			return _colorPrefix + text + "</bold></rainbow>";
+		}
+		return _colorPrefix + text + "</" + _colorPrefix.replace("<", "").replace(">", "") + ">";
 	}
 
 	public String getDisplay(boolean isThai) {

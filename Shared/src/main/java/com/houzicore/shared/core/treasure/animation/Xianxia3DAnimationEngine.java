@@ -74,8 +74,8 @@ public class Xianxia3DAnimationEngine extends Animation {
         super(treasure);
         _treasure = treasure;
         _displayEntityManager = dem;
-        _cauldronLoc = _treasure.getCenterBlock().getLocation().add(0.5, 1.15, 0.5);
-        _mouthLoc = _cauldronLoc.clone().add(0, 0.1, 0); // Center mouth level (Y+1.25)
+        _cauldronLoc = _treasure.getCenterBlock().getLocation().add(0.5, 0.35, 0.5); // visual bottom sits on ground
+        _mouthLoc = _cauldronLoc.clone().add(0, 0.8, 0); // Center mouth level (Y+1.15)
     }
 
     @Override
@@ -136,7 +136,7 @@ public class Xianxia3DAnimationEngine extends Animation {
             _cauldronModel.setAnimation(ModelAnimation.rotateY(2.5f));
             
             // Add interaction hitbox box to detect right-clicks during brewing
-            _cauldronModel.addInteractionBox(0.0, -0.8, 0.0, 1.8f, 1.8f);
+            _cauldronModel.addInteractionBox(0.0, -0.35, 0.0, 1.8f, 1.8f);
             
             _displayEntityManager.addModel(_cauldronModel);
             _cauldronModel.spawn(_cauldronLoc);
@@ -147,7 +147,7 @@ public class Xianxia3DAnimationEngine extends Animation {
         }
 
         // Spawn fire/smoke particles under the cauldron
-        Location bottom = _cauldronLoc.clone().add(0, -0.8, 0);
+        Location bottom = _cauldronLoc.clone().add(0, -0.35, 0);
         bottom.getWorld().spawnParticle(Particle.SOUL_FIRE_FLAME, bottom, 1, 0.1, 0.05, 0.1, 0.01);
         if (tick % 12 == 0) {
             Player player = _treasure.getPlayer();
@@ -174,13 +174,13 @@ public class Xianxia3DAnimationEngine extends Animation {
             double radius = 0.2 + _random.nextDouble() * 0.2;
             Location spawnAt = _mouthLoc.clone().add(
                     Math.cos(angle) * radius,
-                    0.1 + _random.nextDouble() * 0.1,
+                    0.7 + _random.nextDouble() * 0.2, // Spawn higher up
                     Math.sin(angle) * radius);
 
             ItemDisplay display = spawnAt.getWorld().spawn(spawnAt, ItemDisplay.class, entity -> {
                 entity.setItemStack(new ItemStack(material));
                 entity.setItemDisplayTransform(org.bukkit.entity.ItemDisplay.ItemDisplayTransform.GROUND);
-                Vector3f scale = new Vector3f(0.45f, 0.45f, 0.45f);
+                Vector3f scale = new Vector3f(0.33f, 0.33f, 0.33f); // Symmetrical premium scale
                 entity.setTransformation(new Transformation(new Vector3f(0, 0, 0), new Quaternionf(), scale, new Quaternionf()));
             });
 
@@ -188,7 +188,7 @@ public class Xianxia3DAnimationEngine extends Animation {
             player.playSound(player.getLocation(), Sound.BLOCK_BREWING_STAND_BREW, 0.5f, 1.2f);
         }
 
-        Location bottom = _cauldronLoc.clone().add(0, -0.8, 0);
+        Location bottom = _cauldronLoc.clone().add(0, -0.35, 0);
         bottom.getWorld().spawnParticle(Particle.SOUL_FIRE_FLAME, bottom, 1, 0.1, 0.05, 0.1, 0.01);
     }
 
@@ -515,13 +515,13 @@ public class Xianxia3DAnimationEngine extends Animation {
                 continue;
             }
 
-            // Float upward and rotate
-            Location current = teaser.display.getLocation().add(0, 0.05, 0);
+            // Descend downward into the cauldron and rotate
+            Location current = teaser.display.getLocation().add(0, -0.04, 0);
             current.setYaw(current.getYaw() + 15.0f);
             teaser.display.teleport(current);
 
-            // Dissolve after 10 ticks
-            if (teaser.age >= 10) {
+            // Dissolve after 15 ticks (approx 0.6 blocks total descent)
+            if (teaser.age >= 15) {
                 current.getWorld().spawnParticle(Particle.SMOKE, current, 3, 0.1, 0.1, 0.1, 0.01);
                 teaser.display.remove();
                 _teaserItems.remove(i);

@@ -262,7 +262,7 @@ public class TreasureLocation implements Listener {
 		if (visible) {
 			_hologram.stop();
 			updatePlayerHolograms();
-			_chestBlock.setType(Material.BARRIER);
+			_chestBlock.setType(Material.AIR);
 			spawnIdleCauldronModel();
 		} else {
 			_hologram.stop();
@@ -272,19 +272,20 @@ public class TreasureLocation implements Listener {
 		}
 	}
 
-	/** Spawn a slowly-rotating BlockDisplay overlay on top of the native CAULDRON block. */
+	/** Spawn a slowly-rotating 3D ItemDisplay cauldron model with an interaction hitbox. */
 	private void spawnIdleCauldronModel() {
 		removeIdleCauldronModel();
-		DisplayPart cauldronPart = DisplayPart.centeredBlock(Material.CAULDRON)
-				.scale(1.0f, 1.0f, 1.0f)
+		DisplayPart cauldronPart = DisplayPart.item(Material.CAULDRON)
+				.itemTransform(org.bukkit.entity.ItemDisplay.ItemDisplayTransform.HEAD)
+				.scale(1.15f, 1.15f, 1.15f)
 				.brightness(15, 15);
 		_idleCauldronModel = new DisplayModel(
 				"treasure_idle_" + _chestBlock.hashCode(),
 				java.util.Collections.singletonList(cauldronPart));
-		_idleCauldronModel.addInteractionBox(0.0, 0.0, 0.0, 1.2f, 1.2f);
+		_idleCauldronModel.addInteractionBox(0.0, -0.35, 0.0, 1.4f, 1.4f);
 		_idleCauldronModel.setAnimation(ModelAnimation.rotateY(2.0f));
 		_displayEntityManager.addModel(_idleCauldronModel);
-		_idleCauldronModel.spawn(_chestBlock.getLocation().add(0.5, 0.5, 0.5));
+		_idleCauldronModel.spawn(_chestBlock.getLocation().add(0.5, 0.35, 0.5));
 	}
 
 	private void removeIdleCauldronModel() {

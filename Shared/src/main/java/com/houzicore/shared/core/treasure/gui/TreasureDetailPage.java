@@ -218,11 +218,28 @@ public class TreasureDetailPage extends ShopPageBase<TreasureManager, TreasureSh
     }
 
     private ItemStack makeItem(Material mat, String name, List<String> lore) {
+        net.kyori.adventure.text.minimessage.MiniMessage mm = net.kyori.adventure.text.minimessage.MiniMessage.miniMessage();
         ItemStack item = new ItemStack(mat);
         ItemMeta meta = item.getItemMeta();
         if (meta != null) {
-            meta.setDisplayName(name);
-            meta.setLore(lore);
+            if (name != null) {
+                if (name.startsWith("§")) {
+                    meta.setDisplayName(name);
+                } else {
+                    meta.displayName(mm.deserialize(name));
+                }
+            }
+            if (lore != null) {
+                List<net.kyori.adventure.text.Component> componentLore = new ArrayList<>();
+                for (String line : lore) {
+                    if (line.startsWith("§")) {
+                        componentLore.add(net.kyori.adventure.text.serializer.legacy.LegacyComponentSerializer.legacySection().deserialize(line));
+                    } else {
+                        componentLore.add(mm.deserialize(line));
+                    }
+                }
+                meta.lore(componentLore);
+            }
             item.setItemMeta(meta);
         }
         return item;
