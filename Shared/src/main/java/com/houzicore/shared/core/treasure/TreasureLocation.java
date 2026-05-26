@@ -18,6 +18,7 @@ import org.bukkit.event.EventPriority;
 import org.bukkit.event.Listener;
 import org.bukkit.event.block.Action;
 import org.bukkit.event.inventory.InventoryOpenEvent;
+import org.bukkit.event.player.PlayerInteractEntityEvent;
 import org.bukkit.event.player.PlayerInteractEvent;
 import org.bukkit.event.player.PlayerMoveEvent;
 import org.bukkit.event.player.PlayerQuitEvent;
@@ -278,8 +279,9 @@ public class TreasureLocation implements Listener {
 				.scale(1.0f, 1.0f, 1.0f)
 				.brightness(15, 15);
 		_idleCauldronModel = new DisplayModel(
-				"idle_cauldron_" + _chestBlock.hashCode(),
+				"treasure_idle_" + _chestBlock.hashCode(),
 				java.util.Collections.singletonList(cauldronPart));
+		_idleCauldronModel.addInteractionBox(0.0, 0.0, 0.0, 1.2f, 1.2f);
 		_idleCauldronModel.setAnimation(ModelAnimation.rotateY(2.0f));
 		_displayEntityManager.addModel(_idleCauldronModel);
 		_idleCauldronModel.spawn(_chestBlock.getLocation().add(0.5, 0.5, 0.5));
@@ -291,6 +293,36 @@ public class TreasureLocation implements Listener {
 			_displayEntityManager.removeModel(_idleCauldronModel);
 			_idleCauldronModel = null;
 		}
+	}
+
+	private boolean handleInteraction(Player player, org.bukkit.entity.Entity clicked, org.bukkit.event.player.PlayerInteractEntityEvent event) {
+		if (clicked instanceof org.bukkit.entity.Interaction interaction) {
+			org.bukkit.NamespacedKey key = new org.bukkit.NamespacedKey("houzicore", "bde_interact");
+			if (interaction.getPersistentDataContainer().has(key, org.bukkit.persistence.PersistentDataType.STRING)) {
+				String modelId = interaction.getPersistentDataContainer().get(key, org.bukkit.persistence.PersistentDataType.STRING);
+				
+				// 1. ดักจับช่วงไม่มีคนเปิด (Idle State): เปิดหน้าแผงผังร้านค้าคลังแสง
+				if (("treasure_idle_" + _chestBlock.hashCode()).equals(modelId)) {
+					openShop(player);
+					if (event != null) event.setCancelled(true);
+					return true;
+				}
+				
+				// 2. 🛡️ ดักจับช่วงกำลังรันแอนิเมชันร่ายมนตร์ 10 วินาที: ส่ง ActionBar แจ้งผู้เล่นอื่นทันที!
+				if (("treasure_active_" + _chestBlock.hashCode()).equals(modelId)) {
+					player.sendActionBar(mm.deserialize("<red>☯ แท่นกระถางสำริดกำลังหลอมโอสถอยู่... กรุณารอศิษย์พี่ปรุงยาเสร็จสิ้นสักครู่</red>"));
+					player.playSound(player.getLocation(), Sound.BLOCK_ANVIL_HIT, 0.5f, 1.5f);
+					if (event != null) event.setCancelled(true);
+					return true;
+				}
+			}
+		}
+		return false;
+	}
+
+	@EventHandler
+	public void onPlayerInteractEntity(org.bukkit.event.player.PlayerInteractEntityEvent event) {
+		handleInteraction(event.getPlayer(), event.getRightClicked(), event);
 	}
 
 	@EventHandler

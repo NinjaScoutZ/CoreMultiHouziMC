@@ -12,6 +12,7 @@ import com.houzicore.shared.core.reward.RewardData;
 import com.houzicore.shared.core.reward.RewardRarity;
 import com.houzicore.shared.core.gadget.CosmeticRarity;
 import com.houzicore.shared.common.util.UtilServer;
+import com.houzicore.shared.common.util.C;
 import net.kyori.adventure.text.minimessage.MiniMessage;
 import org.bukkit.Location;
 import org.bukkit.Material;
@@ -21,7 +22,6 @@ import org.bukkit.entity.ItemDisplay;
 import org.bukkit.entity.TextDisplay;
 import org.bukkit.entity.Player;
 import org.bukkit.inventory.ItemStack;
-import org.bukkit.plugin.java.JavaPlugin;
 import org.bukkit.util.Transformation;
 import org.joml.Quaternionf;
 import org.joml.Vector3f;
@@ -34,7 +34,7 @@ import java.util.Random;
 public class Xianxia3DAnimationEngine extends Animation {
 
     private static final MiniMessage mm = MiniMessage.miniMessage();
-    private static final String SYSTEM_PREFIX = "<gradient:#ffcc00:#ff5555><bold>☯ สำนักเซียน ☯</bold></gradient>";
+    private static final String QI_PREFIX = "<gradient:#ffcc00:#ff5555><bold>☯ พิธีหลอมโอสถเก้าชั้นฟ้า ☯</bold></gradient>";
     private static final float[] PENTATONIC_PITCHES = { 0.5f, 0.5946f, 0.7071f, 0.8409f, 1.0f, 1.1892f };
     private static final Material[] TEASER_MATERIALS = {
         Material.GHAST_TEAR, Material.MAGMA_CREAM, Material.BLAZE_POWDER, 
@@ -46,8 +46,9 @@ public class Xianxia3DAnimationEngine extends Animation {
     private final Treasure _treasure;
     private final DisplayEntityManager _displayEntityManager;
     private final Location _cauldronLoc;
+    private final Location _mouthLoc;
     
-    private DisplayModel _active3DModel;
+    private DisplayModel _cauldronModel;
     private TextDisplay _hologramBoard;
     private ItemDisplay _rewardDisplay;
     private ItemDisplay _divineJackpotDisplay;
@@ -73,7 +74,8 @@ public class Xianxia3DAnimationEngine extends Animation {
         super(treasure);
         _treasure = treasure;
         _displayEntityManager = dem;
-        _cauldronLoc = _treasure.getCenterBlock().getLocation().add(0.5, 0.7, 0.5);
+        _cauldronLoc = _treasure.getCenterBlock().getLocation().add(0.5, 1.15, 0.5);
+        _mouthLoc = _cauldronLoc.clone().add(0, 0.1, 0); // Center mouth level (Y+1.25)
     }
 
     @Override
@@ -86,18 +88,18 @@ public class Xianxia3DAnimationEngine extends Animation {
 
         _elapsedTicks++;
 
-        // 7-Phase Timeline Dispatcher
-        if (_elapsedTicks <= 40) {
+        // 7-Phase Timeline Dispatcher (Total 240 Ticks = 12 Seconds)
+        if (_elapsedTicks <= 60) {
             tickPhaseIgnition(_elapsedTicks);
-        } else if (_elapsedTicks <= 80) {
+        } else if (_elapsedTicks <= 90) {
             tickPhaseTeasers(_elapsedTicks);
         } else if (_elapsedTicks <= 120) {
             tickPhaseAccelerate(_elapsedTicks);
         } else if (_elapsedTicks <= 140) {
             tickPhaseColorHint(_elapsedTicks);
-        } else if (_elapsedTicks <= 150) {
+        } else if (_elapsedTicks <= 190) {
             tickPhaseDramaticPause(_elapsedTicks);
-        } else if (_elapsedTicks <= 170) {
+        } else if (_elapsedTicks <= 210) {
             tickPhaseExplosion(_elapsedTicks);
         } else if (_elapsedTicks <= 240) {
             tickPhaseCollection(_elapsedTicks);
@@ -106,11 +108,6 @@ public class Xianxia3DAnimationEngine extends Animation {
         // Trail of Essence: Runs across Phase 1-4 (Ticks 1-140)
         if (_elapsedTicks <= 140) {
             spawnTrailOfEssence(_elapsedTicks);
-        }
-
-        // Dynamic pentatonic note sounds: Runs across Phase 3-4 (Ticks 81-140)
-        if (_elapsedTicks > 80 && _elapsedTicks <= 140) {
-            playDynamicSound(_elapsedTicks);
         }
 
         // Update active teasers (floating and rotation physics)
@@ -128,43 +125,56 @@ public class Xianxia3DAnimationEngine extends Animation {
 
     private void tickPhaseIgnition(int tick) {
         if (tick == 1) {
-            // Spawn cauldron model — always use CAULDRON block for proper 3D look
-            // (tier.getMaterial() can be ANVIL or BEACON for high tiers which look wrong)
-            DisplayPart cauldronVisual = DisplayPart.centeredBlock(Material.CAULDRON)
-                    .scale(1.4f, 1.4f, 1.4f)
+            // Spawn cauldron model using HEAD transform to snap pivot perfectly to center
+            DisplayPart cauldronVisual = DisplayPart.item(Material.CAULDRON)
+                    .itemTransform(org.bukkit.entity.ItemDisplay.ItemDisplayTransform.HEAD)
+                    .scale(1.15f, 1.15f, 1.15f)
                     .brightness(15, 15);
 
-            _active3DModel = new DisplayModel("xianxia_cauldron_" + _treasure.getPlayer().getEntityId(),
+            _cauldronModel = new DisplayModel("treasure_active_" + _treasure.getCenterBlock().hashCode(),
                     java.util.Collections.singletonList(cauldronVisual));
-            _active3DModel.setAnimation(ModelAnimation.rotateY(getStartVelocity(_treasure.getTreasureType())));
-            _displayEntityManager.addModel(_active3DModel);
-            _active3DModel.spawn(_cauldronLoc);
+            _cauldronModel.setAnimation(ModelAnimation.rotateY(2.5f));
+            
+            // Add interaction hitbox box to detect right-clicks during brewing
+            _cauldronModel.addInteractionBox(0.0, -0.8, 0.0, 1.8f, 1.8f);
+            
+            _displayEntityManager.addModel(_cauldronModel);
+            _cauldronModel.spawn(_cauldronLoc);
 
-            // Play fire ignition sound
             Player player = _treasure.getPlayer();
-            player.playSound(player.getLocation(), Sound.BLOCK_FURNACE_FIRE_CRACKLE, 1.0f, 0.8f);
+            player.playSound(player.getLocation(), Sound.BLOCK_FURNACE_FIRE_CRACKLE, 0.6f, 0.9f);
             player.playSound(player.getLocation(), Sound.ITEM_FLINTANDSTEEL_USE, 1.0f, 0.9f);
         }
 
         // Spawn fire/smoke particles under the cauldron
-        Location bottom = _cauldronLoc.clone().add(0, -0.4, 0);
-        bottom.getWorld().spawnParticle(Particle.FLAME, bottom, 2, 0.1, 0.05, 0.1, 0.02);
-        bottom.getWorld().spawnParticle(Particle.SMALL_FLAME, bottom, 1, 0.1, 0.05, 0.1, 0.01);
-        if (tick % 5 == 0) {
-            bottom.getWorld().spawnParticle(Particle.SMOKE, bottom, 2, 0.15, 0.1, 0.15, 0.01);
+        Location bottom = _cauldronLoc.clone().add(0, -0.8, 0);
+        bottom.getWorld().spawnParticle(Particle.SOUL_FIRE_FLAME, bottom, 1, 0.1, 0.05, 0.1, 0.01);
+        if (tick % 12 == 0) {
+            Player player = _treasure.getPlayer();
+            if (player != null && player.isOnline()) {
+                player.playSound(player.getLocation(), Sound.BLOCK_FURNACE_FIRE_CRACKLE, 0.6f, 0.9f);
+            }
         }
     }
 
     private void tickPhaseTeasers(int tick) {
-        // Spawn a random Chinese alchemy ingredient every 8 ticks
-        if ((tick - 40) % 8 == 0) {
+        Player player = _treasure.getPlayer();
+        if (tick == 61) {
+            player.playSound(player.getLocation(), Sound.ENTITY_SPLASH_POTION_BREAK, 1.0f, 0.8f);
+            _mouthLoc.getWorld().spawnParticle(Particle.RAID_OMEN, _mouthLoc, 40, 0.15, 0.15, 0.15, 0.04);
+            if (_cauldronModel != null) {
+                _cauldronModel.setAnimation(ModelAnimation.rotateY(10f));
+            }
+        }
+
+        // Spawn a random Chinese alchemy ingredient every 6 ticks
+        if ((tick - 60) % 6 == 0) {
             Material material = TEASER_MATERIALS[_random.nextInt(TEASER_MATERIALS.length)];
-            // Scatter items in a ring around the cauldron mouth — not all at the same point
             double angle = _random.nextDouble() * Math.PI * 2;
-            double radius = 0.3 + _random.nextDouble() * 0.25;
-            Location spawnAt = _cauldronLoc.clone().add(
+            double radius = 0.2 + _random.nextDouble() * 0.2;
+            Location spawnAt = _mouthLoc.clone().add(
                     Math.cos(angle) * radius,
-                    0.7 + _random.nextDouble() * 0.15,
+                    0.1 + _random.nextDouble() * 0.1,
                     Math.sin(angle) * radius);
 
             ItemDisplay display = spawnAt.getWorld().spawn(spawnAt, ItemDisplay.class, entity -> {
@@ -175,123 +185,128 @@ public class Xianxia3DAnimationEngine extends Animation {
             });
 
             _teaserItems.add(new TeaserItem(display));
-
-            Player player = _treasure.getPlayer();
             player.playSound(player.getLocation(), Sound.BLOCK_BREWING_STAND_BREW, 0.5f, 1.2f);
         }
 
-        // Fire particle shimmers
-        Location bottom = _cauldronLoc.clone().add(0, -0.4, 0);
-        bottom.getWorld().spawnParticle(Particle.FLAME, bottom, 1, 0.1, 0.05, 0.1, 0.02);
+        Location bottom = _cauldronLoc.clone().add(0, -0.8, 0);
+        bottom.getWorld().spawnParticle(Particle.SOUL_FIRE_FLAME, bottom, 1, 0.1, 0.05, 0.1, 0.01);
     }
 
     private void tickPhaseAccelerate(int tick) {
-        TreasureType tier = _treasure.getTreasureType();
-        float start = getStartVelocity(tier);
-        float peak = getPeakVelocity(tier);
-        
-        // Linearly accelerate the Y rotation of the cauldron
-        float progress = (tick - 80) / 40.0f;
-        float currentSpeed = start + (peak - start) * progress;
-        if (_active3DModel != null) {
-            _active3DModel.setAnimation(ModelAnimation.rotateY(currentSpeed));
+        Player player = _treasure.getPlayer();
+        if (tick == 91) {
+            player.playSound(player.getLocation(), Sound.BLOCK_MOSS_BREAK, 1.0f, 1.1f);
+            _mouthLoc.getWorld().spawnParticle(Particle.HAPPY_VILLAGER, _mouthLoc, 45, 0.2, 0.2, 0.2, 0.06);
+            if (_cauldronModel != null) {
+                _cauldronModel.setAnimation(ModelAnimation.rotateY(24f));
+            }
         }
 
-        // Spawn tier-specific alchemy particles around the cauldron
-        spawnTierSpecificParticles(tier, _cauldronLoc);
+        // Accelerating note block chimes (Interval: 6 ticks)
+        if ((tick - 91) % 6 == 0) {
+            float pitch = PENTATONIC_PITCHES[_pentatonicIndex % PENTATONIC_PITCHES.length];
+            _pentatonicIndex++;
+            player.playSound(player.getLocation(), Sound.BLOCK_NOTE_BLOCK_CHIME, 0.8f, pitch);
+        }
+
+        spawnTierSpecificParticles(_treasure.getTreasureType(), _cauldronLoc);
     }
 
     private void tickPhaseColorHint(int tick) {
-        TreasureType tier = _treasure.getTreasureType();
+        Player player = _treasure.getPlayer();
         if (tick == 121) {
-            // Dramatic color hint sound
-            float soundPitch = switch (tier) {
-                case OLD -> 0.8f;
-                case ANCIENT -> 1.0f;
-                case MYTHICAL -> 1.2f;
-                case IMMORTAL -> 1.4f;
-                case DIVINE -> 1.7f;
-                default -> 1.0f;
-            };
-            Player player = _treasure.getPlayer();
-            player.playSound(_cauldronLoc, Sound.BLOCK_BEACON_ACTIVATE, 1.0f, soundPitch);
+            player.playSound(player.getLocation(), Sound.BLOCK_AMETHYST_BLOCK_CHIME, 1.0f, 1.1f);
+            _mouthLoc.getWorld().spawnParticle(Particle.TOTEM_OF_UNDYING, _mouthLoc, 50, 0.25, 0.25, 0.25, 0.08);
+            if (_cauldronModel != null) {
+                _cauldronModel.setAnimation(ModelAnimation.rotateY(42f));
+            }
         }
 
-        // Spawn dense hint particles bubbling at the mouth of the cauldron
-        Location mouth = _cauldronLoc.clone().add(0, 0.7, 0);
+        // Accelerating note block chimes (Interval: 3 ticks)
+        if ((tick - 121) % 3 == 0) {
+            float pitch = PENTATONIC_PITCHES[_pentatonicIndex % PENTATONIC_PITCHES.length];
+            _pentatonicIndex++;
+            player.playSound(player.getLocation(), Sound.BLOCK_NOTE_BLOCK_CHIME, 0.8f, pitch);
+            if (_treasure.getTreasureType() == TreasureType.DIVINE) {
+                player.playSound(player.getLocation(), Sound.BLOCK_NOTE_BLOCK_PLING, 0.5f, pitch * 1.5f);
+            }
+        }
+
+        // Bubble color hint particles at the mouth of the cauldron
         Reward mainReward = _treasure.getRewards()[0];
         RewardRarity rarity = mainReward.getRarity();
-
         switch (rarity) {
             case OTHER, COMMON, UNCOMMON -> 
-                mouth.getWorld().spawnParticle(Particle.CLOUD, mouth, 4, 0.15, 0.05, 0.15, 0.02);
+                _mouthLoc.getWorld().spawnParticle(Particle.CLOUD, _mouthLoc, 4, 0.15, 0.05, 0.15, 0.02);
             case RARE -> 
-                mouth.getWorld().spawnParticle(Particle.HAPPY_VILLAGER, mouth, 4, 0.15, 0.05, 0.15, 0.05);
+                _mouthLoc.getWorld().spawnParticle(Particle.HAPPY_VILLAGER, _mouthLoc, 4, 0.15, 0.05, 0.15, 0.05);
             case LEGENDARY -> 
-                mouth.getWorld().spawnParticle(Particle.TOTEM_OF_UNDYING, mouth, 6, 0.15, 0.05, 0.15, 0.08);
+                _mouthLoc.getWorld().spawnParticle(Particle.TOTEM_OF_UNDYING, _mouthLoc, 6, 0.15, 0.05, 0.15, 0.08);
             case MYTHICAL -> {
-                mouth.getWorld().spawnParticle(Particle.END_ROD, mouth, 4, 0.15, 0.05, 0.15, 0.05);
-                mouth.getWorld().spawnParticle(Particle.SOUL_FIRE_FLAME, mouth, 4, 0.15, 0.05, 0.15, 0.03);
+                _mouthLoc.getWorld().spawnParticle(Particle.END_ROD, _mouthLoc, 4, 0.15, 0.05, 0.15, 0.05);
+                _mouthLoc.getWorld().spawnParticle(Particle.SOUL_FIRE_FLAME, _mouthLoc, 4, 0.15, 0.05, 0.15, 0.03);
             }
         }
     }
 
     private void tickPhaseDramaticPause(int tick) {
+        Player player = _treasure.getPlayer();
         if (tick == 141) {
-            // Stop cauldron rotation completely
-            if (_active3DModel != null) {
-                _active3DModel.setAnimation(ModelAnimation.none());
-            }
-            // Condense/Deactivate sound
-            Player player = _treasure.getPlayer();
             player.playSound(player.getLocation(), Sound.BLOCK_BEACON_DEACTIVATE, 0.8f, 0.8f);
         }
 
-        // Absolute silence and stillness. No particles.
+        // Purple gas brewing stand pitch ramp phase
+        _mouthLoc.getWorld().spawnParticle(Particle.DRAGON_BREATH, _mouthLoc, 3, 0.1, 0.1, 0.1, 0.02);
+        if ((tick - 141) % 4 == 0) {
+            float pitchRamp = 0.7f + ((tick - 141) * 0.023f);
+            player.playSound(player.getLocation(), Sound.BLOCK_BREWING_STAND_BREW, 0.8f, pitchRamp);
+        }
     }
 
     private void tickPhaseExplosion(int tick) {
-        if (tick == 151) {
-            // Remove the cauldron model
-            if (_active3DModel != null) {
-                _active3DModel.remove();
-                _displayEntityManager.removeModel(_active3DModel);
-                _active3DModel = null;
+        if (tick == 191) {
+            // Remove active cauldron model
+            if (_cauldronModel != null) {
+                _cauldronModel.remove();
+                _displayEntityManager.removeModel(_cauldronModel);
+                _cauldronModel = null;
             }
 
-            // Grant rewards and get the main display item
+            // Grant rewards to account
             grantRewards();
 
             Reward mainReward = _treasure.getRewards()[0];
             RewardRarity rarity = mainReward.getRarity();
             CosmeticRarity cosmeticRarity = mapRarity(rarity);
             String rColor = CosmeticUITemplate.getRarityHexColor(cosmeticRarity);
+            
             String rewardName = _mainRewardData != null 
                     ? org.bukkit.ChatColor.stripColor(_mainRewardData.getFriendlyName())
                     : "Unknown Reward";
 
-            Location pLoc = _cauldronLoc.clone().add(0, 0.7, 0);
-            Location floatingLoc = _cauldronLoc.clone().add(0, 1.5, 0);
+            Location floatingLoc = _cauldronLoc.clone().add(0, 1.1, 0); // Float at Y+2.25
 
-            // Spawn explosion effects based on Rarity
-            playRarityExplosionEffects(pLoc, rarity);
+            // Explosion particles and soundscapes
+            playRarityExplosionEffects(_mouthLoc, rarity);
 
-            // Divine Jackpot UI: spawn gold block decoration overlay for DIVINE tier unboxing
+            // Strike lightning for legendary/mythic
+            if (rarity == RewardRarity.LEGENDARY || rarity == RewardRarity.MYTHICAL) {
+                _cauldronLoc.getWorld().strikeLightningEffect(_cauldronLoc);
+            }
+
+            // Divine Jackpot gold block base
             if (_treasure.getTreasureType() == TreasureType.DIVINE) {
-                _divineJackpotDisplay = pLoc.getWorld().spawn(_treasure.getCenterBlock().getLocation().add(0.5, 0.8, 0.5), ItemDisplay.class, entity -> {
+                _divineJackpotDisplay = _mouthLoc.getWorld().spawn(_treasure.getCenterBlock().getLocation().add(0.5, 0.8, 0.5), ItemDisplay.class, entity -> {
                     entity.setItemStack(new ItemStack(Material.GOLD_BLOCK));
                     Vector3f scale = new Vector3f(1.6f, 1.6f, 1.6f);
                     entity.setTransformation(new Transformation(new Vector3f(0f, 0f, 0f), new Quaternionf(), scale, new Quaternionf()));
                 });
             }
 
-            // Grant messages and text display
-            // Use <color:X>...</color:X> syntax — <X>...</X> only works for named colors, not hex
+            // Spawn floating text board
             String colorOpen = rColor.startsWith("#") ? "color:" + rColor : rColor;
-            _hologramBoard = pLoc.getWorld().spawn(pLoc.clone().add(0, 1.2, 0), TextDisplay.class, textEnt -> {
-                textEnt.text(mm.deserialize(
-                        "<gradient:#ffcc00:#ff5555><bold>☯ หลอมโอสถวิเศษสำเร็จ ☯</bold></gradient>\n"
-                        + "<" + colorOpen + "><bold>" + rewardName + "</bold></" + colorOpen + ">"));
+            _hologramBoard = _mouthLoc.getWorld().spawn(_mouthLoc.clone().add(0, 1.2, 0), TextDisplay.class, textEnt -> {
+                textEnt.text(mm.deserialize("<bold>" + QI_PREFIX + "</bold>\n<bold><" + colorOpen + ">" + rewardName + "</" + colorOpen + "></bold>"));
                 textEnt.setBillboard(TextDisplay.Billboard.CENTER);
                 textEnt.setShadowed(true);
                 textEnt.setBackgroundColor(org.bukkit.Color.fromARGB(0, 0, 0, 0));
@@ -300,7 +315,7 @@ public class Xianxia3DAnimationEngine extends Animation {
             // Announce in chat
             broadcastReward(rewardName, cosmeticRarity, rColor);
 
-            // Spawn floating reward display
+            // Spawn floating item display
             _rewardDisplay = floatingLoc.getWorld().spawn(floatingLoc, ItemDisplay.class, entity -> {
                 ItemStack stack = _mainRewardData != null ? _mainRewardData.getDisplayItem() : null;
                 if (stack == null) {
@@ -314,48 +329,46 @@ public class Xianxia3DAnimationEngine extends Animation {
         }
 
         // Keep item slowly spinning
-        if (_rewardDisplay != null && _rewardDisplay.isValid()) {
-            float angle = (float) Math.toRadians((tick - 150) * 4.0);
-            Quaternionf rot = new Quaternionf().rotateY(angle);
-            Transformation trans = _rewardDisplay.getTransformation();
-            _rewardDisplay.setTransformation(new Transformation(trans.getTranslation(), rot, trans.getScale(), trans.getRightRotation()));
+        if (tick >= 191 && tick <= 210) {
+            if (_rewardDisplay != null && _rewardDisplay.isValid()) {
+                float angle = (float) Math.toRadians((tick - 191) * 4.0);
+                Quaternionf rot = new Quaternionf().rotateY(angle);
+                Transformation trans = _rewardDisplay.getTransformation();
+                _rewardDisplay.setTransformation(new Transformation(trans.getTranslation(), rot, trans.getScale(), trans.getRightRotation()));
+            }
         }
     }
 
     private void tickPhaseCollection(int tick) {
-        Location floatingLoc = _cauldronLoc.clone().add(0, 1.5, 0);
+        Location floatingLoc = _cauldronLoc.clone().add(0, 1.1, 0); // Y+2.25
 
-        if (tick < 200) {
-            // Phase 7a: Float in air
+        if (tick < 235) {
+            // Hover in air and spawn rarity aura
             if (_rewardDisplay != null && _rewardDisplay.isValid()) {
-                double hover = Math.sin((tick - 170) * 0.15) * 0.15;
+                double hover = Math.sin((tick - 210) * 0.15) * 0.15;
                 _rewardDisplay.teleport(floatingLoc.clone().add(0, hover, 0));
                 
-                // Slow rotation
-                float angle = (float) Math.toRadians((tick - 150) * 3.0);
+                float angle = (float) Math.toRadians((tick - 191) * 3.0);
                 Quaternionf rot = new Quaternionf().rotateY(angle);
                 Transformation trans = _rewardDisplay.getTransformation();
                 _rewardDisplay.setTransformation(new Transformation(trans.getTranslation(), rot, trans.getScale(), trans.getRightRotation()));
             }
 
-            // Spawn floating rarity-based particle aura
             Reward mainReward = _treasure.getRewards()[0];
             spawnRarityAura(floatingLoc, mainReward.getRarity(), tick);
 
         } else {
-            // Phase 7b: LERP towards player (Collection phase)
+            // LERP towards player's chest (ticks 235-240)
             Player player = _treasure.getPlayer();
-            double progress = (tick - 200) / 40.0; // 40 ticks to reach player
+            double progress = (tick - 234) / 6.0; // Fast Lerp in 6 ticks
 
             Location target = player.getLocation().add(0, 1.2, 0);
             Location current = lerp(floatingLoc, target, progress);
 
             if (_rewardDisplay != null && _rewardDisplay.isValid()) {
-                // Spin fast as it approaches the player
-                float angle = (float) Math.toRadians((tick - 150) * 15.0);
+                float angle = (float) Math.toRadians((tick - 191) * 15.0);
                 Quaternionf rot = new Quaternionf().rotateY(angle);
                 
-                // Scale down slightly as it approaches
                 float currentScale = 1.2f - (float) (1.1f * progress);
                 Vector3f scaleVec = new Vector3f(currentScale, currentScale, currentScale);
                 
@@ -363,10 +376,8 @@ public class Xianxia3DAnimationEngine extends Animation {
                 _rewardDisplay.teleport(current);
             }
 
-            // Spawn trail particles behind the flying reward display
             current.getWorld().spawnParticle(Particle.GLOW, current, 1, 0.05, 0.05, 0.05, 0.01);
 
-            // Pickup event trigger at tick 239
             if (tick == 239) {
                 player.playSound(player.getLocation(), Sound.ENTITY_ITEM_PICKUP, 1.0f, 1.5f);
                 player.getWorld().spawnParticle(Particle.COMPOSTER, player.getLocation().add(0, 1.0, 0), 10, 0.3, 0.3, 0.3, 0.1);
@@ -387,7 +398,6 @@ public class Xianxia3DAnimationEngine extends Animation {
         Player player = _treasure.getPlayer();
         if (player == null || !player.isOnline()) return;
 
-        // Accelerate frequency as unboxing progresses
         int interval = (tick >= 100) ? 2 : 4;
         if (tick % interval == 0) {
             Location start = player.getLocation().add(0, 1.2, 0);
@@ -401,24 +411,6 @@ public class Xianxia3DAnimationEngine extends Animation {
                     double ratio = (double) i / (double) steps;
                     Location pt = start.clone().add(dir.clone().multiply(dist * ratio));
                     pt.getWorld().spawnParticle(Particle.ENCHANT, pt, 1, 0, 0, 0, 0);
-                }
-            }
-        }
-    }
-
-    private void playDynamicSound(int tick) {
-        int interval = 10;
-        if (tick >= 120) interval = 3;
-        else if (tick >= 100) interval = 6;
-
-        if ((tick - 80) % interval == 0) {
-            float pitch = PENTATONIC_PITCHES[_pentatonicIndex % PENTATONIC_PITCHES.length];
-            _pentatonicIndex++;
-            Player player = _treasure.getPlayer();
-            if (player != null && player.isOnline()) {
-                player.playSound(player.getLocation(), Sound.BLOCK_NOTE_BLOCK_CHIME, 0.8f, pitch);
-                if (_treasure.getTreasureType() == TreasureType.DIVINE) {
-                    player.playSound(player.getLocation(), Sound.BLOCK_NOTE_BLOCK_PLING, 0.5f, pitch * 1.5f);
                 }
             }
         }
@@ -466,7 +458,6 @@ public class Xianxia3DAnimationEngine extends Animation {
                 loc.getWorld().spawnParticle(Particle.TOTEM_OF_UNDYING, loc, 60, 0.4, 0.4, 0.4, 0.15);
                 loc.getWorld().spawnParticle(Particle.FIREWORK, loc, 25, 0.3, 0.3, 0.3, 0.1);
                 
-                loc.getWorld().strikeLightningEffect(loc);
                 player.playSound(player.getLocation(), Sound.ENTITY_WITHER_SPAWN, 0.8f, 1.0f);
                 player.playSound(player.getLocation(), Sound.ENTITY_PLAYER_LEVELUP, 1.0f, 1.15f);
             }
@@ -475,8 +466,6 @@ public class Xianxia3DAnimationEngine extends Animation {
                 loc.getWorld().spawnParticle(Particle.TRIAL_SPAWNER_DETECTION, loc, 50, 0.5, 0.5, 0.5, 0.2);
                 loc.getWorld().spawnParticle(Particle.DRAGON_BREATH, loc, 50, 0.4, 0.4, 0.4, 0.15);
                 
-                loc.getWorld().strikeLightningEffect(loc);
-                loc.getWorld().strikeLightningEffect(loc.clone().add(1, 0, 1));
                 player.playSound(player.getLocation(), Sound.ENTITY_WITHER_SPAWN, 1.0f, 0.9f);
                 player.playSound(player.getLocation(), Sound.ENTITY_LIGHTNING_BOLT_THUNDER, 0.8f, 1.2f);
                 player.playSound(player.getLocation(), Sound.ENTITY_PLAYER_LEVELUP, 1.0f, 1.0f);
@@ -497,14 +486,12 @@ public class Xianxia3DAnimationEngine extends Animation {
                 }
             }
             case LEGENDARY -> {
-                // Golden spiral
                 double angle = tick * 0.15;
                 double yOffset = Math.sin(tick * 0.1) * 0.4;
                 Location pLoc = loc.clone().add(Math.cos(angle) * 0.5, yOffset, Math.sin(angle) * 0.5);
                 loc.getWorld().spawnParticle(Particle.TOTEM_OF_UNDYING, pLoc, 1, 0, 0, 0, 0);
             }
             case MYTHICAL -> {
-                // 3-axis orbital shimmers
                 double angle = tick * 0.2;
                 double cos = Math.cos(angle) * 0.6;
                 double sin = Math.sin(angle) * 0.6;
@@ -516,32 +503,6 @@ public class Xianxia3DAnimationEngine extends Animation {
                 loc.getWorld().spawnParticle(Particle.GLOW, pLoc3, 1, 0, 0, 0, 0);
             }
         }
-    }
-
-    // ────────────────────────────────────────────────────────────────────────
-    // Internal calculations & helper methods
-    // ────────────────────────────────────────────────────────────────────────
-
-    private float getStartVelocity(TreasureType tier) {
-        return switch (tier) {
-            case OLD -> 1.5f;
-            case ANCIENT -> 2.5f;
-            case MYTHICAL -> 3.5f;
-            case IMMORTAL -> 4.5f;
-            case DIVINE -> 6.0f;
-            default -> 1.5f;
-        };
-    }
-
-    private float getPeakVelocity(TreasureType tier) {
-        return switch (tier) {
-            case OLD -> 24f;
-            case ANCIENT -> 35f;
-            case MYTHICAL -> 48f;
-            case IMMORTAL -> 60f;
-            case DIVINE -> 75f;
-            default -> 24f;
-        };
     }
 
     private void updateTeasers() {
@@ -608,17 +569,16 @@ public class Xianxia3DAnimationEngine extends Animation {
         boolean isThai = com.houzicore.shared.core.lang.LangManager.get().isThai(player);
         String colorOpen = colorCode.startsWith("#") ? "color:" + colorCode : colorCode;
         String msg = isThai
-            ? SYSTEM_PREFIX + " <gray>เตาหลอมโอสถปะทุออก! คุณบำเพ็ญเพียรสำเร็จ ได้รับ:</gray> <" + colorOpen + "><bold>[" + rewardName + "]</bold></" + colorOpen + ">"
-            : SYSTEM_PREFIX + " <gray>The alchemy cauldron bursts! You have refined:</gray> <" + colorOpen + "><bold>[" + rewardName + "]</bold></" + colorOpen + ">";
+            ? QI_PREFIX + " <gray>เตาหลอมโอสถปะทุออก! คุณบำเพ็ญเพียรสำเร็จ ได้รับ:</gray> <" + colorOpen + "><bold>[" + rewardName + "]</bold></" + colorOpen + ">"
+            : QI_PREFIX + " <gray>The alchemy cauldron bursts! You have refined:</gray> <" + colorOpen + "><bold>[" + rewardName + "]</bold></" + colorOpen + ">";
         player.sendMessage(mm.deserialize(msg));
 
-        // Network announcements for high-tier rewards (Epic, Legendary, Mythic)
         if (rarity == CosmeticRarity.EPIC || rarity == CosmeticRarity.LEGENDARY || rarity == CosmeticRarity.MYTHIC) {
             for (Player oPlayer : UtilServer.getPlayers()) {
                 boolean oIsThai = com.houzicore.shared.core.lang.LangManager.get().isThai(oPlayer);
                 String annMsg = oIsThai
-                    ? SYSTEM_PREFIX + " <gold>" + player.getName() + "</gold> <gray>ได้บำเพ็ญตบะธรรมทลวงเขตแดนสำเร็จ ได้รับสมบัติล้ำค่า:</gray> <" + colorOpen + "><bold>[" + rewardName + "]</bold></" + colorOpen + ">"
-                    : SYSTEM_PREFIX + " <gold>" + player.getName() + "</gold> <gray>has broken through their tribulation, refining:</gray> <" + colorOpen + "><bold>[" + rewardName + "]</bold></" + colorOpen + ">";
+                    ? QI_PREFIX + " <gold>" + player.getName() + "</gold> <gray>ได้บำเพ็ญตบะธรรมทลวงเขตแดนสำเร็จ ได้รับสมบัติล้ำค่า:</gray> <" + colorOpen + "><bold>[" + rewardName + "]</bold></" + colorOpen + ">"
+                    : QI_PREFIX + " <gold>" + player.getName() + "</gold> <gray>has broken through their tribulation, refining:</gray> <" + colorOpen + "><bold>[" + rewardName + "]</bold></" + colorOpen + ">";
                 oPlayer.sendMessage(mm.deserialize(annMsg));
             }
         }
@@ -632,10 +592,10 @@ public class Xianxia3DAnimationEngine extends Animation {
         }
         _teaserItems.clear();
 
-        if (_active3DModel != null) {
-            _active3DModel.remove();
-            _displayEntityManager.removeModel(_active3DModel);
-            _active3DModel = null;
+        if (_cauldronModel != null) {
+            _cauldronModel.remove();
+            _displayEntityManager.removeModel(_cauldronModel);
+            _cauldronModel = null;
         }
 
         if (_hologramBoard != null && _hologramBoard.isValid()) {
@@ -658,7 +618,6 @@ public class Xianxia3DAnimationEngine extends Animation {
     protected void onFinish() {
         cleanupEntities();
 
-        // Safety fallback: ensure rewards are given even if skipped or closed early
         if (!_rewardGiven) {
             grantRewards();
         }
