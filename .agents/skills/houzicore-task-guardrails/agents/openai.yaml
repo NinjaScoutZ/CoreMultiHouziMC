@@ -1,0 +1,4 @@
+interface:
+  display_name: "HouziCore Task Guardrails"
+  short_description: "Scope tasks and verify repo-safe edits"
+  default_prompt: "Use $houzicore-task-guardrails to plan and verify a HouziCore task before editing."

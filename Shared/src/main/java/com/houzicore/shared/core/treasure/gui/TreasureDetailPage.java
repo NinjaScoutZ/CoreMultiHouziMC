@@ -18,6 +18,9 @@ import com.houzicore.shared.core.treasure.TreasureLang;
 import com.houzicore.shared.core.treasure.TreasureLocation;
 import com.houzicore.shared.core.treasure.TreasureManager;
 import com.houzicore.shared.core.treasure.TreasureType;
+import net.kyori.adventure.text.Component;
+import net.kyori.adventure.text.minimessage.MiniMessage;
+import com.houzicore.shared.common.util.ItemBuilder;
 
 /**
  * Detail page for a single treasure tier.
@@ -67,59 +70,60 @@ public class TreasureDetailPage extends ShopPageBase<TreasureManager, TreasureSh
     protected void buildPage() {
         boolean isThai = LangManager.get().isThai(getPlayer());
         int owned = _invService.getOwnedCount(getPlayer(), _type);
+        net.kyori.adventure.text.minimessage.MiniMessage mm = net.kyori.adventure.text.minimessage.MiniMessage.miniMessage();
+        String frameSeparator = "<dark_gray>▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬</dark_gray>";
 
         Material accentMat = getAccentMaterial(_type);
         ItemStack accent = makeItem(accentMat, " ");
         ItemStack gray   = makeItem(Material.GRAY_STAINED_GLASS_PANE, " ");
         ItemStack black  = makeItem(Material.BLACK_STAINED_GLASS_PANE, " ");
 
-        // ── Full fill (black) ──────────────────────────────────────────
         for (int i = 0; i < 54; i++) getInventory().setItem(i, black);
-
-        // ── Tier accent top row ────────────────────────────────────────
         for (int i = 0; i < 9; i++) getInventory().setItem(i, accent);
-
-        // ── Gray side/bottom frame ─────────────────────────────────────
         for (int i = 45; i < 54; i++) getInventory().setItem(i, gray);
         for (int row = 1; row < 5; row++) {
             getInventory().setItem(row * 9,     gray);
             getInventory().setItem(row * 9 + 8, gray);
         }
 
-        // ── Big Chest icon ─────────────────────────────────────────────
-        List<String> chestLore = new ArrayList<>();
-        chestLore.add(" ");
-        chestLore.add(" §7" + TreasureLang.get(getPlayer(), "ui.labels.tier", "Tier") + ": " + _type.getDisplayName(isThai));
-        chestLore.add(" §7" + TreasureLang.get(getPlayer(), "ui.labels.price_each", "Price each") + ": "
-                + "§6" + String.format("%,d", _type.getCostCoins()) + " " + com.houzicore.shared.common.util.UtilText.toSmallCaps("Coins"));
-        chestLore.add(" ");
-        chestLore.addAll(_type.getRarityOddsLore(isThai));
-        ItemStack chestItem = makeItem(_type.getMaterial(), _type.getDisplayName(getPlayer()), chestLore);
+        // ── Big Chest Icon Refactor (สลอตไอเท็มโชว์ใบประกาศสเตตัสเรทกล่อง) ──
+        ItemStack chestItem = new ItemStack(_type.getMaterial());
+        var chestMeta = chestItem.getItemMeta();
+        if (chestMeta != null) {
+            chestMeta.displayName(mm.deserialize("<gradient:#ffcc00:#ffaa00><bold>🎁 " + _type.getDisplayName(isThai) + "</bold></gradient>"));
+            
+            List<net.kyori.adventure.text.Component> chestLore = new ArrayList<>();
+            chestLore.add(mm.deserialize(frameSeparator));
+            chestLore.add(mm.deserialize(isThai ? "<gray>หมวดหมู่สินค้า: </gray><yellow>กล่องสมบัติล็อบบี้ส่วนกลาง</yellow>" : "<gray>Category: </gray><yellow>Lobby Treasure Chest</yellow>"));
+            chestLore.add(mm.deserialize(isThai ? "<gray>ราคาต้นทุนต่อใบ: </gray><gold>" + String.format("%,d", _type.getCostCoins()) + " คอยน์</gold>" : "<gray>Cost per Chest: </gray><gold>" + String.format("%,d", _type.getCostCoins()) + " Coins</gold>"));
+            chestLore.add(Component.empty());
+            chestLore.add(mm.deserialize(isThai ? "<white><bold>📊 อัตราการสุ่มเปิดเจอไอเท็มแรร์:</bold></white>" : "<white><bold>📊 Rare Item Random Odds:</bold></white>"));
+            for (String oddLine : _type.getRarityOddsLore(isThai)) {
+                chestLore.add(mm.deserialize("<dark_gray> ▪ </dark_gray>" + oddLine.replace("§7", "<gray>").replace("§6", "<gold>").replace("§b", "<aqua>")));
+            }
+            chestLore.add(mm.deserialize(frameSeparator));
+            chestMeta.lore(chestLore);
+            chestItem.setItemMeta(chestMeta);
+        }
         UtilInv.addDullEnchantment(chestItem);
         hideInfo(chestItem);
         getInventory().setItem(SLOT_CHEST, chestItem);
 
-        // ── Info item (drop odds) ──────────────────────────────────────
-        List<String> infoLore = new ArrayList<>();
-        infoLore.add(" ");
-        infoLore.addAll(_type.getRarityOddsLore(isThai));
-        infoLore.add(" ");
-        infoLore.add(" §7💡 " + TreasureLang.get(getPlayer(), "ui.labels.buy_or_open_hint", "Buy or open a chest below"));
-        ItemStack infoItem = makeItem(Material.PAPER,
-                "§f" + com.houzicore.shared.common.util.UtilText.toSmallCaps(TreasureLang.get(getPlayer(), "ui.info_title", "Chest Info")), infoLore);
-        getInventory().setItem(SLOT_INFO, infoItem);
-
-        // ── Buy button ─────────────────────────────────────────────────
-        List<String> buyLore = new ArrayList<>();
-        buyLore.add(" ");
-        buyLore.add(" §7" + TreasureLang.get(getPlayer(), "ui.labels.starting_at", "Starting at") + ": "
-                + "§6" + String.format("%,d", _type.getCostCoins()) + " " + com.houzicore.shared.common.util.UtilText.toSmallCaps("Coins"));
-        buyLore.add(" §7" + TreasureLang.get(getPlayer(), "ui.labels.bundles", "Bundles") + ": §f"
-                + TreasureLang.get(getPlayer(), "ui.bundles", "1x / 5x / 10x"));
-        buyLore.add(" ");
-        buyLore.add(" §a" + TreasureLang.get(getPlayer(), "ui.actions.choose_quantity", "Click to choose quantity"));
-        ItemStack buyItem = makeItem(Material.GOLD_INGOT,
-                "§6§l🛒 " + com.houzicore.shared.common.util.UtilText.toSmallCaps(TreasureLang.get(getPlayer(), "ui.actions.buy_chest", "Buy Chest")), buyLore);
+        // ── Buy Button Refactor (ปุ่ม🛒เลือกจำนวนสั่งซื้อคราฟต์พรีเมียม) ──
+        ItemStack buyItem = new ItemStack(Material.GOLD_INGOT);
+        var buyMeta = buyItem.getItemMeta();
+        if (buyMeta != null) {
+            buyMeta.displayName(mm.deserialize(isThai ? "<gradient:#ff5555:#ffaa00><bold>🛒 สั่งซื้อกล่องสมบัติเพิ่มเติม</bold></gradient>" : "<gradient:#ff5555:#ffaa00><bold>🛒 Purchase Additional Chests</bold></gradient>"));
+            buyMeta.lore(List.of(
+                Component.empty(),
+                mm.deserialize(isThai ? "<gray>• ราคาเริ่มต้น: <gold>" + String.format("%,d", _type.getCostCoins()) + " คอยน์</gold></gray>" : "<gray>• Starting Price: <gold>" + String.format("%,d", _type.getCostCoins()) + " Coins</gold></gray>"),
+                mm.deserialize(isThai ? "<gray>• ชุดแพ็คเกจโบนัส: <white>ซื้อเหมา 1 ใบ / 5 ใบ / 10 ใบ</white></gray>" : "<gray>• Bonus Packages: <white>Bundles of 1 / 5 / 10 Chests</white></gray>"),
+                Component.empty(),
+                mm.deserialize(isThai ? "<yellow>» คลิกเพื่อระบุจำนวนสินค้าที่ต้องการสั่งซื้อ</yellow>" : "<yellow>» Click to choose purchase quantity</yellow>")
+            ));
+            buyItem.setItemMeta(buyMeta);
+        }
+        hideInfo(buyItem);
         addButton(SLOT_BUY, buyItem, (player, click) -> {
             playAcceptSound(player);
             getShop().openPageForPlayer(player, new TreasureBuyQuantityPage(
@@ -127,15 +131,20 @@ public class TreasureDetailPage extends ShopPageBase<TreasureManager, TreasureSh
                     _invService, _type, this, player));
         });
 
-        // ── Open button ────────────────────────────────────────────────
+        // ── Open Button Refactor (ปุ่มเปิดกล่อง/ล็อกสถานะ) ──
         if (owned > 0) {
-            List<String> openLore = new ArrayList<>();
-            openLore.add(" ");
-            openLore.add(" §7" + TreasureLang.get(getPlayer(), "ui.labels.available", "Available") + ": §a" + owned + "x");
-            openLore.add(" ");
-            openLore.add(" §a" + TreasureLang.get(getPlayer(), "ui.actions.click_open", "Click to open"));
-            ItemStack openItem = makeItem(Material.NETHER_STAR,
-                    "§a§l▶ " + com.houzicore.shared.common.util.UtilText.toSmallCaps(TreasureLang.get(getPlayer(), "ui.actions.open_chest", "Open Chest")), openLore);
+            ItemStack openItem = new ItemStack(Material.NETHER_STAR);
+            var openMeta = openItem.getItemMeta();
+            if (openMeta != null) {
+                openMeta.displayName(mm.deserialize(isThai ? "<gradient:#a8ff78:#78ffd6><bold>▶ ปลดปล่อยคาถาเปิดกล่องสมบัติ</bold></gradient>" : "<gradient:#a8ff78:#78ffd6><bold>▶ Unlock Treasure Chest</bold></gradient>"));
+                openMeta.lore(List.of(
+                    Component.empty(),
+                    mm.deserialize(isThai ? "<gray>• คลังกล่องที่มีในครอบครอง: <green><bold>" + owned + " ใบ</bold></green></gray>" : "<gray>• Available Chests Owned: <green><bold>" + owned + " Chests</bold></green></gray>"),
+                    Component.empty(),
+                    mm.deserialize(isThai ? "<green>» คลิกเพื่อร่ายอนิเมชันเปิดกล่องลุ้นของแรร์ระดับสากล!</green>" : "<green>» Click to play opening animation and claim rewards!</green>")
+                ));
+                openItem.setItemMeta(openMeta);
+            }
             UtilInv.addDullEnchantment(openItem);
             hideInfo(openItem);
             addButton(SLOT_OPEN, openItem, (player, click) -> {
@@ -144,41 +153,46 @@ public class TreasureDetailPage extends ShopPageBase<TreasureManager, TreasureSh
                 _treasureLocation.attemptOpenTreasure(player, _type);
             });
         } else {
-            List<String> lockedLore = new ArrayList<>();
-            lockedLore.add(" §c" + TreasureLang.get(getPlayer(), "ui.state.no_chests_line_1", "You have no chests of this type."));
-            lockedLore.add(" §7" + TreasureLang.get(getPlayer(), "ui.state.no_chests_line_2", "Buy some first."));
-            ItemStack lockedItem = makeItem(Material.BARRIER,
-                    "§c" + com.houzicore.shared.common.util.UtilText.toSmallCaps(TreasureLang.get(getPlayer(), "ui.state.no_chests_title", "No Chests Available")), lockedLore);
+            ItemStack lockedItem = new ItemStack(Material.BARRIER);
+            var lockMeta = lockedItem.getItemMeta();
+            if (lockMeta != null) {
+                lockMeta.displayName(mm.deserialize(isThai ? "<red><bold>✖ ไม่สามารถเปิดกล่องสมบัติได้</bold></red>" : "<red><bold>✖ Chest Unavailable</bold></red>"));
+                lockMeta.lore(List.of(
+                    Component.empty(),
+                    mm.deserialize(isThai ? "<gray>คุณไม่มีไอเท็มกล่องประเภทนี้เหลืออยู่ในคลังเก็บของ</gray>" : "<gray>You have no chests of this type in your storage</gray>"),
+                    mm.deserialize(isThai ? "<gray>กรุณากดซื้อแพ็คเกจผ่านปุ่มรถเข็นซ้ายมือเพื่อสะสมก่อน</gray>" : "<gray>Please purchase chests using the cart button on the left</gray>")
+                ));
+                lockedItem.setItemMeta(lockMeta);
+            }
+            hideInfo(lockedItem);
             addButton(SLOT_OPEN, lockedItem, (player, click) -> playDenySound(player));
         }
 
-        // ── Owned count ────────────────────────────────────────────────
-        List<String> ownedLore = new ArrayList<>();
-        ownedLore.add(" ");
-        ownedLore.add(" §7" + TreasureLang.get(getPlayer(), "ui.labels.chests_owned", "Chests owned") + ": "
-                + (owned > 0 ? "§a" : "§c") + owned + "x");
-        ItemStack ownedItem = makeItem(Material.CHEST,
-                "§f" + com.houzicore.shared.common.util.UtilText.toSmallCaps(TreasureLang.get(getPlayer(), "ui.inventory_title", "Chest Storage")), ownedLore);
+        // ── Storage count & Navigation footer (ช่องคลังพัสดุและปุ่มกลับ) ──
+        ItemStack ownedItem = new ItemBuilder(Material.CHEST)
+                .setTitle(isThai ? "§f📦 คลังเก็บรักษาสมบัติส่วนตัว" : "§fChest Storage")
+                .addLore("", isThai ? " §7จำนวนกล่องที่มีทั้งหมด: " + (owned > 0 ? "§a" : "§c") + owned + " ใบ" : " §7Chests owned: " + owned)
+                .build();
+        hideInfo(ownedItem);
         getInventory().setItem(SLOT_OWNED, ownedItem);
 
-        // ── Back button ────────────────────────────────────────────────
-        List<String> backLore = new ArrayList<>();
-        backLore.add(" §7" + TreasureLang.get(getPlayer(), "ui.actions.back_to_selection", "Return to chest selection"));
-        ItemStack backItem = makeItem(Material.ARROW,
-                "§c« " + TreasureLang.get(getPlayer(), "ui.actions.back", "Back"), backLore);
+        ItemStack backItem = new ItemBuilder(Material.ARROW)
+                .setTitle(isThai ? "§c« ย้อนกลับ" : "§c« Back")
+                .addLore(isThai ? " §7กลับไปยังหน้ารายการเลือกประเภทกล่อง" : " §7Return to chest selection")
+                .build();
+        hideInfo(backItem);
         addButton(SLOT_BACK, backItem, (player, click) -> {
             _mainPage.refresh();
             getShop().openPageForPlayer(player, _mainPage);
         });
 
-        // ── Coin balance ───────────────────────────────────────────────
         int coins = getDonationManager().Get(getPlayer().getName()) != null
                     ? getDonationManager().Get(getPlayer().getName()).getCoins()
                     : 0;
-        List<String> coinLore = new ArrayList<>();
-        coinLore.add(" §7" + TreasureLang.get(getPlayer(), "ui.coin_balance", "Your coin balance"));
-        ItemStack coinItem = makeItem(Material.SUNFLOWER,
-                "§6" + String.format("%,d", coins) + " " + com.houzicore.shared.common.util.UtilText.toSmallCaps("Coins"), coinLore);
+        ItemStack coinItem = new ItemBuilder(Material.SUNFLOWER)
+                .setTitleComponent(mm.deserialize("<bold><gold>🪙 กระเป๋าเงิน: " + String.format("%,d", coins) + " คอยน์</gold></bold>"))
+                .build();
+        hideInfo(coinItem);
         getInventory().setItem(SLOT_COIN, coinItem);
     }
 

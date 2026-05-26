@@ -1,0 +1,127 @@
+version: 1
+
+modules:
+  Shared:
+    code_roots:
+      - Code/Shared/src/main/java/com/houzicore/shared
+    owns:
+      - public contracts used by multiple downstream modules
+      - default runtime implementations
+      - cross-module facades
+      - reusable utility and infrastructure code
+    may_depend_on_modules: []
+    downstream_consumers:
+      - Lobby
+      - Arcade
+      - MapBuilder
+      - Bungeecord
+    forbidden_dependencies:
+      - Lobby
+      - Arcade
+      - MapBuilder
+      - Bungeecord
+
+  Lobby:
+    code_roots:
+      - Code/Lobby/src/main/java/com/houzicore/lobby
+    owns:
+      - lobby bootstrap and context installer
+      - lobby-only modules, commands, UI, and arena-in-lobby flows
+      - lobby orchestration over shared contracts
+    may_depend_on_modules:
+      - Shared
+    downstream_consumers: []
+    forbidden_dependencies:
+      - Arcade
+      - MapBuilder
+      - Bungeecord
+
+  Arcade:
+    code_roots:
+      - Code/Arcade/src/main/java/com/houzicore/arcade
+    owns:
+      - arcade bootstrap and transition coordination
+      - game runtime, voting, spectator, and pilot game migrations
+      - arcade orchestration over shared contracts
+    may_depend_on_modules:
+      - Shared
+    downstream_consumers: []
+    forbidden_dependencies:
+      - Lobby
+      - MapBuilder
+      - Bungeecord
+    active_pilot_games:
+      - HideSeek
+      - PrimalGames
+    legacy_minigame_policy:
+      - Do not migrate or refactor non-pilot games under Code/Arcade/src/main/java/com/houzicore/arcade/nautilus/game/arcade/game/games without a dedicated rework task.
+      - Preserve legacy minigames as rework/removal candidates instead of sweeping them into shared runtime migrations by default.
+
+  MapBuilder:
+    code_roots:
+      - Code/MapBuilder/src/main/java/com/houzicore/mapbuilder
+    owns:
+      - map edit context and session flow
+      - schema-first export and editor tooling
+      - mapbuilder orchestration over shared contracts
+    may_depend_on_modules:
+      - Shared
+    downstream_consumers: []
+    forbidden_dependencies:
+      - Lobby
+      - Arcade
+      - Bungeecord
+
+  Bungeecord:
+    code_roots:
+      - Code/Bungeecord/src/main/java/com/houzicore
+    owns:
+      - proxy-side integration only
+    may_depend_on_modules:
+      - Shared
+    downstream_consumers: []
+    forbidden_dependencies:
+      - Lobby
+      - Arcade
+      - MapBuilder
+
+shared_runtime_contracts:
+  context:
+    owner: Shared
+    downstream_extension_points:
+      - Code/Lobby/src/main/java/com/houzicore/lobby/hub/bootstrap
+      - Code/Arcade/src/main/java/com/houzicore/arcade/bootstrap
+      - Code/MapBuilder/src/main/java/com/houzicore/mapbuilder/bootstrap
+
+  feature_gate:
+    owner: Shared
+    downstream_extension_points:
+      - context policy installers
+      - runtime listeners that query capability
+
+  loadout:
+    owner: Shared
+    downstream_extension_points:
+      - LobbyBootstrap loadout registry
+      - future Arcade loadout catalogs
+      - MapBuilder editor loadouts
+
+  snapshot:
+    owner: Shared
+    downstream_extension_points:
+      - transition coordinators
+      - temporary mode entry and exit flows
+
+  disguise:
+    owner: Shared
+    downstream_extension_points:
+      - compatibility bridge
+      - backend adapters
+      - downstream business code via facade only
+
+cross_module_rules:
+  - Lobby, Arcade, and MapBuilder may consume Shared contracts but may not import each other directly.
+  - New public abstractions that must survive across modules belong in Shared, not in downstream module packages.
+  - If behavior is player-state-sensitive and already modeled by a shared runtime contract, downstream modules should extend the contract path rather than create another local authority.
+  - Non-pilot legacy Arcade minigames are out of scope for broad runtime sweeps until a task explicitly opens that game's rework lane.
+  - Docs, templates, and agent scripts belong under .agent or tasks, not inside runtime module source trees.

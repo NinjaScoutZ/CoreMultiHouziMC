@@ -1,0 +1,99 @@
+version: 1
+
+rules:
+  - id: generated-output-edit
+    description: Generated build output is not a source edit surface.
+    path_prefixes:
+      - Code/Shared/target/
+      - Code/Lobby/target/
+      - Code/Arcade/target/
+      - Code/MapBuilder/target/
+      - Code/Bungeecord/target/
+    use_instead:
+      - edit source under Code/**/src
+
+  - id: runtime-clone-edit
+    description: Runtime worlds, logs, and cloned server instances are read-only in normal tasks.
+    path_prefixes:
+      - running_servers/
+      - test/
+      - debug/
+      - Lobby-1/
+      - MIN-1/
+      - server/
+    use_instead:
+      - edit source or template files
+
+  - id: raw-disguise-api
+    description: Do not grow new direct LibsDisguises write-paths outside the approved bridge.
+    match:
+      type: regex
+      value: '\bDisguiseAPI\.'
+    forbidden_in:
+      - Code/Lobby/src/main/java/
+      - Code/Arcade/src/main/java/
+      - Code/MapBuilder/src/main/java/
+    allowed_in:
+      - Code/Shared/src/main/java/com/houzicore/shared/core/disguise/
+    use_instead:
+      - DisguiseService
+      - DisguiseManager compatibility layer
+
+  - id: raw-inventory-wipe
+    description: Arbitrary inventory wipes create restore regressions.
+    match:
+      type: regex
+      value: 'UtilInv\.Clear\('
+    allowed_in:
+      - Code/Lobby/src/main/java/com/houzicore/lobby/hub/bootstrap/
+      - Code/Arcade/src/main/java/com/houzicore/arcade/bootstrap/
+      - Code/MapBuilder/src/main/java/com/houzicore/mapbuilder/bootstrap/
+      - Code/Shared/src/main/java/com/houzicore/shared/core/loadout/
+      - Code/Shared/src/main/java/com/houzicore/shared/core/snapshot/
+    use_instead:
+      - LoadoutService
+      - PlayerSnapshotService
+      - PlayerStateApplier
+
+  - id: raw-inventory-clear
+    description: Direct clear or setContents calls should stay inside approved runtime ownership paths.
+    match:
+      type: regex
+      value: 'getInventory\(\)\.(clear|setContents)\('
+    allowed_in:
+      - approved bootstrap and snapshot implementations
+    use_instead:
+      - LoadoutService
+      - PlayerSnapshotService
+      - PlayerStateApplier
+
+  - id: legacy-timed-loop
+    description: New timed gameplay logic should not introduce new BukkitRunnable loops where UpdateEvent is the standard.
+    match:
+      type: regex
+      value: 'BukkitRunnable|runTaskLater|runTaskTimer'
+    use_instead:
+      - UpdateEvent
+      - UpdateType
+
+  - id: raw-capability-source
+    description: New permission or capability decisions should not use GameMode or ad-hoc booleans when FeatureGate or context policy exists.
+    match:
+      type: regex
+      value: '\.isOp\(\)|GameMode\.'
+    use_instead:
+      - FeatureGate
+      - ContextPolicy
+
+  - id: cross-module-import
+    description: Lobby, Arcade, and MapBuilder must not depend on each other directly.
+    examples:
+      - import com.houzicore.lobby... inside Arcade
+      - import com.houzicore.arcade... inside Lobby
+      - import com.houzicore.mapbuilder... inside Lobby or Arcade
+    use_instead:
+      - Shared contracts
+
+usage_rules:
+  - Forbidden patterns are not theoretical; they are triggers for preflight or postflight review.
+  - If a task truly needs an exception, record it in the task file before editing and keep the write scope narrow.

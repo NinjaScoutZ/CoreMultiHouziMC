@@ -1,0 +1,64 @@
+version: 1
+
+repo_boundaries:
+  writeable_source:
+    - Code/Shared/src/main/java
+    - Code/Shared/src/main/resources
+    - Code/Lobby/src/main/java
+    - Code/Lobby/src/main/resources
+    - Code/Arcade/src/main/java
+    - Code/Arcade/src/main/resources
+    - Code/MapBuilder/src/main/java
+    - Code/MapBuilder/src/main/resources
+    - Code/Bungeecord/src/main/java
+    - Code/Bungeecord/src/main/resources
+
+  writeable_docs:
+    - docs
+    - .agent
+    - tasks
+
+  deployment_outputs:
+    - servers/Lobby/plugins
+    - servers/Arcade1/plugins
+
+  generated_read_only:
+    - Code/Shared/target
+    - Code/Lobby/target
+    - Code/Arcade/target
+    - Code/MapBuilder/target
+    - Code/Bungeecord/target
+    - BungeeProxy/plugins
+    - hcsm/node_modules
+    - mcsmanager/web/node_modules
+    - mcsmanager/daemon/node_modules
+    - web-panel/node_modules
+
+  runtime_read_only:
+    - PRIMAL
+    - server
+    - servers/Lobby/world
+    - servers/Arcade1/world
+    - running_servers
+    - test
+    - debug
+    - Lobby-1
+    - MIN-1
+    - BungeeProxy/proxy.log.0
+    - BungeeProxy/logs
+
+  temporary_artifacts:
+    - build_log.txt
+    - build_log_2.txt
+    - build_log_3.txt
+    - build_log_4.txt
+    - Code/Lobby/mvn_output.txt
+    - Code/Lobby.rar
+    - Code/Lobby.zip
+
+rules:
+  - Never implement feature work inside generated_read_only or runtime_read_only trees.
+  - Treat deployment_outputs as copy targets only, not as canonical source.
+  - Source changes belong under Code/**/src, docs, .agent, or tasks unless the task explicitly says otherwise.
+  - If a task truly targets runtime data, world files, or deploy artifacts, the task file must say so explicitly under Scope and Allowed Write Paths.
+  - Large or noisy worktrees do not expand the task boundary; they are a reason to narrow the task further.

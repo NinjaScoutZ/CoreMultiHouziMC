@@ -9,6 +9,7 @@ import org.bukkit.Material;
 import org.bukkit.entity.EntityType;
 import org.bukkit.entity.Player;
 import org.bukkit.event.inventory.ClickType;
+import org.bukkit.inventory.ItemStack;
 
 import com.houzicore.shared.account.CoreClientManager;
 import com.houzicore.shared.common.CurrencyType;
@@ -23,6 +24,8 @@ import com.houzicore.shared.core.pet.PetClient;
 import com.houzicore.shared.core.shop.item.IButton;
 import com.houzicore.shared.core.shop.item.ShopItem;
 import com.houzicore.shared.core.shop.page.ShopPageBase;
+import net.kyori.adventure.text.minimessage.MiniMessage;
+import com.houzicore.shared.core.cosmetic.ui.CosmeticUITemplate;
 
 public class PetPage extends ShopPageBase<CosmeticManager, CosmeticShop> {
 
@@ -93,6 +96,8 @@ public class PetPage extends ShopPageBase<CosmeticManager, CosmeticShop> {
             }
         }
 
+        MiniMessage mm = MiniMessage.miniMessage();
+
         for (int idx = 0; idx < petCount; idx++) {
             int slot = slotPositions[idx];
             final PetInfo pet = pets.get(idx);
@@ -102,70 +107,37 @@ public class PetPage extends ShopPageBase<CosmeticManager, CosmeticShop> {
             boolean owned = getDonationManager().Get(getPlayer().getName()).OwnsUnknownPackage(pet.name)
                     || (petClient != null && petClient.GetPets().containsKey(pet.entityType));
             boolean active = activeType == pet.entityType;
+            boolean isThai = com.houzicore.shared.core.lang.LangManager.get().isThai(getPlayer());
 
             String petName = petClient != null && petClient.GetPets().containsKey(pet.entityType)
                     && petClient.GetPets().get(pet.entityType) != null
                     && petClient.GetPets().get(pet.entityType).length() > 0
                     ? petClient.GetPets().get(pet.entityType) : pet.name;
 
-            List<String> lore = new ArrayList<>();
-            if (owned) {
-                if (active) {
-                    lore.add(C.cGreen + C.Bold + "▶ " + com.houzicore.shared.core.lang.LangManager.get().get(getPlayer(), "cosmetic.active"));
-                } else {
-                    lore.add(C.cGreen + "✔ " + com.houzicore.shared.core.lang.LangManager.get().get(getPlayer(), "cosmetic.unlocked"));
-                }
-            } else {
-                lore.add(C.cRed + "✖ " + com.houzicore.shared.core.lang.LangManager.get().get(getPlayer(), "cosmetic.locked"));
-            }
+            // ดีไซน์รายละเอียดฟังก์ชันแบบคำนวณตามภาษาของผู้เล่นล็อบบี้
+            List<String> petDescriptions = isThai 
+                    ? List.of("เสกสัตว์เลี้ยง " + petName + " ออกมาเคียงข้างกายคุณ", "คอยเดินตามหลังและสามารถตั้งชื่อเล่นได้อย่างอิสระ")
+                    : List.of("Summon a " + petName + " pet to follow you", "around the lobby network with absolute style.");
 
-            lore.add(" ");
-            lore.add(rarity.getDisplayName());
-            lore.add(" ");
-            lore.add(C.cGray + "Summon a " + petName + " pet");
-            lore.add(C.cGray + "to follow you around.");
-            lore.add(" ");
-
-            if (owned) {
-                lore.add(C.cDGray + com.houzicore.shared.core.lang.LangManager.get().get(getPlayer(), "cosmetic.cost")
-                        + cost
-                        + (com.houzicore.shared.core.lang.LangManager.get().isThai(getPlayer()) ? " เอสเซนส์" : " Essence"));
-            } else {
-                boolean canAfford = getDonationManager().Get(getPlayer().getName()).GetBalance(CurrencyType.Essence) >= cost;
-                lore.add(C.cDGray + com.houzicore.shared.core.lang.LangManager.get().get(getPlayer(), "cosmetic.cost")
-                        + (canAfford ? C.cGray : C.cDGray) + cost
-                        + (com.houzicore.shared.core.lang.LangManager.get().isThai(getPlayer()) ? " เอสเซนส์" : " Essence"));
-            }
-
-            lore.add(" ");
-            if (owned) {
-                if (active) {
-                    lore.add(C.cGray + com.houzicore.shared.core.lang.LangManager.get().get(getPlayer(), "cosmetic.put_away_pet"));
-                } else {
-                    lore.add(C.cYellow + com.houzicore.shared.core.lang.LangManager.get().get(getPlayer(), "cosmetic.summon_pet"));
-                }
-            } else if (getDonationManager().Get(getPlayer().getName()).GetBalance(CurrencyType.Essence) >= cost) {
-                lore.add(C.cYellow + com.houzicore.shared.core.lang.LangManager.get().get(getPlayer(), "cosmetic.purchase"));
-            } else {
-                lore.add(C.cDGray + (com.houzicore.shared.core.lang.LangManager.get().isThai(getPlayer()) ? "เอสเซนส์ไม่พอ" : "Not enough Essence"));
-            }
+            // ดึงขุมพลังจากโรงงานกลางแปรสภาพ Lore เป็นบล็อก RPG ทันที บรรทัดเดียวจบ!
+            ItemStack renderedPet = CosmeticUITemplate.buildCosmeticCard(
+                    pet.displayMaterial,
+                    (byte) 0,
+                    petName,
+                    rarity,
+                    petDescriptions,
+                    owned,
+                    active,
+                    -1, // สัตว์เลี้ยงไม่มีคลังกระสุน ใส่ -1 เพื่อซ่อนสถานะอัตโนมัติ
+                    cost,
+                    isThai
+            );
 
             final EntityType petType = pet.entityType;
             final boolean isActive = active;
 
-            String title;
             if (owned) {
-                title = active
-                        ? (C.cGreen + C.Bold + petName)
-                        : (rarity.getColor() + "" + org.bukkit.ChatColor.BOLD + petName);
-            } else {
-                title = C.cRed + petName;
-            }
-
-            ShopItem item = new ShopItem(pet.displayMaterial, (byte) 0, title, lore.toArray(new String[0]), 1, !owned, false);
-
-            if (owned) {
-                addButton(slot, item, new IButton() {
+                addButton(slot, renderedPet, new IButton() {
                     @Override
                     public void onClick(Player player, ClickType clickType) {
                         if (isActive) {
@@ -180,40 +152,30 @@ public class PetPage extends ShopPageBase<CosmeticManager, CosmeticShop> {
                     addGlow(slot);
                 }
             } else if (getDonationManager().Get(getPlayer().getName()).GetBalance(CurrencyType.Essence) >= cost) {
-                addButton(slot, item, new IButton() {
-                    @Override
-                    public void onClick(Player player, ClickType clickType) {
-                        getShop().openPageForPlayer(getPlayer(), new com.houzicore.shared.core.shop.page.ConfirmationPage<>(
-                                getPlugin(), getShop(), getClientManager(), getDonationManager(), new Runnable() {
-                                    @Override
-                                    public void run() {
-                                        getDonationManager().PurchaseUnknownSalesPackage(
-                                                new com.houzicore.shared.common.util.Callback<com.houzicore.shared.server.util.TransactionResponse>() {
-                                                    @Override
-                                                    public void run(com.houzicore.shared.server.util.TransactionResponse response) {
-                                                        refresh();
-                                                    }
-                                                },
-                                                getPlayer().getName(),
-                                                getClientManager().Get(getPlayer()).getAccountId(),
-                                                pet.name,
-                                                true,
-                                                cost,
-                                                true);
-                                    }
-                                },
-                                PetPage.this,
-                                new com.houzicore.shared.core.shop.item.SalesPackageBase(pet.name, pet.displayMaterial, (byte) 0, new String[] {}, cost) {
-                                    @Override
-                                    public void Sold(Player p, CurrencyType type) {
-                                    }
-                                },
-                                CurrencyType.Essence,
-                                getPlayer()));
-                    }
+                addButton(slot, renderedPet, (player, clickType) -> {
+                    getShop().openPageForPlayer(getPlayer(), new com.houzicore.shared.core.shop.page.ConfirmationPage<>(
+                            getPlugin(), getShop(), getClientManager(), getDonationManager(), new Runnable() {
+                                @Override
+                                public void run() {
+                                    getDonationManager().PurchaseUnknownSalesPackage(
+                                            response -> refresh(),
+                                            getPlayer().getName(),
+                                            getClientManager().Get(getPlayer()).getAccountId(),
+                                            pet.name,
+                                            true,
+                                            cost,
+                                            true);
+                                }
+                            },
+                            PetPage.this,
+                            new com.houzicore.shared.core.shop.item.SalesPackageBase(pet.name, pet.displayMaterial, (byte) 0, new String[] {}, cost) {
+                                @Override public void Sold(Player p, CurrencyType type) {}
+                            },
+                            CurrencyType.Essence,
+                            getPlayer()));
                 });
             } else {
-                setItem(slot, item);
+                setItem(slot, renderedPet);
             }
         }
 

@@ -1,0 +1,63 @@
+version: 1
+
+flows:
+  lobby_join:
+    modules:
+      - Shared
+      - Lobby
+    purpose: baseline lobby state on join
+    required_assertions:
+      - player context becomes LOBBY_FREE
+      - lobby loadout is applied exactly once
+      - no duplicate hotbar items appear
+      - player cleanup does not leak context or snapshot state on quit
+
+  lobby_arena_cycle:
+    modules:
+      - Shared
+      - Lobby
+    purpose: temporary arena flow inside lobby
+    required_assertions:
+      - entering arena prep captures snapshot before destructive state changes
+      - arena live disables DOUBLE_JUMP, GADGET, PET, and MOUNT where policy requires
+      - exiting arena restores the preserved player state
+      - cosmetics intent survives the temporary mode
+      - repeated enter and exit does not duplicate items or leak entities
+
+  arcade_round_cycle:
+    modules:
+      - Shared
+      - Arcade
+    purpose: arcade lobby to live to spectator or postgame
+    required_assertions:
+      - context transitions move through the intended runtime owner
+      - rules and feature restrictions match game state
+      - spectator is handled as a first-class context
+      - pilot runtime changes do not require direct manager-local inventory repair
+
+  map_edit_cycle:
+    modules:
+      - Shared
+      - MapBuilder
+    purpose: temporary editor mode with restore path
+    required_assertions:
+      - snapshot is captured before editor state wipes player state
+      - MAP_EDIT applies editor tools and movement flags
+      - ending the session restores the prior snapshot
+      - quitting during an editor session does not leak snapshot or context memory
+
+  disguise_bridge_mob:
+    modules:
+      - Shared
+      - Lobby
+      - Arcade
+    purpose: keep new disguise writes on the facade path
+    required_assertions:
+      - new MOB disguise write paths route through DisguiseService or the compatibility bridge
+      - direct LibsDisguises write calls do not spread into new Lobby or Arcade work
+      - fallback behavior is explicit when a backend cannot satisfy a request
+
+usage_rules:
+  - Every task must map itself to at least one acceptance flow or define a new one.
+  - Tasks that mutate player state should not be marked complete without naming the flow they verified.
+  - If a task changes a transition owner, update the affected flow before handing off.

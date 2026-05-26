@@ -75,4 +75,112 @@ public class CosmeticUITemplate {
 
         return builder.build();
     }
+
+    /**
+     * Build a cosmetic display item (e.g. for Pets) with modern MiniMessage/Adventure styling.
+     */
+    public static ItemStack buildCosmeticCard(
+            Material material,
+            byte data,
+            String title,
+            CosmeticRarity rarity,
+            List<String> description,
+            boolean owned,
+            boolean active,
+            int ammoCount,
+            int cost,
+            boolean isThai
+    ) {
+        String rColor = rarity.getMiniMessageColor();
+        String rarityName = rarity.getDisplayName().replace("✦ ", "");
+
+        String formattedTitle;
+        if (owned) {
+            formattedTitle = active
+                    ? "<bold><green>" + title + "</green></bold>"
+                    : "<bold><" + rColor + ">" + title + "</" + rColor + ">";
+        } else {
+            formattedTitle = "<red>" + title + "</red>";
+        }
+
+        List<String> rawLore = new ArrayList<>();
+        rawLore.add(LINE_SEPARATOR);
+
+        if (owned) {
+            if (active) {
+                rawLore.add(isThai ? "<green>● กำลังใช้งานอยู่</green>" : "<green>● Currently Active</green>");
+            } else {
+                rawLore.add(isThai ? "<green>✔ ครอบครองแล้ว</green>" : "<green>✔ Unlocked</green>");
+            }
+        } else {
+            rawLore.add(isThai ? "<red>✖ ยังไม่ได้ครอบครอง</red>" : "<red>✖ Locked</red>");
+        }
+        rawLore.add("");
+
+        rawLore.add(isThai 
+                ? "<gray>ระดับความหายาก: </gray><" + rColor + "><bold>" + rarityName + "</bold></" + rColor + ">"
+                : "<gray>Rarity: </gray><" + rColor + "><bold>" + rarityName + "</bold></" + rColor + ">");
+        
+        rawLore.add("");
+
+        // Description
+        for (String line : description) {
+            rawLore.add("<gray>" + line + "</gray>");
+        }
+
+        if (ammoCount >= 0) {
+            rawLore.add("");
+            rawLore.add(isThai 
+                    ? "<gray>จำนวนกระสุน: </gray><yellow>" + ammoCount + "</yellow>"
+                    : "<gray>Ammo: </gray><yellow>" + ammoCount + "</yellow>");
+        }
+
+        rawLore.add(LINE_SEPARATOR);
+
+        // Price/Essence info
+        if (owned) {
+            rawLore.add(isThai
+                    ? "<dark_gray>ราคา: " + cost + " เอสเซนส์</dark_gray>"
+                    : "<dark_gray>Cost: " + cost + " Essence</dark_gray>");
+        } else {
+            rawLore.add(isThai
+                    ? "<dark_gray>ราคา: </dark_gray><gold>" + cost + " เอสเซนส์</gold>"
+                    : "<dark_gray>Cost: </dark_gray><gold>" + cost + " Essence</gold>");
+        }
+        rawLore.add("");
+
+        if (owned) {
+            if (active) {
+                rawLore.add(isThai ? "<gray>คลิกเพื่อเก็บสัตว์เลี้ยง</gray>" : "<gray>Click to dismiss pet</gray>");
+            } else {
+                rawLore.add(isThai ? "<yellow>คลิกเพื่อเสกสัตว์เลี้ยง</yellow>" : "<yellow>Click to summon pet</yellow>");
+            }
+        } else {
+            rawLore.add(isThai ? "<yellow>คลิกเพื่อสั่งซื้อ</yellow>" : "<yellow>Click to purchase</yellow>");
+        }
+
+        ItemBuilder builder = new ItemBuilder(material).hideFlags();
+        builder.setTitleComponent(mm.deserialize(formattedTitle));
+
+        List<Component> componentLore = new ArrayList<>();
+        for (String rawLine : rawLore) {
+            componentLore.add(mm.deserialize(rawLine));
+        }
+        builder.setLoreComponents(componentLore);
+
+        if (active) {
+            builder.addGlow();
+        }
+
+        return builder.build();
+    }
+
+    /**
+     * Get hex color or MiniMessage color string for a rarity.
+     */
+    public static String getRarityHexColor(CosmeticRarity rarity) {
+        return rarity.getMiniMessageColor();
+    }
 }
+
+

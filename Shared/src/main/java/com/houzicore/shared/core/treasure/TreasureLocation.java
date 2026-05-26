@@ -42,8 +42,11 @@ import com.houzicore.shared.core.displayentity.DisplayModel;
 import com.houzicore.shared.core.displayentity.ModelAnimation;
 import com.houzicore.shared.updater.UpdateType;
 import com.houzicore.shared.updater.event.UpdateEvent;
+import net.kyori.adventure.text.minimessage.MiniMessage;
 
 public class TreasureLocation implements Listener {
+	private static final MiniMessage mm = MiniMessage.miniMessage();
+	private static final String QI_MAIN_TITLE = "<gradient:#ffcc00:#ff5555><bold>☯ แท่นหลอมโอสถสวรรค์ ☯</bold></gradient>";
 	private final TreasureManager _treasureManager;
 	private final TreasureInventoryService _treasureInventoryService;
 	private final Hologram _hologram;
@@ -68,7 +71,7 @@ public class TreasureLocation implements Listener {
 		_hologramManager = hologramManager;
 		_currentTreasure = null;
 		_hologram = new Hologram(_hologramManager, chestBlock.getLocation().add(0.5, 2.5, 0.5),
-				com.houzicore.shared.common.util.HouziColorParser.parse("<GRADIENT:#00AA00,#55FF55,#00AA00> " + TreasureLang.getEnglish("ui.hologram.open", "OPEN TREASURE") + " </GRADIENT>"));
+				com.houzicore.shared.common.util.HouziColorParser.parse("<gradient:#ffcc00:#ff5555><bold>┃ คลิกขวาหลอมโอสถวิเศษ ┃</bold></gradient>"));
 		_playerHolograms = new HashMap<>();
 		_lastKnownReadyCounts = new HashMap<>();
 		_displayEntityManager = displayEntityManager;
@@ -79,11 +82,11 @@ public class TreasureLocation implements Listener {
 			}
 		}
 		
-		com.houzicore.shared.core.displayentity.DisplayPart chestPart = com.houzicore.shared.core.displayentity.DisplayPart.item(Material.ENDER_CHEST)
+		com.houzicore.shared.core.displayentity.DisplayPart chestPart = com.houzicore.shared.core.displayentity.DisplayPart.item(Material.CAULDRON)
 			.itemTransform(org.bukkit.entity.ItemDisplay.ItemDisplayTransform.HEAD);
 		chestPart.scale(new org.joml.Vector3f(1.6f, 1.6f, 1.6f));
 		_idleHologramModel = new DisplayModel("treasure_idle_" + chestBlock.hashCode(), java.util.Collections.singletonList(chestPart));
-		_idleHologramModel.setAnimation(ModelAnimation.rotateY(3f));
+		_idleHologramModel.setAnimation(ModelAnimation.rotateY(2.5f));
 		_idleHologramModel.addInteractionBox(0.0, -0.8, 0.0, 1.8f, 1.8f);
 		_displayEntityManager.addModel(_idleHologramModel);
 		
@@ -93,12 +96,12 @@ public class TreasureLocation implements Listener {
 
 	public void attemptOpenTreasure(Player player, TreasureType treasureType) {
 		if (isTreasureInProgress()) {
-			player.sendMessage(F.main("Treasure", com.houzicore.shared.core.lang.LangManager.get().get(player, "treasure.wait_current")));
+			player.sendMessage(F.main("สำนักเซียน", com.houzicore.shared.core.lang.LangManager.get().get(player, "treasure.wait_current")));
 			return;
 		}
 
 		if (!chargeAccount(player, treasureType)) {
-			player.sendMessage(F.main("Treasure", com.houzicore.shared.core.lang.LangManager.get().get(player, "treasure.no_chests")));
+			player.sendMessage(F.main("สำนักเซียน", com.houzicore.shared.core.lang.LangManager.get().get(player, "treasure.no_chests")));
 			return;
 		}
 
@@ -112,7 +115,14 @@ public class TreasureLocation implements Listener {
 
 		if (treasureType == TreasureType.ANCIENT || treasureType == TreasureType.MYTHICAL) {
 			for (Player oPlayer : com.houzicore.shared.common.util.UtilServer.getPlayers()) {
-				oPlayer.sendMessage(F.main("Treasure", com.houzicore.shared.core.lang.LangManager.get().get(oPlayer, "treasure.open_announce").replace("{0}", F.name(player.getName())).replace("{1}", F.elem(treasureType.getDisplayName(oPlayer)))));
+				boolean oIsThai = com.houzicore.shared.core.lang.LangManager.get().isThai(oPlayer);
+				String displayChestName = treasureType.getDisplay(oIsThai);
+				String rarityColor = switch (treasureType) {
+					case ANCIENT -> "#ffaa00";
+					case MYTHICAL -> "#ff5555";
+					default -> "gray";
+				};
+				oPlayer.sendMessage(mm.deserialize(QI_MAIN_TITLE + " <gray>ผู้บำเพ็ญพลังปราณ</gray> <green>" + player.getName() + "</green> <gray>กำลังทำพิธีเปิดคัมภีร์ลับแดนสวรรค์ เกรด:</gray> <" + rarityColor + "><bold>[" + displayChestName + "]</bold></" + rarityColor + ">"));
 			}
 		}
 
@@ -126,9 +136,11 @@ public class TreasureLocation implements Listener {
 		teleportLocation.setYaw(player.getLocation().getYaw());
 
 		for (final Entity entity : player.getNearbyEntities(3, 3, 3)) {
-			UtilAction.velocity(entity,
-					UtilAlg.getTrajectory(entity.getLocation(), treasure.getCenterBlock().getLocation()).multiply(-1),
-					1.5, true, 0.8, 0, 1.0, true);
+			if (!entity.equals(player)) {
+				UtilAction.velocity(entity,
+						UtilAlg.getTrajectory(entity.getLocation(), treasure.getCenterBlock().getLocation()).multiply(-1),
+						1.2, true, 0.6, 0, 1.0, true);
+			}
 		}
 
 		player.teleport(teleportLocation);
@@ -404,20 +416,19 @@ public class TreasureLocation implements Listener {
 	private String[] buildHologramLines(Player player) {
 		int totalOwned = getTotalOwnedChests(player);
 		String localeOpen = com.houzicore.shared.common.util.HouziColorParser.parse(
-				"<GRADIENT:#00AA00,#55FF55,#00AA00> " + TreasureLang.get(player, "ui.hologram.open", "OPEN TREASURE") + " </GRADIENT>");
+				"<GRADIENT:#00AA00,#55FF55,#00AA00> [ คลิกขวาเปิดเตาหลอม ] </GRADIENT>");
 
 		if (totalOwned <= 0) {
 			return new String[] {
-					_hologramPulse ? "§7" + TreasureLang.get(player, "ui.hologram.none_ready", "No chests ready")
-							: "§8" + TreasureLang.get(player, "ui.hologram.none_ready", "No chests ready"),
-					"§7" + TreasureLang.get(player, "ui.hologram.none_types", "Buy a chest to begin opening."),
+					_hologramPulse ? "§7🔮 ดวงจิตศิษย์สายนอกว่างเปล่า" : "§8🔮 ดวงจิตศิษย์สายนอกว่างเปล่า",
+					"§7กรุณาสะสมคัมภีร์ลับแดนปราณสวรรค์ก่อนทำพิธี",
 					localeOpen
 			};
 		}
 
 		return new String[] {
-				(_hologramPulse ? "§b" : "§3") + TreasureLang.get(player, "ui.hologram.ready_total", "{0} Chests Ready").replace("{0}", String.valueOf(totalOwned)),
-				"§f" + TreasureLang.get(player, "ui.hologram.ready_types", "Ready: {0}").replace("{0}", getReadyTypesLine(player)),
+				(_hologramPulse ? "§b⚡ " : "§3⚡ ") + "มีคัมภีร์พร้อมหลอมโอสถ: " + totalOwned + " เล่ม",
+				"§fเคล็ดวิชาที่พร้อมบำเพ็ญเพียรบารมี",
 				localeOpen
 		};
 	}

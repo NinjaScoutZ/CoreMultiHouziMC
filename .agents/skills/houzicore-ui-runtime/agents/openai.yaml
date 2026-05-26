@@ -1,0 +1,4 @@
+interface:
+  display_name: "HouziCore UI Runtime"
+  short_description: "Align actionbar and scoreboard changes"
+  default_prompt: "Use $houzicore-ui-runtime to update HouziCore actionbar or scoreboard behavior safely."
