@@ -93,4 +93,14 @@ public enum CosmeticRarity {
             case MYTHIC -> 2.0;
         };
     }
+
+    public String getMiniMessageColor() {
+        return switch (this) {
+            case COMMON -> "gray";
+            case RARE -> "blue";
+            case EPIC -> "dark_purple";
+            case LEGENDARY -> "#ffaa00";
+            case MYTHIC -> "#ff55ff";
+        };
+    }
 }
