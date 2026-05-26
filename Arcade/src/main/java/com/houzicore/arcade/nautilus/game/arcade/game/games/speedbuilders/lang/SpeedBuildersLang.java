@@ -84,6 +84,22 @@ public final class SpeedBuildersLang {
         return rendered;
     }
 
+    public Component getModern(Player player, String key, Object... args) {
+        String raw = lookupWithFallback(player, key);
+        if (raw == null) {
+            return deserialize("<red>[Missing: " + key + "]");
+        }
+        if (args != null && args.length > 0) {
+            for (int i = 0; i < args.length; i++) {
+                String target = "{" + i + "}";
+                if (raw.contains(target)) {
+                    raw = raw.replace(target, String.valueOf(args[i]));
+                }
+            }
+        }
+        return deserialize(raw);
+    }
+
     public Component component(Player player, String key, TagResolver... tags) {
         String raw = lookupWithFallback(player, key);
         if (raw == null) {

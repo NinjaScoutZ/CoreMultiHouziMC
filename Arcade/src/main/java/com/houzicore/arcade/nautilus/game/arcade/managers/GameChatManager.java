@@ -102,16 +102,14 @@ public class GameChatManager implements Listener
 					event.viewers().add(p);
 				}
 
-				// Trim the '@'
-				final Component finalMsg = rawMessage.startsWith("@") ? Component.text(rawMessage.substring(1)) : event.message();
-
 				Component prefixComp = modernPrefix
 						.append(Component.text("Party ", NamedTextColor.DARK_PURPLE, TextDecoration.BOLD))
 						.append(Component.text(senderName, NamedTextColor.WHITE, TextDecoration.BOLD));
 
-				event.renderer((s, sDisplayName, msg, viewer) -> 
-					prefixComp.append(Component.space()).append(finalMsg.color(NamedTextColor.LIGHT_PURPLE))
-				);
+				event.renderer((s, sDisplayName, msg, viewer) -> {
+					Component cleanMsg = msg.replaceText(config -> config.match("^@").replacement(""));
+					return prefixComp.append(Component.space()).append(cleanMsg.color(NamedTextColor.LIGHT_PURPLE));
+				});
 				return;
 			}
 		}
@@ -140,16 +138,15 @@ public class GameChatManager implements Listener
 				if (rawMessage.length() > 0 && rawMessage.charAt(0) == '@')
 				{
 					// Team Chat
-					final Component finalMsg = rawMessage.startsWith("@") ? Component.text(rawMessage.substring(1)) : event.message();
-
 					Component prefixComp = Component.text("Team ", NamedTextColor.WHITE, TextDecoration.BOLD)
 							.append(deadComponent)
 							.append(modernPrefix)
 							.append(Component.text(senderName, teamColor));
 
-					event.renderer((s, sDisplayName, msg, viewer) -> 
-						prefixComp.append(Component.space()).append(finalMsg.color(NamedTextColor.WHITE))
-					);
+					event.renderer((s, sDisplayName, msg, viewer) -> {
+						Component cleanMsg = msg.replaceText(config -> config.match("^@").replacement(""));
+						return prefixComp.append(Component.space()).append(cleanMsg.color(NamedTextColor.WHITE));
+					});
 				}
 				else
 				{

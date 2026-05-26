@@ -267,6 +267,9 @@ public class GameLobbyManager implements Listener
 
 		// FastBoard handles the Sidebar, so we don't register SIDEBAR Objective here.
 		
+		// Packet-based TeamManager (in ScoreboardManager) now manages overhead nametags dynamically,
+		// so we disable the vanilla team registration to prevent packet conflicts and client crashes (1.20.2+).
+		/*
 		for (Rank rank : Rank.values())
 		{
 			// We MUST use Bukkit's Scoreboard Teams to render Overhead NameTags! Tablist is protected by TablistFix.
@@ -295,6 +298,7 @@ public class GameLobbyManager implements Listener
 				}
 			}
 		}
+		*/
 
 		if (resendToAll)
 		{
@@ -1631,6 +1635,7 @@ public class GameLobbyManager implements Listener
 		appendPlayerInfoLines(lines, player, game, isThai);
 		lines.add("    ");
 		lines.add(boardLine(" &7" + dateStr + " &8• &7" + _serverName));
+		lines.add(boardLine(" &e&lplay." + com.houzicore.shared.core.common.BrandConfig.website()));
 	}
 
 	private void appendPlayerInfoLines(java.util.ArrayList<String> lines, Player player, Game game, boolean isThai)
@@ -1804,7 +1809,11 @@ public class GameLobbyManager implements Listener
 		{
 			try
 			{
-				scoreboard.getTeam(rankTeamName).addPlayer(player);
+				org.bukkit.scoreboard.Team team = scoreboard.getTeam(rankTeamName);
+				if (team != null)
+				{
+					team.addPlayer(player);
+				}
 			}
 			catch (Exception e)
 			{

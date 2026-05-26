@@ -18,6 +18,8 @@ import net.kyori.adventure.text.object.ObjectContents;
 
 import com.houzicore.shared.common.util.UtilAction;
 
+import org.bukkit.attribute.Attribute;
+import org.bukkit.EntityEffect;
 import org.bukkit.Bukkit;
 import org.bukkit.ChatColor;
 import org.bukkit.Color;
@@ -846,7 +848,7 @@ public class HideSeek extends TeamGame
                 maxHp += 6.0;
         }
         
-        player.setMaxHealth(maxHp);
+        player.getAttribute(Attribute.MAX_HEALTH).setBaseValue(maxHp);
         player.setHealth(maxHp);
     }
 
@@ -864,6 +866,9 @@ public class HideSeek extends TeamGame
             return;
 
         Player player = event.getPlayer();
+
+        if (player.getInventory().getHeldItemSlot() != 8)
+            return;
 
         if (!isMorphTool(player.getInventory().getItemInMainHand()))
             return;
@@ -931,6 +936,9 @@ public class HideSeek extends TeamGame
 
         Player player = event.getPlayer();
 
+        if (player.getInventory().getHeldItemSlot() != 8)
+            return;
+
         if (!isMorphTool(player.getInventory().getItemInMainHand()))
             return;
 
@@ -997,6 +1005,9 @@ public class HideSeek extends TeamGame
             return;
             
         Player player = (Player) event.getDamager();
+
+        if (player.getInventory().getHeldItemSlot() != 8)
+            return;
 
         if (!isMorphTool(player.getInventory().getItemInMainHand()))
             return;
@@ -1380,7 +1391,7 @@ public class HideSeek extends TeamGame
                     hunter.setHealth(0);
                 } else {
                     hunter.setHealth(hunter.getHealth() - 1.0);
-                    hunter.damage(0.1); // Small invisible hit tick simulation
+                    hunter.playEffect(EntityEffect.HURT); // Small invisible hit tick simulation without calling damage()
                 }
                 
                 // Deduct score/points
@@ -2811,7 +2822,7 @@ public class HideSeek extends TeamGame
             }
 
             long remaining = Math.max(0L, finishAt - now);
-            com.houzicore.shared.common.util.UtilTextBottom.display(com.houzicore.shared.common.actionbar.ActionBarChannel.GAME_STATUS, C.cAqua + C.Bold + "TERMINAL " + C.cWhite + (remaining / 1000L + 1) + "s", player);
+            com.houzicore.shared.common.util.UtilTextBottom.display(com.houzicore.shared.common.actionbar.ActionBarChannel.GAME_STATUS, C.cAqua + "⚙ " + C.cWhite + "Hacking Terminal: " + C.cAqua + (remaining / 1000L + 1) + "s", player);
 
             if (now >= finishAt)
             {
@@ -4842,7 +4853,7 @@ public class HideSeek extends TeamGame
                 continue;
             }
 
-            String survivalStr = "⌚ Survived: " + formatSurvivalTime(System.currentTimeMillis() - _gameStartTime);
+            String survivalStr = C.cAqua + "⌛ " + C.cWhite + "Survived: " + C.cAqua + formatSurvivalTime(System.currentTimeMillis() - _gameStartTime);
             String statusSuffix = "";
             
             if (isLocked)
@@ -4863,14 +4874,14 @@ public class HideSeek extends TeamGame
                     int bars = (int)(nerve / 10f);
                     StringBuilder barStr = new StringBuilder();
                     for (int i=0; i<10; i++) {
-                        if (i < bars) barStr.append(C.cGreen).append("⬛");
-                        else barStr.append(C.cGray).append("⬛");
+                        if (i < bars) barStr.append(C.cGreen).append("●");
+                        else barStr.append(C.cGray).append("●");
                     }
-                    statusSuffix = " | " + C.cRed + C.Bold + "NERVE: " + barStr.toString();
+                    statusSuffix = C.cGray + " • " + C.cRed + "Nerve: " + barStr.toString();
                 }
                 else
                 {
-                    statusSuffix = " | " + C.cGreen + "\uD83E\uDDCA Locked";
+                    statusSuffix = C.cGray + " • " + C.cGreen + "🔒 Solidified";
                 }
             }
             else
@@ -4882,18 +4893,18 @@ public class HideSeek extends TeamGame
                     {
                         float progress = (float) disguise.getStillTicks() / 40.0f;
                         int percent = (int)(Math.min(0.999f, Math.max(0.0f, progress)) * 100);
-                        statusSuffix = " | " + C.cYellow + "🧱 Solidifying: " + percent + "%";
+                        statusSuffix = C.cGray + " • " + C.cYellow + "🧱 Solidifying: " + percent + "%";
                     }
                 }
                 else
                 {
-                    statusSuffix = " | " + C.cAqua + "🏃 Hiding";
+                    statusSuffix = C.cGray + " • " + C.cAqua + "🏃 Hiding";
                 }
             }
 
             com.houzicore.shared.common.util.UtilTextBottom.display(
                 com.houzicore.shared.common.actionbar.ActionBarChannel.GAME_STATUS,
-                C.cWhite + survivalStr + statusSuffix,
+                survivalStr + statusSuffix,
                 hider
             );
         }
@@ -4902,14 +4913,14 @@ public class HideSeek extends TeamGame
         for (Player hunter : _seekers.GetPlayers(true))
         {
             long searchMs = System.currentTimeMillis() - _gameStartTime;
-            String timeStr = "⌚ Search Time: " + formatSurvivalTime(searchMs);
+            String timeStr = C.cAqua + "⌚ " + C.cWhite + "Search Time: " + C.cAqua + formatSurvivalTime(searchMs);
             int uses = _compassUses.getOrDefault(hunter.getUniqueId(), 0);
             int chargesLeft = 3 - uses;
-            String compassSuffix = " | 🧭 Radar: " + chargesLeft + "/3 Chgs";
+            String compassSuffix = C.cGray + " • " + C.cAqua + "🧭 Radar: " + C.cWhite + chargesLeft + "/3" + C.cGray + " Chgs";
             
             com.houzicore.shared.common.util.UtilTextBottom.display(
                 com.houzicore.shared.common.actionbar.ActionBarChannel.GAME_STATUS,
-                C.cWhite + timeStr + compassSuffix,
+                timeStr + compassSuffix,
                 hunter
             );
         }
@@ -5268,7 +5279,7 @@ public class HideSeek extends TeamGame
                     if (idleTime > 15000 && idleTime <= 20000) {
                         // Send warning once when entering the threshold
                         if (idleTime - 15000 < 1000) {
-                            com.houzicore.shared.common.util.UtilPlayer.message(p, C.cYellow + "⚠ You're getting warm...");
+                            com.houzicore.shared.common.util.UtilTextMiddle.display("", C.cYellow + "⚠ You're getting warm...", 10, 40, 10, p);
                         }
                     } else if (idleTime > 20000 && idleTime <= 25000) {
                         UtilParticle.PlayParticle(ParticleType.LARGE_SMOKE, p.getLocation().add(0, 0.5, 0), 0.3f, 0.5f, 0.3f, 0.02f, 5, ViewDist.NORMAL, UtilServer.getPlayers());
@@ -5277,7 +5288,7 @@ public class HideSeek extends TeamGame
                         p.getWorld().playSound(p.getLocation(), Sound.BLOCK_FIRE_AMBIENT, 1.0f, 1.5f);
                     } else if (idleTime > 30000) {
                         revealHider(p, 60);
-                        com.houzicore.shared.common.util.UtilPlayer.message(p, C.cRed + "⚠ You've been revealed for camping!");
+                        com.houzicore.shared.common.util.UtilTextMiddle.display("", C.cRed + "⚠ You've been revealed for camping!", 10, 40, 10, p);
                         _camperTime.put(p, now); // Reset timer
                     }
                 }

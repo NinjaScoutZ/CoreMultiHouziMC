@@ -48,11 +48,10 @@ import org.bukkit.event.player.PlayerBucketFillEvent;
 import org.bukkit.event.player.PlayerInteractEntityEvent;
 import org.bukkit.event.player.PlayerInteractEvent;
 import org.bukkit.event.player.PlayerMoveEvent;
-import org.bukkit.event.player.PlayerPickupItemEvent;
+import org.bukkit.event.entity.EntityPickupItemEvent;
 import org.bukkit.event.player.PlayerQuitEvent;
 import org.bukkit.event.player.PlayerToggleFlightEvent;
 import org.bukkit.event.world.StructureGrowEvent;
-import org.bukkit.material.Bed;
 import org.bukkit.potion.PotionEffect;
 import org.bukkit.potion.PotionEffectType;
 import org.bukkit.util.Vector;
@@ -77,6 +76,11 @@ import com.houzicore.shared.common.util.UtilTime;
 import com.houzicore.shared.core.disguise.disguises.DisguiseGuardian;
 import com.houzicore.shared.updater.UpdateType;
 import com.houzicore.shared.updater.event.UpdateEvent;
+import com.houzicore.shared.common.Rank;
+import com.houzicore.shared.core.command.CommandBase;
+import net.kyori.adventure.text.Component;
+import net.kyori.adventure.text.format.NamedTextColor;
+import net.kyori.adventure.text.format.TextDecoration;
 
 import com.houzicore.arcade.ArcadeManager;
 import com.houzicore.arcade.GameType;
@@ -210,6 +214,38 @@ public class SpeedBuilders extends SoloGame
 
 	private BuildData _nextBuild;
 
+	private boolean _useModernUX = true;
+	private CommandBase<ArcadeManager> _toggleModernUXCmd;
+
+	private final java.util.Map<Player, org.bukkit.boss.BossBar> _playerBossBars = new java.util.HashMap<>();
+
+	private void updatePlayerBossBar(Player player, double progress, String title, org.bukkit.boss.BarColor color)
+	{
+		org.bukkit.boss.BossBar bar = _playerBossBars.get(player);
+		if (bar == null)
+		{
+			bar = org.bukkit.Bukkit.createBossBar(title, color, org.bukkit.boss.BarStyle.SOLID);
+			bar.setVisible(true);
+			bar.addPlayer(player);
+			_playerBossBars.put(player, bar);
+		}
+		else
+		{
+			bar.setTitle(title);
+			bar.setColor(color);
+		}
+		bar.setProgress(Math.max(0.0, Math.min(1.0, progress)));
+	}
+
+	private void clearBossBars()
+	{
+		for (org.bukkit.boss.BossBar bar : _playerBossBars.values())
+		{
+			bar.removeAll();
+		}
+		_playerBossBars.clear();
+	}
+
 	public SpeedBuilders(ArcadeManager manager)
 	{
 		super(manager, GameType.SpeedBuilders,
@@ -259,6 +295,17 @@ public class SpeedBuilders extends SoloGame
 		new CompassModule(this)
 				.setGiveItem(true)
 				.register();
+
+		_toggleModernUXCmd = new CommandBase<ArcadeManager>(Manager, Rank.ADMIN, "modernux", "togglemodernux")
+		{
+			@Override
+			public void Execute(Player caller, String[] args)
+			{
+				_useModernUX = !_useModernUX;
+				caller.sendMessage(F.main("Build", "Modern UX is now " + (_useModernUX ? C.cGreen + "ENABLED" : C.cRed + "DISABLED")));
+			}
+		};
+		Manager.addCommand(_toggleModernUXCmd);
 
 		/*
 		registerDebugCommand("setnext", Perm.DEBUG_SETNEXT_COMMAND, PermissionGroup.BUILDER, (caller, args) ->
@@ -553,8 +600,16 @@ public class SpeedBuilders extends SoloGame
 		if (event.GetState() == GameState.End || event.GetState() == GameState.Dead)
 		{
 			despawnJudge();
+			clearBossBars();
+			if (_toggleModernUXCmd != null)
+			{
+				Manager.removeCommand(_toggleModernUXCmd);
+				_toggleModernUXCmd = null;
+			}
 		}
 	}
+
+
 
 	public void judgeTargetLocation(Location loc)
 	{
@@ -837,7 +892,15 @@ public class SpeedBuilders extends SoloGame
 			UtilPlayer.message(player, F.main("Build", "สร้างตามเป้าหมายได้เลย!"));
 		}
 		
-		UtilTextMiddle.display("เป้าหมายรอบนี้คือ", C.cGold + _currentBuild.BuildText, 0, 80, 10);
+		for (Player player : UtilServer.getPlayers())
+		{
+			UtilTextMiddle.display(
+				SpeedBuildersLang.get().get(player, "speedbuilders.build_target"),
+				C.cPurple + _currentBuild.BuildText,
+				0, 80, 10,
+				player
+			);
+		}
 		
 		_roundsPlayed++;
 		
@@ -849,6 +912,12 @@ public class SpeedBuilders extends SoloGame
 	public void onPlayerQuit(PlayerQuitEvent event)
 	{
 		Player player = event.getPlayer();
+		org.bukkit.boss.BossBar bar = _playerBossBars.remove(player);
+		if (bar != null)
+		{
+			bar.removeAll();
+		}
+
 		if (GetTeamList().size() > 1 && GetTeamList().get(1).HasPlayer(player))
 			GetTeamList().get(1).RemovePlayer(player);
 		
@@ -1147,23 +1216,32 @@ public class SpeedBuilders extends SoloGame
 				else
 				{
 					// Don't display middle text if everyone now has a perfect build
-					UtilTextMiddle.display("ยอดเยี่ยมมาก", C.cGreen + "Perfect Match", 0, 30, 10, player);
+					UtilTextMiddle.display(
+						SpeedBuildersLang.get().get(player, "speedbuilders.perfect_title"),
+						SpeedBuildersLang.get().get(player, "speedbuilders.perfect_subtitle"),
+						0, 30, 10,
+						player
+					);
 				}
 			}
 		}, 0);
 	}
 
 	@EventHandler(priority = EventPriority.HIGHEST)
-	public void onPlayerPickupItem(PlayerPickupItemEvent event)
+	public void onPlayerPickupItem(EntityPickupItemEvent event)
 	{
+		if (!(event.getEntity() instanceof Player))
+			return;
+		Player player = (Player) event.getEntity();
+
 		if (_state != SpeedBuildersState.BUILDING)
 			return;
 		
-		if (!_buildRecreations.containsKey(event.getPlayer()))
+		if (!_buildRecreations.containsKey(player))
 			return;
 		
-		if (_buildRecreations.get(event.getPlayer()).DroppedItems.containsKey(event.getItem()))
-			_buildRecreations.get(event.getPlayer()).DroppedItems.remove(event.getItem());
+		if (_buildRecreations.get(player).DroppedItems.containsKey(event.getItem()))
+			_buildRecreations.get(player).DroppedItems.remove(event.getItem());
 		else
 			event.setCancelled(true);
 	}
@@ -1287,7 +1365,7 @@ public class SpeedBuilders extends SoloGame
 				_buildCountStage = 0;
 				
 				//Sometimes it doesn't show in the update method
-				UtilTextMiddle.display("หมดเวลาให้จดจำ", C.cRed + "View Time Over!", 0, 30, 10);
+				UtilTextMiddle.display(C.cPurple + "หมดเวลาให้จดจำ", C.cDPurple + "View Time Over!", 0, 30, 10);
 				
 				for (Player player : GetTeamList().get(0).GetPlayers(true))
 				{
@@ -1301,6 +1379,7 @@ public class SpeedBuilders extends SoloGame
 		{
 			if (UtilTime.elapsed(_stateTime, _buildTime * 1000) || _allPerfect)
 			{
+				clearBossBars();
 				for (RecreationData recreation : _buildRecreations.values())
 				{
 					for (Item item : recreation.DroppedItems.keySet())
@@ -1318,19 +1397,35 @@ public class SpeedBuilders extends SoloGame
 
 				if (_allPerfect)
 				{
-					UtilTextMiddle.display("", C.cAqua + GUARDIAN_NAME + " is Impressed!", 0, 100, 10);
+					for (Player player : UtilServer.getPlayers())
+					{
+						UtilTextMiddle.display(
+							GUARDIAN_NAME,
+							SpeedBuildersLang.get().get(player, "speedbuilders.impressed"),
+							0, 100, 10,
+							player
+						);
+					}
 					_allPerfect = false;
 				}
 				else
 				{
-					UtilTextMiddle.display("", C.cRed + "TIME'S UP!", 0, 30, 10);
+					UtilTextMiddle.display("", C.cPurple + "TIME'S UP!", 0, 30, 10);
 
 					Manager.runSyncLater(new Runnable()
 					{
 						@Override
 						public void run()
 						{
-							UtilTextMiddle.display("", GUARDIAN_NAME + C.cAqua + " กำลังตัดสิน", 0, 40, 10);
+							for (Player player : UtilServer.getPlayers())
+							{
+								UtilTextMiddle.display(
+									GUARDIAN_NAME,
+									SpeedBuildersLang.get().get(player, "speedbuilders.judging") + "...",
+									0, 40, 10,
+									player
+								);
+							}
 						}
 					}, 40L);
 				}
@@ -1454,17 +1549,9 @@ public class SpeedBuilders extends SoloGame
 					}
 				}
 
-				// Check elimination
-				boolean isEliminationRound = false;
+				// Check elimination: ทุกรอบที่ไม่ใช่ช่วง WARM_UP จะมีการคัดออก 1 คนเสมอ
 				SpeedBuildersStage stage = getActiveStage();
-				if (stage == SpeedBuildersStage.MAIN_GAME && (_roundsPlayed == 6 || _roundsPlayed == 9))
-				{
-					isEliminationRound = true;
-				}
-				else if (stage == SpeedBuildersStage.SUDDEN_DEATH)
-				{
-					isEliminationRound = true;
-				}
+				boolean isEliminationRound = (stage != SpeedBuildersStage.WARM_UP);
 
 				_judgingQueue.clear();
 				_judgingColors.clear();
@@ -1490,8 +1577,55 @@ public class SpeedBuilders extends SoloGame
 					List<Player> aliveBuilders = new ArrayList<>(_buildRecreations.keySet());
 					if (!aliveBuilders.isEmpty())
 					{
-						List<Player> sorted = getSortedPlayers(aliveBuilders);
-						Player toIncinerate = sorted.get(sorted.size() - 1);
+						// คัดเลือกคนตกรอบโดยอิงจากผลงานรอบปัจจุบัน:
+						// - ความแม่นยำ (Match blocks) ต่ำสุด
+						// - หากเท่ากัน ให้คนที่ต่อเสร็จช้าที่สุดตกรอบ (คนไม่สร้างอะไรเลยจะตกรอบแน่นอน)
+						aliveBuilders.sort((p1, p2) -> {
+							RecreationData r1 = _buildRecreations.get(p1);
+							RecreationData r2 = _buildRecreations.get(p2);
+							
+							int match1 = r1.calculateScoreFromBuild(_currentBuild);
+							int match2 = r2.calculateScoreFromBuild(_currentBuild);
+							
+							// ความแม่นยำมากสุดอยู่ต้นๆ น้อยสุดอยู่อันดับท้ายๆ
+							if (match1 != match2)
+							{
+								return Integer.compare(match2, match1);
+							}
+							
+							// เทียบโบนัสความเร็ว (กรณีต่อเสร็จสมบูรณ์แบบ 100% ทั้งคู่)
+							boolean perfect1 = _perfectBuild.containsKey(p1);
+							boolean perfect2 = _perfectBuild.containsKey(p2);
+							if (perfect1 && perfect2)
+							{
+								long t1 = _perfectBuild.get(p1);
+								long t2 = _perfectBuild.get(p2);
+								return Long.compare(t1, t2); // เสร็ตไวกว่า (เวลาน้อยกว่า) อยู่หน้า ปลอดภัยกว่า
+							}
+							else if (perfect1)
+							{
+								return -1;
+							}
+							else if (perfect2)
+							{
+								return 1;
+							}
+							
+							// หากแต้มเท่ากันและไม่ได้ Perfect ทั้งคู่ ให้ใช้แต้มสะสมคุ้มครองคนสร้างมาดีตลอดเกม
+							Integer cs1 = _cumulativeScores.get(p1);
+							int cum1 = cs1 != null ? cs1 : 0;
+							Integer cs2 = _cumulativeScores.get(p2);
+							int cum2 = cs2 != null ? cs2 : 0;
+							if (cum1 != cum2)
+							{
+								return Integer.compare(cum2, cum1);
+							}
+							
+							return p1.getName().compareTo(p2.getName());
+						});
+						
+						// คนสุดท้ายของลิสต์ที่เรียงลำดับเสร็จคือคนที่มีผลงานแย่ที่สุดในรอบนี้
+						Player toIncinerate = aliveBuilders.get(aliveBuilders.size() - 1);
 						RecreationData elRecreation = _buildRecreations.get(toIncinerate);
 						
 						_toEliminate.add(elRecreation);
@@ -1617,7 +1751,15 @@ public class SpeedBuilders extends SoloGame
 					UtilPlayer.message(player, F.main("Build", "สร้างตามเป้าหมายได้เลย!"));
 				}
 				
-				UtilTextMiddle.display("เป้าหมายรอบนี้คือ", C.cGold + _currentBuild.BuildText, 0, 80, 10);
+				for (Player player : UtilServer.getPlayers())
+				{
+					UtilTextMiddle.display(
+						SpeedBuildersLang.get().get(player, "speedbuilders.build_target"),
+						C.cPurple + _currentBuild.BuildText,
+						0, 80, 10,
+						player
+					);
+				}
 				
 				triggerThemeReveal();
 				setSpeedBuilderState(SpeedBuildersState.VIEWING);
@@ -1633,7 +1775,15 @@ public class SpeedBuilders extends SoloGame
 					judgeTargetLocation(currentTarget.OriginalBuildLocation.clone().subtract(0, 1.7, 0));
 					
 					// Suspense title before dragon breathes fire
-					UtilTextMiddle.display(C.cYellow + currentTarget.Player.getName(), C.cWhite + "กำลังตัดสิน... / Judging...", 0, 30, 10);
+					for (Player p : UtilServer.getPlayers())
+					{
+						UtilTextMiddle.display(
+							GUARDIAN_NAME,
+							C.cPurple + currentTarget.Player.getName() + " §7- " + SpeedBuildersLang.get().get(p, "speedbuilders.judging") + "...",
+							0, 30, 10,
+							p
+						);
+					}
 					
 					for (Player p : UtilServer.getPlayers())
 					{
@@ -1652,7 +1802,11 @@ public class SpeedBuilders extends SoloGame
 							
 							if (color == ParticleColor.RED)
 							{
-								UtilTextMiddle.display("", C.cRed + currentTarget.Player.getName() + " ถูกคัดออกแล้ว!", 0, 40, 10);
+								for (Player player : UtilServer.getPlayers())
+								{
+									String sub = SpeedBuildersLang.get().get(player, "speedbuilders.eliminated", currentTarget.Player.getName());
+									UtilTextMiddle.display(C.cDPurple + C.Bold + "ELIMINATED!", sub, 0, 40, 10, player);
+								}
 								currentTarget.getMidpoint().getWorld().strikeLightningEffect(currentTarget.OriginalBuildLocation);
 								for (Player player : UtilServer.getPlayers())
 								{
@@ -1678,12 +1832,20 @@ public class SpeedBuilders extends SoloGame
 							}
 							else if (color == ParticleColor.GOLD)
 							{
-								UtilTextMiddle.display("", C.cGold + currentTarget.Player.getName() + " Perfect Match!", 0, 40, 10);
+								for (Player player : UtilServer.getPlayers())
+								{
+									String sub = C.cPurple + currentTarget.Player.getName() + " " + SpeedBuildersLang.get().get(player, "speedbuilders.perfect_subtitle");
+									UtilTextMiddle.display(SpeedBuildersLang.get().get(player, "speedbuilders.perfect_title"), sub, 0, 40, 10, player);
+								}
 								judgeTargetLocation(null);
 							}
 							else
 							{
-								UtilTextMiddle.display("", C.cAqua + currentTarget.Player.getName() + " ผ่านรอบนี้!", 0, 40, 10);
+								for (Player player : UtilServer.getPlayers())
+								{
+									String sub = C.cPurple + currentTarget.Player.getName() + " " + SpeedBuildersLang.get().get(player, "speedbuilders.passed");
+									UtilTextMiddle.display(C.cPurple + C.Bold + "PASSED!", sub, 0, 40, 10, player);
+								}
 								judgeTargetLocation(null);
 							}
 							
@@ -1815,7 +1977,7 @@ public class SpeedBuilders extends SoloGame
 		org.bukkit.Location loc = player.getLocation().add(0, 2, 0);
 
 		// 1. Floating Text (Subtitle / Title)
-		UtilTextMiddle.display("", C.cGreen + "+" + score + " pts", 0, 40, 10, player);
+		UtilTextMiddle.display("", C.cPurple + "+" + score + " pts", 0, 40, 10, player);
 
 		// 2. Particle Ring & Sounds
 		for (int i = 0; i < 3; i++)
@@ -1832,8 +1994,8 @@ public class SpeedBuilders extends SoloGame
 		}
 
 		// 3. ActionBar & Chat
-		UtilTextBottom.display(C.cAqua + "🐉 The Dragon nods at your build! " + C.cGreen + "(+" + score + " pts)", player);
-		UtilPlayer.message(player, C.cAqua + "🐉 The Dragon nods at your build! " + C.cGreen + "(+" + score + " pts)");
+		UtilTextBottom.display(C.cPurple + "🐉 The Dragon nods at your build! " + C.cDPurple + "(+" + score + " pts)", player);
+		UtilPlayer.message(player, C.cPurple + "🐉 The Dragon nods at your build! " + C.cDPurple + "(+" + score + " pts)");
 	}
 
 	@EventHandler
@@ -1856,8 +2018,28 @@ public class SpeedBuilders extends SoloGame
 		double timeFraction = (double) timeLeft / (_buildTime * 1000.0D);
 		String timeLeftStr = UtilTime.MakeStr(timeLeft);
 
+		String clockColor = "green";
+		if (timeFraction <= 0.25) clockColor = "red";
+		else if (timeFraction <= 0.50) clockColor = "gold";
+
 		for (Player p : UtilServer.getPlayers())
 		{
+			if (_useModernUX)
+			{
+				String timeTitle = SpeedBuildersLang.get().get(p, "speedbuilders.scoreboard.time");
+				String barTitle = timeTitle + " §7» " + (timeLeft <= 10000 ? "§c§l" : "§d§l") + timeLeftStr;
+				org.bukkit.boss.BarColor color = (timeLeft <= 10000) ? org.bukkit.boss.BarColor.RED : org.bukkit.boss.BarColor.PINK;
+				updatePlayerBossBar(p, timeFraction, barTitle, color);
+			}
+			else
+			{
+				org.bukkit.boss.BossBar bar = _playerBossBars.remove(p);
+				if (bar != null)
+				{
+					bar.removeAll();
+				}
+			}
+
 			if (_buildRecreations.containsKey(p))
 			{
 				RecreationData recreation = _buildRecreations.get(p);
@@ -1868,7 +2050,7 @@ public class SpeedBuilders extends SoloGame
 				int speedBonus = 0;
 				if (_perfectBuild.containsKey(p))
 				{
-					p.setWorldBorder(null);
+					if (p.getWorldBorder() != null) p.setWorldBorder(null);
 					long finishTime = _perfectBuild.get(p);
 					long timeElapsed = finishTime - _stateTime;
 					long totalTime = _buildTime * 1000L;
@@ -1882,32 +2064,71 @@ public class SpeedBuilders extends SoloGame
 					{
 						long now = System.currentTimeMillis();
 						long lastHeart = _lastHeartbeat.containsKey(p) ? _lastHeartbeat.get(p) : 0L;
-						if (now - lastHeart >= 1000)
+						
+						if (_useModernUX)
 						{
-							_lastHeartbeat.put(p, now);
-							p.playSound(p.getLocation(), org.bukkit.Sound.ENTITY_WARDEN_HEARTBEAT, 1.0f, 1.0f);
-						}
+							// UX Rework: ใช้สมการปรับจังหวะบีบอารมณ์ ยิ่งใกล้หมดเวลายิ่งรัว (Exponential Heartbeat Schedule)
+							long pulseInterval = (long) (100.0 + (timeFraction * 900.0));
+							if (now - lastHeart >= pulseInterval)
+							{
+								_lastHeartbeat.put(p, now);
+								p.playSound(p.getLocation(), org.bukkit.Sound.ENTITY_WARDEN_HEARTBEAT, 1.2f, 0.8f + (float)(1.0 - timeFraction));
+							}
 
-						if (p.getWorldBorder() == null || p.getWorldBorder().getSize() > 9000)
+							if (p.getWorldBorder() == null || p.getWorldBorder().getSize() > 9000)
+							{
+								org.bukkit.WorldBorder wb = org.bukkit.Bukkit.createWorldBorder();
+								wb.setCenter(p.getLocation());
+								wb.setSize(1000); // บีบขอบเขตให้แคบลงเพื่อเร่งแสง Vignette สีแดงขอบจอเต็มสูบ
+								wb.setWarningDistance(1000);
+								p.setWorldBorder(wb);
+							}
+						}
+						else
 						{
-							org.bukkit.WorldBorder wb = org.bukkit.Bukkit.createWorldBorder();
-							wb.setCenter(p.getLocation());
-							wb.setSize(10000);
-							wb.setWarningDistance(10000);
-							p.setWorldBorder(wb);
+							if (now - lastHeart >= 1000)
+							{
+								_lastHeartbeat.put(p, now);
+								p.playSound(p.getLocation(), org.bukkit.Sound.ENTITY_WARDEN_HEARTBEAT, 1.0f, 1.0f);
+							}
+
+							if (p.getWorldBorder() == null || p.getWorldBorder().getSize() > 9000)
+							{
+								org.bukkit.WorldBorder wb = org.bukkit.Bukkit.createWorldBorder();
+								wb.setCenter(p.getLocation());
+								wb.setSize(10000);
+								wb.setWarningDistance(10000);
+								p.setWorldBorder(wb);
+							}
 						}
 					}
 				}
 				
-				String message = SpeedBuildersLang.get().get(p, "speedbuilders.actionbar.progress", String.valueOf(percent), String.valueOf(speedBonus));
-				message = message + " §7| §f" + timeLeftStr;
-				
-				UtilTextBottom.display(message, p);
+				if (_useModernUX)
+				{
+					// แปลงการพ่นข้อความ ActionBar เป็นสไตล์นวัตกรรมผ่าน MiniMessage Components ในไฟล์ yml
+					Component modernActionBar = SpeedBuildersLang.get().getModern(p, "speedbuilders.actionbar.progress_modern", String.valueOf(percent), String.valueOf(speedBonus), clockColor, timeLeftStr);
+					p.sendActionBar(modernActionBar);
+				}
+				else
+				{
+					String message = SpeedBuildersLang.get().get(p, "speedbuilders.actionbar.progress", String.valueOf(percent), String.valueOf(speedBonus));
+					message = message + " §7| §f" + timeLeftStr;
+					UtilTextBottom.display(message, p);
+				}
 			}
 			else
 			{
-				String message = "§e§lTIME LEFT §7| §f" + timeLeftStr;
-				UtilTextBottom.display(message, p);
+				if (_useModernUX)
+				{
+					Component modernActionBar = SpeedBuildersLang.get().getModern(p, "speedbuilders.actionbar.spectator_modern", clockColor, timeLeftStr);
+					p.sendActionBar(modernActionBar);
+				}
+				else
+				{
+					String message = "§e§lTIME LEFT §7| §f" + timeLeftStr;
+					UtilTextBottom.display(message, p);
+				}
 			}
 		}
 	}
@@ -1935,9 +2156,9 @@ public class SpeedBuilders extends SoloGame
 			}
 			
 			if (_buildCountStage == _buildTime)
-				UtilTextMiddle.display("", C.cRed + "TIME'S UP!", 0, 30, 10);
+				UtilTextMiddle.display("", C.cPurple + "TIME'S UP!", 0, 30, 10);
 			else if (_buildCountStage >= _buildTime - 5)
-				UtilTextMiddle.display("", C.cGreen + (_buildTime - _buildCountStage), 0, 30, 10, players.toArray(new Player[players.size()]));
+				UtilTextMiddle.display("", C.cPurple + (_buildTime - _buildCountStage), 0, 30, 10, players.toArray(new Player[players.size()]));
 			
 			if (_buildCountStage >= _buildTime - 5)
 			{
@@ -1966,9 +2187,9 @@ public class SpeedBuilders extends SoloGame
 		if (UtilTime.elapsed(_stateTime, _viewCountStage * 1000))
 		{
 			if (_viewCountStage == _viewTime)
-				UtilTextMiddle.display("หมดเวลาให้จดจำ", C.cRed + "View Time Over!", 0, 30, 10);
+				UtilTextMiddle.display(C.cPurple + "หมดเวลาให้จดจำ", C.cDPurple + "View Time Over!", 0, 30, 10);
 			else if (_viewCountStage > 3)
-				UtilTextMiddle.display("", C.cGreen + (_viewTime - _viewCountStage), 0, 30, 10);
+				UtilTextMiddle.display("", C.cPurple + (_viewTime - _viewCountStage), 0, 30, 10);
 			
 			if (_viewCountStage > 3)
 			{
@@ -2135,12 +2356,16 @@ public class SpeedBuilders extends SoloGame
 //	}
 
 	@EventHandler
-	public void stopGuardianSpecPickup(PlayerPickupItemEvent event)
+	public void stopGuardianSpecPickup(EntityPickupItemEvent event)
 	{
+		if (!(event.getEntity() instanceof Player))
+			return;
+		Player player = (Player) event.getEntity();
+
 		if (GetState().ordinal() < GameState.Prepare.ordinal())
 			return;
 		
-		if (Manager.isSpectator(event.getPlayer()) || (GetTeamList().size() > 1 && GetTeamList().get(1).HasPlayer(event.getPlayer())))
+		if (Manager.isSpectator(player) || (GetTeamList().size() > 1 && GetTeamList().get(1).HasPlayer(player)))
 			event.setCancelled(true);
 	}
 
@@ -2547,59 +2772,188 @@ public class SpeedBuilders extends SoloGame
 		if (GetTeamList().size() > 1)
 			playersDead.addAll(GetTeamList().get(1).GetPlayers(false));
 		
-		// Use player context for localizing their scoreboard if possible, or fallback to default
-		// Bukkit scoreboard is shared, so we render a generic bilingual or English-based fallback scoreboard.
-		// Wait, Spigot Scoreboard is shared per-player or global? In HouziCore's Board library, each player has a personalized board!
-		// Let's check: Scoreboard.Write(Player, String) or Scoreboard.Write(String)?
-		// The original code uses Scoreboard.Write(String). This means HouziCore Scoreboard is global (shared) or Board is per-player but drawn globally.
-		// Wait, if it draws globally, we can use bilingual formatting (EN / TH) on the same line or use default locale.
-		// Let's do elegant bilingual naming or clean presentation. E.g., title: "SPEED BUILDERS", Round: "Round/รอบ", Stage: "Stage/ช่วง"
-		// Better yet, since we have the LangManager, we can use the English fallback for global display, but with beautiful style.
-		
-		Scoreboard.WriteBlank();
-		Scoreboard.Write(C.cYellow + C.Bold + "STAGE");
-		SpeedBuildersStage stage = getActiveStage();
-		if (stage == SpeedBuildersStage.WARM_UP)
-			Scoreboard.Write(C.cGreen + "Warm-up");
-		else if (stage == SpeedBuildersStage.MAIN_GAME)
-			Scoreboard.Write(C.cGold + "Main Game");
+		if (_useModernUX)
+		{
+			// calculate how many player slots we want to display (max 8)
+			List<Player> sortedBuilders = getSortedPlayers(playersAlive);
+			int playerAndDeadCount = sortedBuilders.size() + playersDead.size();
+			int maxSlots = Math.min(8, playerAndDeadCount);
+
+			// We want total lines (metadata + slots) to be at most 11.
+			// Let's decide which blank lines to write dynamically!
+			boolean writeBlankStart = true;
+			boolean writeBlankMiddle = true;
+			boolean writeBlankEnd = true;
+
+			int metadataCount = 3; // Stage, Round, Rankings Header
+			if (writeBlankStart) metadataCount++;
+			if (writeBlankMiddle) metadataCount++;
+			if (writeBlankEnd) metadataCount++;
+
+			// If the total lines exceed 11, we start dropping blank lines to fit!
+			if (metadataCount + maxSlots > 11) {
+				writeBlankStart = false;
+				metadataCount--;
+			}
+			if (metadataCount + maxSlots > 11) {
+				writeBlankMiddle = false;
+				metadataCount--;
+			}
+			if (metadataCount + maxSlots > 11) {
+				writeBlankEnd = false;
+				metadataCount--;
+			}
+
+			// Now, recalculate maxSlots just in case we still exceed 11
+			maxSlots = 11 - metadataCount;
+			if (maxSlots < 1) maxSlots = 1;
+
+			if (writeBlankStart)
+			{
+				Scoreboard.WriteBlank();
+			}
+			
+			// แสดงผลช่วงสถานะของเกม (Stage Component) - แปลภาษาตามผู้เล่น
+			SpeedBuildersStage stage = getActiveStage();
+			Component stageLabel = Component.text(" ⏳ ", NamedTextColor.WHITE)
+				.append(Component.text("%LANG:speedbuilders.scoreboard.stage%: ", NamedTextColor.LIGHT_PURPLE));
+			if (stage == SpeedBuildersStage.WARM_UP)
+				stageLabel = stageLabel.append(Component.text("%LANG:speedbuilders.scoreboard.stage_warmup%", NamedTextColor.LIGHT_PURPLE));
+			else if (stage == SpeedBuildersStage.MAIN_GAME)
+				stageLabel = stageLabel.append(Component.text("%LANG:speedbuilders.scoreboard.stage_main%", NamedTextColor.DARK_PURPLE));
+			else
+				stageLabel = stageLabel.append(Component.text("%LANG:speedbuilders.scoreboard.stage_sudden%", NamedTextColor.LIGHT_PURPLE, TextDecoration.BOLD));
+			Scoreboard.Write(stageLabel);
+			
+			// แสดงผลรอบการเล่นปัจจุบันคู่กับสไปรต์ไอคอนจาก Core Shared
+			Scoreboard.Write(Component.text()
+				.append(com.houzicore.shared.core.chat.SpriteUtil.buildInlineSprite("item/clock", true))
+				.append(Component.text(" %LANG:speedbuilders.scoreboard.round%: ", NamedTextColor.LIGHT_PURPLE))
+				.append(Component.text(_roundsPlayed, NamedTextColor.WHITE))
+				.build());
+			
+			if (writeBlankMiddle)
+			{
+				Scoreboard.WriteBlank();
+			}
+
+			Scoreboard.Write(Component.text("🏆 ").append(Component.text("%LANG:speedbuilders.scoreboard.rank%", NamedTextColor.LIGHT_PURPLE, TextDecoration.BOLD)));
+			
+			int rank = 1;
+			int slotsUsed = 0;
+			
+			for (Player p : sortedBuilders)
+			{
+				if (slotsUsed >= maxSlots) break;
+				
+				NamedTextColor prefixColor = NamedTextColor.GRAY;
+				boolean isBoldPrefix = false;
+				NamedTextColor scoreColor = NamedTextColor.GRAY;
+				
+				if (rank == 1)
+				{
+					prefixColor = NamedTextColor.LIGHT_PURPLE;
+					isBoldPrefix = true;
+					scoreColor = NamedTextColor.LIGHT_PURPLE;
+				}
+				else if (rank == 2)
+				{
+					prefixColor = NamedTextColor.DARK_PURPLE;
+					isBoldPrefix = true;
+					scoreColor = NamedTextColor.DARK_PURPLE;
+				}
+				else if (rank == 3)
+				{
+					prefixColor = NamedTextColor.LIGHT_PURPLE;
+					scoreColor = NamedTextColor.LIGHT_PURPLE;
+				}
+				
+				String prefix = " " + rank + ". ";
+				Component prefixComp = Component.text(prefix, prefixColor);
+				if (isBoldPrefix) prefixComp = prefixComp.decorate(TextDecoration.BOLD);
+				
+				int totalScore = _cumulativeScores.containsKey(p) ? _cumulativeScores.get(p) : 0;
+				int combo = _comboStreaks.containsKey(p) ? _comboStreaks.get(p) : 0;
+				
+				Component comboBadge = combo > 0 ? 
+					Component.text(" x" + combo, NamedTextColor.LIGHT_PURPLE, TextDecoration.BOLD) : Component.empty();
+				
+				Scoreboard.Write(Component.text()
+					.append(prefixComp)
+					.append(com.houzicore.shared.core.chat.PlayerHeadUtil.buildInlineHead(p, true)) // ฉีดหัวผู้เล่นจิ๋วเข้ามาในแถบคะแนนสด
+					.append(Component.text(p.getName(), NamedTextColor.WHITE))
+					.append(Component.text(" -> ", NamedTextColor.GRAY))
+					.append(Component.text(totalScore, scoreColor))
+					.append(comboBadge)
+					.build());
+				rank++;
+				slotsUsed++;
+			}
+			
+			// แสดงรายชื่อคนที่ตกรอบ (Dead/Spectator Team) เป็นสีเทาขีดฆ่าพร้อมไอคอนสไปรต์หัวกะโหลก
+			for (Player p : playersDead)
+			{
+				if (slotsUsed >= maxSlots) break;
+				
+				Scoreboard.Write(Component.text()
+					.append(com.houzicore.shared.core.chat.SpriteUtil.buildInlineSprite("blocks", "block/skeleton_skull", true))
+					.append(Component.text(p.getName(), NamedTextColor.DARK_GRAY, TextDecoration.STRIKETHROUGH))
+					.build());
+				slotsUsed++;
+			}
+			
+			if (writeBlankEnd)
+			{
+				Scoreboard.WriteBlank();
+			}
+		}
 		else
-			Scoreboard.Write(C.cRed + "Sudden Death");
-		
-		Scoreboard.WriteBlank();
-		Scoreboard.Write(C.cYellow + C.Bold + "ROUND");
-		Scoreboard.Write(C.cWhite + String.valueOf(_roundsPlayed));
-		
-		if (_state == SpeedBuildersState.BUILDING)
 		{
 			Scoreboard.WriteBlank();
-			Scoreboard.Write(C.cYellow + C.Bold + "TIME LEFT");
-			Scoreboard.Write(C.cGreen + "Building: " + (_buildTime - _buildCountStage) + "s");
-		}
-		
-		Scoreboard.WriteBlank();
-		Scoreboard.Write(C.cYellow + C.Bold + "RANKINGS");
-		
-		List<Player> sorted = getSortedPlayers(playersAlive);
-		int rank = 1;
-		for (Player p : sorted)
-		{
-			Integer cm = _comboStreaks.get(p);
-			int combo = (cm != null) ? cm : 0;
-			String prefix = "";
-			if (rank == 1) prefix = "🥇 ";
-			else if (rank == 2) prefix = "🥈 ";
-			else if (rank == 3) prefix = "🥉 ";
-			else prefix = rank + ". ";
+			Scoreboard.Write(C.cPurple + C.Bold + "STAGE");
+			SpeedBuildersStage stage = getActiveStage();
+			if (stage == SpeedBuildersStage.WARM_UP)
+				Scoreboard.Write(C.cPurple + "Warm-up");
+			else if (stage == SpeedBuildersStage.MAIN_GAME)
+				Scoreboard.Write(C.cDPurple + "Main Game");
+			else
+				Scoreboard.Write(C.cPurple + C.Bold + "Sudden Death");
 			
-			String comboSuffix = combo > 0 ? " §d(x" + combo + ")" : "";
-			Scoreboard.Write(prefix + C.cWhite + p.getName() + comboSuffix);
-			rank++;
-		}
-		
-		for (Player p : playersDead)
-		{
-			Scoreboard.Write(C.cDGray + C.Strike + p.getName());
+			Scoreboard.WriteBlank();
+			Scoreboard.Write(C.cPurple + C.Bold + "ROUND");
+			Scoreboard.Write(C.cWhite + String.valueOf(_roundsPlayed));
+			
+			if (_state == SpeedBuildersState.BUILDING)
+			{
+				Scoreboard.WriteBlank();
+				Scoreboard.Write(C.cPurple + C.Bold + "TIME LEFT");
+				Scoreboard.Write(C.cDPurple + "Building: " + (_buildTime - _buildCountStage) + "s");
+			}
+			
+			Scoreboard.WriteBlank();
+			Scoreboard.Write(C.cPurple + C.Bold + "RANKINGS");
+			
+			List<Player> sorted = getSortedPlayers(playersAlive);
+			int rank = 1;
+			for (Player p : sorted)
+			{
+				Integer cm = _comboStreaks.get(p);
+				int combo = (cm != null) ? cm : 0;
+				String prefix = "";
+				if (rank == 1) prefix = "§d§l 1. ";
+				else if (rank == 2) prefix = "§5§l 2. ";
+				else if (rank == 3) prefix = "§d 3. ";
+				else prefix = "§8 " + rank + ". ";
+				
+				String comboSuffix = combo > 0 ? " §d(x" + combo + ")" : "";
+				Scoreboard.Write(prefix + C.cWhite + p.getName() + comboSuffix);
+				rank++;
+			}
+			
+			for (Player p : playersDead)
+			{
+				Scoreboard.Write("§8<sprite:block/skeleton_skull> §8§m" + p.getName());
+			}
 		}
 		
 		Scoreboard.Draw();

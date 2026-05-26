@@ -39,6 +39,16 @@ public class ItemBuilder {
 		return this;
 	}
 
+	public ItemBuilder setTitleComponent(net.kyori.adventure.text.Component component) {
+		if (meta != null) meta.displayName(component);
+		return this;
+	}
+
+	public ItemBuilder setLoreComponents(List<net.kyori.adventure.text.Component> loreComponents) {
+		if (meta != null) meta.lore(loreComponents);
+		return this;
+	}
+
 	public ItemBuilder addLore(String... lore) {
 		if (meta != null) {
 			List<String> currentLore = meta.hasLore() ? meta.getLore() : new ArrayList<>();

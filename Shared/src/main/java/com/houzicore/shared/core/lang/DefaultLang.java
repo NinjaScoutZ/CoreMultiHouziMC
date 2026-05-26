@@ -516,6 +516,42 @@ public class DefaultLang {
         DEFAULTS.put("game_menu.speed_builders.desc.1", "&7Look at the build, memorize it,");
         DEFAULTS.put("game_menu.speed_builders.desc.2", "&7and rebuild it as fast as you can.");
         DEFAULTS.put("game_menu.speed_builders.desc.3", "&cDon't let Houra explode your build!");
+
+        // Speed Builders Keys
+        DEFAULTS.put("speedbuilders.scoreboard.title", "&d&lSPEED BUILDERS");
+        DEFAULTS.put("speedbuilders.scoreboard.stage", "&d&lStage");
+        DEFAULTS.put("speedbuilders.scoreboard.stage_warmup", "&dWarm-up");
+        DEFAULTS.put("speedbuilders.scoreboard.stage_main", "&5Main Game");
+        DEFAULTS.put("speedbuilders.scoreboard.stage_sudden", "&5&lSudden Death");
+        DEFAULTS.put("speedbuilders.scoreboard.round", "&d&lRound");
+        DEFAULTS.put("speedbuilders.scoreboard.time", "&d&lTime Left");
+        DEFAULTS.put("speedbuilders.scoreboard.timeLeft", "&d{0}s");
+        DEFAULTS.put("speedbuilders.scoreboard.rank", "&d&lRank");
+        DEFAULTS.put("speedbuilders.scoreboard.combo", "&d&lCombo");
+        DEFAULTS.put("speedbuilders.scoreboard.players", "&d&lPlayers");
+        DEFAULTS.put("speedbuilders.hologram.completed", "Completed");
+        DEFAULTS.put("speedbuilders.perfect", "Perfect Match!");
+        DEFAULTS.put("speedbuilders.eliminated", "&5{0} &7was incinerated by the Dragon!");
+        DEFAULTS.put("speedbuilders.speedbonus", "&d+{0} Speed Bonus!");
+        DEFAULTS.put("speedbuilders.actionbar.progress", "&dMatch: &f{0}% &7| &5Speed Bonus: &d+{1} pts");
+        DEFAULTS.put("speedbuilders.actionbar.progress_modern", "<light_purple>⚙ Accuracy: <white>{0}%</white> • ⚡ Speed Bonus: <white>+{1} pts</white> • <{2}>⌛ {3}</{2}></light_purple>");
+        DEFAULTS.put("speedbuilders.actionbar.spectator_modern", "<light_purple>⌛ Time Left: <{0}>{1}</{0}></light_purple>");
+        DEFAULTS.put("speedbuilders.actionbar.perfect", "&d&lPERFECT! &5Combo Streak: &d{0}x");
+        DEFAULTS.put("speedbuilders.chat.score_summary", "&5&lRound Summary: &d{0} pts &7(Base: {1}, Speed: {2}, Combo: x{3})");
+        DEFAULTS.put("speedbuilders.gui.vote.title", "&8Vote for Creativity!");
+        DEFAULTS.put("speedbuilders.gui.vote.title_voted", "&dCreativity Vote Cast!");
+        DEFAULTS.put("speedbuilders.gui.vote.currently_selected", "&a✔ Currently Selected");
+        DEFAULTS.put("speedbuilders.gui.vote.item_name", "&e{0}");
+        DEFAULTS.put("speedbuilders.gui.vote.already_voted", "&cYou have already voted for {0}!");
+        DEFAULTS.put("speedbuilders.gui.vote.success", "&aYou voted for {0}!");
+        DEFAULTS.put("speedbuilders.gui.vote.ended", "&cVoting period has ended.");
+        DEFAULTS.put("speedbuilders.passed", "&fpassed this round!");
+        DEFAULTS.put("speedbuilders.impressed", "&5is Impressed!");
+        DEFAULTS.put("speedbuilders.judging", "&5is Judging");
+        DEFAULTS.put("speedbuilders.build_target", "&d&lRecreate the build shown!");
+        DEFAULTS.put("speedbuilders.perfect_title", "&d&lPERFECT!");
+        DEFAULTS.put("speedbuilders.perfect_subtitle", "&fPerfect Match!");
+
         DEFAULTS.put("game_menu.bedwars.name", "<GRADIENT:#FFD700,#FF6B00> ʙᴇᴅᴡᴀʀs </GRADIENT>");
         DEFAULTS.put("game_menu.bedwars.desc.1", "&7Defend your bed from enemy teams.");
         DEFAULTS.put("game_menu.bedwars.desc.2", "&7Destroy enemy beds to stop them respawning.");

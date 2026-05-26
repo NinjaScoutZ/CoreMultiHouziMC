@@ -174,10 +174,18 @@ public class GameTeam
 		{
 			for(Player other : UtilServer.getPlayers())
 			{
-				other.getScoreboard().getTeam(Host.Manager.GetClients().Get(player).GetRank().Name + _name.toUpperCase()).removePlayer(player);
-				other.getScoreboard().getTeam(Host.Manager.GetClients().Get(player).GetRank().Name).addPlayer(player);
+				org.bukkit.scoreboard.Team oldTeam = other.getScoreboard().getTeam(Host.Manager.GetClients().Get(player).GetRank().Name + _name.toUpperCase());
+				if (oldTeam != null)
+				{
+					oldTeam.removePlayer(player);
+				}
+				org.bukkit.scoreboard.Team newTeam = other.getScoreboard().getTeam(Host.Manager.GetClients().Get(player).GetRank().Name);
+				if (newTeam != null)
+				{
+					newTeam.addPlayer(player);
+				}
 			}
-			Host.Announce(C.cRed + (LangManager.get().isThai(player) ? "\u0e17\u0e35\u0e21 " + _displayName + " \u0e16\u0e39\u0e01\u0e22\u0e38\u0e1a\u0e41\u0e25\u0e49\u0e27" : "Team " + _displayName + " has been disbanded."));
+			Host.Announce(C.cRed + (LangManager.get().isThai(player) ? "ทีม " + _displayName + " ถูกยุบแล้ว" : "Team " + _displayName + " has been disbanded."));
 		}
 		 
 		_players.clear();

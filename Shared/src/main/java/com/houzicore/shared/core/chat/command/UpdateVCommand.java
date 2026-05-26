@@ -18,8 +18,15 @@ public class UpdateVCommand extends CommandBase<Chat> {
 	// by typing /updatev!
 	// =========================================================================
 	
-	public static final String LATEST_VERSION_DATE = "24/05/2026";
+	public static final String LATEST_VERSION_DATE = "25/05/2026";
 	public static final String[] LATEST_UPDATE_LOG = {
+		"§8▸ §eSpeed Builders Modern UX/UI Adjustments (Legacy Toggleable)",
+		"§7- เพิ่มระบบสลับการแสดงผลหน้าจอแบบโมเดิร์น (Modern UX) ด้วยคำสั่ง /modernux หรือ /togglemodernux สำหรับ ADMIN",
+		"§7- ปรับปรุงแถบกระดานคะแนน (Scoreboard) แบบ Adventure Component พร้อมแสดงหัวผู้เล่นจิ๋ว (Inline Player Head) ในตารางจัดอันดับและไอคอนนาฬิกาแก้ว",
+		"§7- ปรับปรุงแถบแสดงเวลาความคืบหน้าการสร้าง (Action Bar) ไล่ระดับสีตามเวลาที่เหลืออยู่ (เขียว -> ส้ม -> แดง) แบบ MiniMessage API",
+		"§7- เพิ่มระบบเสียงเตือนหัวใจเต้นแรง (Warden Heartbeat) แบบอัตราเร่งความถี่เรื่อยๆ เมื่อเวลาเหลือต่ำกว่า 10 วินาที พร้อมแสดงผลเส้นขอบเขตโลกสีแดงวับ (World Border)",
+		"§7- ดึงข้อความสนับสนุนระบบสองภาษา (EN/TH) ลงในไฟล์แปลภาษา speedbuilders.yml ทั้งหมด หลีกเลี่ยงข้อความไทยในโค้ดดิบ",
+		"",
 		"§8▸ §eSpeed Builders Score-Based Elimination Rework",
 		"§7- ปรับโหมดการเล่น Speed Builders เป็นแบบสะสมคะแนน (Score-Based Elimination) แทนการคัดออกรายรอบ",
 		"§7- เพิ่มระบบแบ่งช่วงการเล่น (Warm-up 60วิ ไม่มีคัดออก, Main Game 45วิ คัดออกรอบ 6, 9 และ Sudden Death 30วิ คัดออกทุกรอบ x2 คะแนน)",

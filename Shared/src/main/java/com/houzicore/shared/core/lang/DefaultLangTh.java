@@ -519,6 +519,42 @@ public class DefaultLangTh {
         DEFAULTS.put("game_menu.speed_builders.desc.1", "&7จำลองสิ่งก่อสร้างที่ปรากฏตรงหน้า");
         DEFAULTS.put("game_menu.speed_builders.desc.2", "&7และสร้างมันขึ้นมาใหม่ให้ไวที่สุด");
         DEFAULTS.put("game_menu.speed_builders.desc.3", "&cระวังอย่าให้ Houra ทำลายเกาะของคุณ!");
+
+        // Speed Builders Keys
+        DEFAULTS.put("speedbuilders.scoreboard.title", "&d&lSPEED BUILDERS");
+        DEFAULTS.put("speedbuilders.scoreboard.stage", "&d&lช่วงการแข่งขัน");
+        DEFAULTS.put("speedbuilders.scoreboard.stage_warmup", "&dวอร์มอัพ");
+        DEFAULTS.put("speedbuilders.scoreboard.stage_main", "&5รอบหลัก");
+        DEFAULTS.put("speedbuilders.scoreboard.stage_sudden", "&5&lช่วงชี้ชะตา");
+        DEFAULTS.put("speedbuilders.scoreboard.round", "&d&lรอบที่");
+        DEFAULTS.put("speedbuilders.scoreboard.time", "&d&lเวลาที่เหลือ");
+        DEFAULTS.put("speedbuilders.scoreboard.timeLeft", "&d{0} วินาที");
+        DEFAULTS.put("speedbuilders.scoreboard.rank", "&d&lอันดับ");
+        DEFAULTS.put("speedbuilders.scoreboard.combo", "&d&lคอมโบ");
+        DEFAULTS.put("speedbuilders.scoreboard.players", "&d&lผู้เล่น");
+        DEFAULTS.put("speedbuilders.hologram.completed", "เสร็จสมบูรณ์");
+        DEFAULTS.put("speedbuilders.perfect", "สร้างเสร็จสมบูรณ์แบบ!");
+        DEFAULTS.put("speedbuilders.eliminated", "&5{0} &7ถูกลมหายใจมังกรแผดเผาจนมอดไหม้!");
+        DEFAULTS.put("speedbuilders.speedbonus", "&dโบนัสความเร็ว +{0}!");
+        DEFAULTS.put("speedbuilders.actionbar.progress", "&dความคืบหน้า: &f{0}% &7| &5โบนัสความเร็ว: &d+{1} คะแนน");
+        DEFAULTS.put("speedbuilders.actionbar.progress_modern", "<light_purple>⚙ ความแม่นยำ: <white>{0}%</white> • ⚡ โบนัสความเร็ว: <white>+{1} คะแนน</white> • <{2}>⌛ {3}</{2}></light_purple>");
+        DEFAULTS.put("speedbuilders.actionbar.spectator_modern", "<light_purple>⌛ เวลาที่เหลืออยู่: <{0}>{1}</{0}></light_purple>");
+        DEFAULTS.put("speedbuilders.actionbar.perfect", "&d&lสมบูรณ์แบบ! &5คอมโบสตรีค: &d{0}x");
+        DEFAULTS.put("speedbuilders.chat.score_summary", "&5&lสรุปรอบนี้: &d{0} คะแนน &7(ฐาน: {1}, ความเร็ว: {2}, คอมโบ: x{3})");
+        DEFAULTS.put("speedbuilders.gui.vote.title", "&8โหวตคะแนนความคิดสร้างสรรค์!");
+        DEFAULTS.put("speedbuilders.gui.vote.title_voted", "&dโหวตความคิดสร้างสรรค์แล้ว!");
+        DEFAULTS.put("speedbuilders.gui.vote.currently_selected", "&a✔ เลือกแล้ว");
+        DEFAULTS.put("speedbuilders.gui.vote.item_name", "&e{0}");
+        DEFAULTS.put("speedbuilders.gui.vote.already_voted", "&cคุณได้โหวตให้ {0} ไปแล้ว!");
+        DEFAULTS.put("speedbuilders.gui.vote.success", "&aคุณโหวตให้ {0} เรียบร้อยแล้ว!");
+        DEFAULTS.put("speedbuilders.gui.vote.ended", "&cหมดเวลาสำหรับการโหวตแล้ว");
+        DEFAULTS.put("speedbuilders.passed", "&fผ่านรอบนี้!");
+        DEFAULTS.put("speedbuilders.impressed", "&5พึงพอใจในผลงาน!");
+        DEFAULTS.put("speedbuilders.judging", "&5กำลังประเมินสิ่งก่อสร้าง");
+        DEFAULTS.put("speedbuilders.build_target", "&d&lเป้าหมายรอบนี้คือ");
+        DEFAULTS.put("speedbuilders.perfect_title", "&d&lสมบูรณ์แบบ!");
+        DEFAULTS.put("speedbuilders.perfect_subtitle", "&fต่อบล็อกถูกต้อง 100%");
+
         DEFAULTS.put("game_menu.bedwars.name", "<GRADIENT:#FFD700,#FF6B00> ʙᴇᴅᴡᴀʀs </GRADIENT>");
         DEFAULTS.put("game_menu.bedwars.desc.1", "&7ปกป้องเตียงของทีมจากศัตรู");
         DEFAULTS.put("game_menu.bedwars.desc.2", "&7ทำลายเตียงทีมอื่นเพื่อไม่ให้เกิดใหม่");

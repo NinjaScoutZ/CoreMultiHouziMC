@@ -54,9 +54,12 @@ import com.houzicore.arcade.nautilus.game.arcade.stats.WinWithoutOpeningChestSta
 import com.houzicore.arcade.nautilus.game.arcade.stats.WinWithoutWearingArmorStatTracker;
 
 import org.bukkit.Bukkit;
+import org.bukkit.Chunk;
+import org.bukkit.ChunkSnapshot;
 import org.bukkit.Location;
 import org.bukkit.Material;
 import org.bukkit.Sound;
+import org.bukkit.attribute.Attribute;
 import org.bukkit.block.Block;
 import org.bukkit.block.BlockFace;
 import org.bukkit.block.BlockState;
@@ -231,18 +234,52 @@ public abstract class Skywars extends Game
 			_objectiveModule.registerObjective(bell);
 		}
 
-		// Register Blocks
-		for (int y = WorldData.MinY; y < WorldData.MaxY; y++)
+		// Register Blocks with ChunkSnapshot Optimization
+		int minChunkX = WorldData.MinX >> 4;
+		int maxChunkX = (WorldData.MaxX - 1) >> 4;
+		int minChunkZ = WorldData.MinZ >> 4;
+		int maxChunkZ = (WorldData.MaxZ - 1) >> 4;
+		
+		int minWorldY = WorldData.World.getMinHeight();
+		int maxWorldY = WorldData.World.getMaxHeight();
+		
+		for (int cx = minChunkX; cx <= maxChunkX; cx++)
 		{
-			for (int x = WorldData.MinX; x < WorldData.MaxX; x++)
+			for (int cz = minChunkZ; cz <= maxChunkZ; cz++)
 			{
-				for (int z = WorldData.MinZ; z < WorldData.MaxZ; z++)
+				Chunk chunk = WorldData.World.getChunkAt(cx, cz);
+				ChunkSnapshot snapshot = chunk.getChunkSnapshot(false, false, false);
+				
+				int startX = Math.max(WorldData.MinX, cx << 4);
+				int endX = Math.min(WorldData.MaxX - 1, (cx << 4) + 15);
+				int startZ = Math.max(WorldData.MinZ, cz << 4);
+				int endZ = Math.min(WorldData.MaxZ - 1, (cz << 4) + 15);
+				
+				for (int y = WorldData.MinY; y < WorldData.MaxY; y++)
 				{
-					Block block = WorldData.World.getBlockAt(x, y, z);
-					if ((block.getType() != Material.AIR)
-							&& (!block.isLiquid()))
+					int sectionY = (y - minWorldY) >> 4;
+					if (sectionY >= 0 && sectionY < ((maxWorldY - minWorldY) >> 4))
 					{
-						_worldBlocks.add(block);
+						if (snapshot.isSectionEmpty(sectionY))
+						{
+							// Skip the rest of this 16-block section
+							y = ((sectionY + 1) << 4) + minWorldY - 1;
+							continue;
+						}
+					}
+					
+					for (int x = startX; x <= endX; x++)
+					{
+						for (int z = startZ; z <= endZ; z++)
+						{
+							int rx = x & 15;
+							int rz = z & 15;
+							Material mat = snapshot.getBlockType(rx, y, rz);
+							if (mat != Material.AIR && mat != Material.WATER && mat != Material.LAVA)
+							{
+								_worldBlocks.add(WorldData.World.getBlockAt(x, y, z));
+							}
+						}
 					}
 				}
 			}
@@ -313,7 +350,7 @@ public abstract class Skywars extends Game
 				phantom.setRemoveWhenFarAway(false);
 				phantom.setCustomName(C.cDPurple + "Void Phantom");
 				phantom.setCustomNameVisible(true);
-				phantom.setMaxHealth(20);
+				phantom.getAttribute(Attribute.MAX_HEALTH).setBaseValue(20);
 				phantom.setHealth(20);
 				phantom.setSize(2); // Slightly larger than default
 

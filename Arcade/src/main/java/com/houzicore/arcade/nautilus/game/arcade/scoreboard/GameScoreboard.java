@@ -94,10 +94,29 @@ public class GameScoreboard implements Listener, ScoreboardDataProvider {
 		
 		for (Component line : _cachedLines) {
 			String legacy = LEGACY_SERIALIZER.serialize(line);
+			boolean modified = false;
 			if (legacy.contains("%KILLS%") || legacy.contains("%ASSISTS%") || legacy.contains("%BEDS%")) {
 				legacy = legacy.replace("%KILLS%", String.valueOf(kills))
 							   .replace("%ASSISTS%", String.valueOf(assists))
 							   .replace("%BEDS%", String.valueOf(beds));
+				modified = true;
+			}
+			if (legacy.contains("%LANG:")) {
+				int startIndex;
+				while ((startIndex = legacy.indexOf("%LANG:")) != -1) {
+					int endIndex = legacy.indexOf("%", startIndex + 6);
+					if (endIndex == -1) break;
+					String placeholder = legacy.substring(startIndex, endIndex + 1);
+					String key = legacy.substring(startIndex + 6, endIndex);
+					String translation = "";
+					if (com.houzicore.shared.core.lang.LangManager.get() != null) {
+						translation = com.houzicore.shared.core.lang.LangManager.get().get(player, key);
+					}
+					legacy = legacy.replace(placeholder, translation);
+				}
+				modified = true;
+			}
+			if (modified) {
 				playerLines.add(LEGACY_SERIALIZER.deserialize(legacy));
 			} else {
 				playerLines.add(line);
@@ -571,6 +590,7 @@ public class GameScoreboard implements Listener, ScoreboardDataProvider {
 
 		newLines.add(ScoreboardLine.legacy(SEPARATOR));
 		newLines.add(ScoreboardLine.legacy(" " + ChatColor.DARK_GRAY + dateStr + " \u2022 " + serverName));
+		newLines.add(ScoreboardLine.legacy(" " + ChatColor.YELLOW + ChatColor.BOLD + "play." + com.houzicore.shared.core.common.BrandConfig.website()));
 
 		int lineCount = Math.min(newLines.size(), ScoreboardSidebar.MAX_LINES);
 

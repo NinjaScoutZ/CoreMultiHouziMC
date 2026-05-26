@@ -46,6 +46,8 @@ public class ItemBuilder {
 	private Material _mat;
 	// private Potion potion;
 	private String _title = null;
+	private net.kyori.adventure.text.Component _titleComponent = null;
+	private List<net.kyori.adventure.text.Component> _loreComponents = null;
 	private boolean _unbreakable;
 	private String _playerHeadName = null;
 	private boolean _glow = false;
@@ -154,10 +156,14 @@ public class ItemBuilder {
 		final ItemStack item = new ItemStack(mat, _amount, _data);
 		final ItemMeta meta = item.getItemMeta();
 		if (meta != null) {
-			if (_title != null) {
+			if (_titleComponent != null) {
+				meta.displayName(_titleComponent);
+			} else if (_title != null) {
 				meta.setDisplayName(_title);
 			}
-			if (!_lore.isEmpty()) {
+			if (_loreComponents != null) {
+				meta.lore(_loreComponents);
+			} else if (!_lore.isEmpty()) {
 				meta.setLore(_lore);
 			}
 			if (meta instanceof LeatherArmorMeta) {
@@ -306,6 +312,16 @@ public class ItemBuilder {
 
 	public ItemBuilder setRawTitle(String title) {
 		_title = title;
+		return this;
+	}
+
+	public ItemBuilder setTitleComponent(net.kyori.adventure.text.Component component) {
+		_titleComponent = component;
+		return this;
+	}
+
+	public ItemBuilder setLoreComponents(List<net.kyori.adventure.text.Component> loreComponents) {
+		_loreComponents = loreComponents;
 		return this;
 	}
 

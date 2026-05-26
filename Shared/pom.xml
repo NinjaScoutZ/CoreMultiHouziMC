@@ -36,14 +36,14 @@
       <artifactId>packetevents-spigot</artifactId>
       <version>2.12.1</version>
       <scope>system</scope>
-      <systemPath>E:/Houzicore/servers/Lobby/plugins/packetevents-spigot-2.12.1.jar</systemPath>
+      <systemPath>${project.basedir}/libs/packetevents-spigot-2.12.1.jar</systemPath>
     </dependency>
     <dependency>
       <groupId>com.comphenix.protocol</groupId>
       <artifactId>ProtocolLib</artifactId>
       <version>5.5.0-SNAPSHOT</version>
       <scope>system</scope>
-      <systemPath>E:/Houzicore/servers/TestServer/plugins/ProtocolLib (1).jar</systemPath>
+      <systemPath>${project.basedir}/libs/ProtocolLib (1).jar</systemPath>
     </dependency>
     <dependency>
       <groupId>net.megavex</groupId>
