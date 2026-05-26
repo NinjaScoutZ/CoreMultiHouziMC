@@ -49,13 +49,13 @@ public class TreasureDetailPage extends ShopPageBase<TreasureManager, TreasureSh
     private final TreasureType     _type;
     private final TreasureLocation _treasureLocation;
     private final TreasureInventoryService _invService;
-    private final TreasurePage     _mainPage;
+    private final ShopPageBase<?, ?> _mainPage;
 
     public TreasureDetailPage(TreasureManager plugin, TreasureShop shop,
                               TreasureLocation treasureLocation,
                               CoreClientManager clientManager, DonationManager donationManager,
                               TreasureInventoryService invService,
-                              TreasureType type, TreasurePage mainPage, Player player) {
+                              TreasureType type, ShopPageBase<?, ?> mainPage, Player player) {
         super(plugin, shop, clientManager, donationManager,
               "   " + com.houzicore.shared.common.util.UtilText.toSmallCaps(TreasureLang.get(player, "ui.page.detail_title", "Treasure Details")),
               player, 54);
@@ -180,10 +180,13 @@ public class TreasureDetailPage extends ShopPageBase<TreasureManager, TreasureSh
                 .setTitle(isThai ? "§c« ย้อนกลับ" : "§c« Back")
                 .addLore(isThai ? " §7กลับไปยังหน้ารายการเลือกประเภทกล่อง" : " §7Return to chest selection")
                 .build();
-        hideInfo(backItem);
         addButton(SLOT_BACK, backItem, (player, click) -> {
             _mainPage.refresh();
-            getShop().openPageForPlayer(player, _mainPage);
+            if (getShop() != null) {
+                getShop().openPageForPlayer(player, (ShopPageBase) _mainPage);
+            } else {
+                player.openInventory(_mainPage.getInventory());
+            }
         });
 
         int coins = getDonationManager().Get(getPlayer().getName()) != null
@@ -198,12 +201,14 @@ public class TreasureDetailPage extends ShopPageBase<TreasureManager, TreasureSh
 
     /** Returns the accent glass-pane colour for a given tier. */
     private static Material getAccentMaterial(TreasureType type) {
-        switch (type) {
-            case OLD:      return Material.YELLOW_STAINED_GLASS_PANE;
-            case ANCIENT:  return Material.ORANGE_STAINED_GLASS_PANE;
-            case MYTHICAL: return Material.MAGENTA_STAINED_GLASS_PANE;
-            default:       return Material.GRAY_STAINED_GLASS_PANE;
-        }
+        return switch (type) {
+            case OLD -> Material.YELLOW_STAINED_GLASS_PANE; // หยกดวงจิต - สีเหลืองใส
+            case ANCIENT -> Material.ORANGE_STAINED_GLASS_PANE; // ปราณสวรรค์ - สีส้มอัคคี
+            case MYTHICAL -> Material.PURPLE_STAINED_GLASS_PANE; // เก้าจักรพรรดิ - สีม่วงเข้ม
+            case IMMORTAL -> Material.LIGHT_BLUE_STAINED_GLASS_PANE; // มรดกเต๋าอมตะ - สีฟ้าครามบริสุทธิ์
+            case DIVINE -> Material.WHITE_STAINED_GLASS_PANE; // จุติเนตรเก้าชั้นฟ้า - กระจกขาวมุกพรีเมียม
+            default -> Material.GRAY_STAINED_GLASS_PANE;
+        };
     }
 
     // ── Util ─────────────────────────────────────────────────────────────────

@@ -144,6 +144,9 @@ public class CarouselAnimation extends Animation {
             case LEGENDARY -> new org.bukkit.Color[]{ org.bukkit.Color.fromRGB(255, 215, 0),  org.bukkit.Color.fromRGB(255, 255, 150) }; // Gold→Pale Gold
             case MYTHICAL  -> new org.bukkit.Color[]{ org.bukkit.Color.fromRGB(170, 0, 255),  org.bukkit.Color.fromRGB(80, 180, 255)  }; // Violet→Sky
             case ILLUMINATED -> new org.bukkit.Color[]{ org.bukkit.Color.fromRGB(255, 230, 100), org.bukkit.Color.fromRGB(255, 255, 255) }; // Holy Gold→White
+            case IMMORTAL -> new org.bukkit.Color[]{ org.bukkit.Color.fromRGB(0, 198, 255), org.bukkit.Color.fromRGB(0, 114, 255) }; // Light Blue→Blue
+            case DIVINE -> new org.bukkit.Color[]{ org.bukkit.Color.fromRGB(255, 255, 255), org.bukkit.Color.fromRGB(255, 215, 0) }; // White→Gold
+            default -> new org.bukkit.Color[]{ org.bukkit.Color.WHITE, org.bukkit.Color.AQUA };
         };
     }
 

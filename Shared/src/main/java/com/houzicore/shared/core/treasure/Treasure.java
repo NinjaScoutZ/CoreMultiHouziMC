@@ -13,6 +13,7 @@ import com.houzicore.shared.core.reward.Reward;
 import com.houzicore.shared.core.treasure.animation.Animation;
 import com.houzicore.shared.core.treasure.animation.CarouselAnimation;
 import com.houzicore.shared.core.treasure.animation.ParticleAnimation;
+import com.houzicore.shared.core.treasure.animation.Xianxia3DAnimationEngine;
 import com.houzicore.shared.core.treasure.animation.XianxiaAlchemyAnimation;
 import com.houzicore.shared.core.displayentity.DisplayEntityManager;
 
@@ -44,8 +45,8 @@ public class Treasure {
 
 		// Ambient tier-specific particle orbit (non-blocking — won't prevent finish)
 		_ambientParticles = new ParticleAnimation(this);
-		// Start the Premium Xianxia Alchemy Animation immediately
-		_animations.add(new XianxiaAlchemyAnimation(this, java.util.Arrays.asList(_rewards)));
+		// Start the Premium Xianxia 3D Animation Engine immediately
+		_animations.add(new Xianxia3DAnimationEngine(this, _hologramManager, _displayEntityManager));
 	}
 
 	public Treasure(Player player, Reward[] rewards, Block centerBlock, Block[] chestBlocks, TreasureType treasureType,
@@ -74,6 +75,10 @@ public class Treasure {
 
 	public Player getPlayer() {
 		return _player;
+	}
+
+	public Reward[] getRewards() {
+		return _rewards;
 	}
 
 	public TreasureType getTreasureType() {

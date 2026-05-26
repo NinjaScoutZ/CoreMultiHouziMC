@@ -27,8 +27,9 @@ public class TreasurePage extends ShopPageBase<TreasureManager, TreasureShop> {
 
     private static final int SLOT_OLD      = 19;
     private static final int SLOT_ANCIENT  = 21;
-    private static final int SLOT_LEGENDARY = 23;
-    private static final int SLOT_MYTHICAL = 25;
+    private static final int SLOT_MYTHICAL = 23;
+    private static final int SLOT_IMMORTAL = 25;
+    private static final int SLOT_DIVINE   = 31;
     private static final int SLOT_COIN = 49;
 
     private final TreasureLocation _treasureLocation;
@@ -75,8 +76,9 @@ public class TreasurePage extends ShopPageBase<TreasureManager, TreasureShop> {
 
         renderChestIcon(TreasureType.OLD,      SLOT_OLD,      isThai);
         renderChestIcon(TreasureType.ANCIENT,  SLOT_ANCIENT,  isThai);
-        renderChestIcon(TreasureType.LEGENDARY, SLOT_LEGENDARY, isThai);
         renderChestIcon(TreasureType.MYTHICAL, SLOT_MYTHICAL, isThai);
+        renderChestIcon(TreasureType.IMMORTAL, SLOT_IMMORTAL, isThai);
+        renderChestIcon(TreasureType.DIVINE,   SLOT_DIVINE,   isThai);
 
         int coins = getDonationManager().Get(getPlayer().getName()) != null
                     ? getDonationManager().Get(getPlayer().getName()).getCoins()

@@ -18,8 +18,17 @@ public class UpdateVCommand extends CommandBase<Chat> {
 	// by typing /updatev!
 	// =========================================================================
 	
-	public static final String LATEST_VERSION_DATE = "25/05/2026";
+	public static final String LATEST_VERSION_DATE = "26/05/2026";
 	public static final String[] LATEST_UPDATE_LOG = {
+		"§8▸ §eXianxia Grand Alchemy Rework & Redis Shading Fixes",
+		"§7- ปรับปรุงและแก้ไขหน้าจอเปิดกล่องสุ่มสไตล์ Xianxia Grand Alchemy Rework ให้แสดงผลเตาหลอมแบบ 3D หมุนสมส่วน",
+		"§7- เพิ่มระบบไทม์ไลน์พิธีการหลอมโอสถ 12 วินาที (7 ช่วง: ปะทุเตา, เผาวัตถุดิบ, เร่งความเร็วเตา, แย้มสีทำนาย, หยุดวิปัสสนา, เตาพ่นสมบัติ, และเหินเวหาเก็บไอเทม)",
+		"§7- เพิ่มเอฟเฟกต์ละอองวัตถุดิบลอยฟุ้ง รอบเตา และเส้นแสงพลังปราณ (Trail of Essence) เชื่อมต่อจากตัวผู้เล่น",
+		"§7- เพิ่มเสียงเครื่องเคาะระฆังเบญจดุริยางค์ (Pentatonic Scale) เร่งจังหวะตามความเร็วรอบของเตาหลอม",
+		"§7- เพิ่มระบบเอฟเฟกต์ลอยออร่าสมบัติเกลียวสว่านแยกตามสีความหายาก (Common - Mythic) และเอฟเฟกต์ทองคำยักษ์ประดับรอบทิศทางเมื่อได้รับระดับสูงสุด (Divine Jackpot)",
+		"§7- ยกเลิกการ Teleport ผู้เล่นออกจากจุดเปิดกล่องสุ่มเพื่อเพิ่มความต่อเนื่องในการรับชม",
+		"§7- แก้ไขข้อผิดพลาด NoClassDefFoundError: redis/clients/jedis/Pipeline ในส่วนบริการเพื่อนด้วยการย้ายไลบรารี Redis และ Commons Pool ไปไว้ใน Shared JAR",
+		"",
 		"§8▸ §eSpeed Builders Modern UX/UI Adjustments (Legacy Toggleable)",
 		"§7- เพิ่มระบบสลับการแสดงผลหน้าจอแบบโมเดิร์น (Modern UX) ด้วยคำสั่ง /modernux หรือ /togglemodernux สำหรับ ADMIN",
 		"§7- ปรับปรุงแถบกระดานคะแนน (Scoreboard) แบบ Adventure Component พร้อมแสดงหัวผู้เล่นจิ๋ว (Inline Player Head) ในตารางจัดอันดับและไอคอนนาฬิกาแก้ว",

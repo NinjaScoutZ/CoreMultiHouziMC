@@ -164,6 +164,14 @@
                   <pattern>net.megavex.scoreboardlibrary</pattern>
                   <shadedPattern>com.houzicore.libs.scoreboardlib</shadedPattern>
                 </relocation>
+                <relocation>
+                  <pattern>redis.clients.jedis</pattern>
+                  <shadedPattern>com.houzicore.libs.jedis</shadedPattern>
+                </relocation>
+                <relocation>
+                  <pattern>org.apache.commons.pool2</pattern>
+                  <shadedPattern>com.houzicore.libs.pool2</shadedPattern>
+                </relocation>
               </relocations>
             </configuration>
           </execution>

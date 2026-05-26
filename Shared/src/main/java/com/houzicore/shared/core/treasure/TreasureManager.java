@@ -167,6 +167,30 @@ public class TreasureManager extends MiniPlugin {
 		return _treasureInventoryService;
 	}
 
+	public TreasureInventoryService getInventoryService() {
+		return _treasureInventoryService;
+	}
+
+	public List<TreasureLocation> getTreasureLocations() {
+		return _treasureLocations;
+	}
+
+	public TreasureLocation getTreasureLocation(Location loc) {
+		if (loc == null || _treasureLocations == null || _treasureLocations.isEmpty()) return null;
+		TreasureLocation nearest = null;
+		double nearestDist = Double.MAX_VALUE;
+		for (TreasureLocation tl : _treasureLocations) {
+			if (tl.getChestBlock() != null && tl.getChestBlock().getWorld().equals(loc.getWorld())) {
+				double dist = tl.getChestBlock().getLocation().distanceSquared(loc);
+				if (dist < nearestDist) {
+					nearestDist = dist;
+					nearest = tl;
+				}
+			}
+		}
+		return nearest;
+	}
+
 	public Reward[] getRewards(Player player, RewardType rewardType) {
 		return _rewardManager.getRewards(player, rewardType);
 	}

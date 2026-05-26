@@ -2,160 +2,126 @@ package com.houzicore.shared.core.treasure;
 
 import java.util.ArrayList;
 import java.util.List;
-
 import org.bukkit.Material;
 import org.bukkit.entity.Player;
-
-import com.houzicore.shared.common.util.C;
-import com.houzicore.shared.common.util.UtilText;
 import com.houzicore.shared.core.reward.RewardType;
 
 public enum TreasureType {
-	OLD(
-		C.cYellow,
-		"Old Chest",
-		"ui.types.old.name",
-		RewardType.OldChest,
-		Material.CHEST,
-		TreasureStyle.OLD,
-		1000
-	),
-	ANCIENT(
-		C.cGold,
-		"Ancient Chest",
-		"ui.types.ancient.name",
-		RewardType.AncientChest,
-		Material.TRAPPED_CHEST,
-		TreasureStyle.ANCIENT,
-		5000
-	),
-	LEGENDARY(
-		C.cYellow,
-		"Legendary Chest",
-		"ui.types.legendary.name",
-		RewardType.LegendaryChest,
-		Material.ENDER_CHEST,
-		TreasureStyle.LEGENDARY,
-		7500
-	),
-	MYTHICAL(
-		C.cRed,
-		"Mythical Chest",
-		"ui.types.mythical.name",
-		RewardType.MythicalChest,
-		Material.DRAGON_EGG,
-		TreasureStyle.MYTHICAL,
-		10000
-	),
-	ILLUMINATED(
-		C.cPurple,
-		"Illuminated Chest",
-		"ui.types.illuminated.name",
-		RewardType.IlluminatedChest,
-		Material.SEA_LANTERN,
-		TreasureStyle.ILLUMINATED,
-		20000
-	);
+	// 5 เกรดหลักวิถีเซียนที่เปิดแสดงผลในระบบล็อบบี้ส่วนกลาง
+	OLD("<gray>", "หยกดวงจิตศิษย์สายนอก", "Outer Soul Jade", RewardType.OldChest, Material.CAULDRON, TreasureStyle.OLD, 1000),
+	ANCIENT("<gradient:#ff5500:#ffaa00>", "คัมภีร์ลี้ลับแดนปราณสวรรค์", "Mystic Heaven Scripture", RewardType.AncientChest, Material.CAULDRON, TreasureStyle.ANCIENT, 3000),
+	MYTHICAL("<gradient:#db00ff:#7200ff>", "เตาหลอมโอสถเก้าจักรพรรดิ", "Nine Emperors Cauldron", RewardType.MythicalChest, Material.CAULDRON, TreasureStyle.MYTHICAL, 8000),
+	IMMORTAL("<gradient:#00c6ff:#0072ff>", "ศิลาจารึกมรดกเต๋าอมตะ", "Immortal Tao Stele", RewardType.OldChest, Material.ANVIL, TreasureStyle.LEGENDARY, 15000),
+	DIVINE("<rainbow><bold>", "เนตรดวงดาราจุติเก้าชั้นฟ้า", "Nine Skies Divine Eye", RewardType.MythicalChest, Material.BEACON, TreasureStyle.MYTHICAL, 30000),
+
+	// Hidden/Legacy Entries (คงไว้เพื่อกระเป๋าเงินผู้เล่นเดิมและ LvlManager เคลียร์ความปลอดภัย)
+	LEGENDARY("§6", "Legendary Chest (Legacy)", "Legendary Chest", RewardType.LegendaryChest, Material.CHEST, TreasureStyle.LEGENDARY, 7500),
+	ILLUMINATED("§d", "Illuminated Chest (Legacy)", "Illuminated Chest", RewardType.IlluminatedChest, Material.SEA_LANTERN, TreasureStyle.ILLUMINATED, 20000);
 
 	private final String _colorPrefix;
-	private final String _itemName;
-	private final String _langKey;
+	private final String _thaiName;
+	private final String _engName;
 	private final RewardType _rewardType;
 	private final Material _material;
 	private final TreasureStyle _treasureStyle;
 	private final int _costCoins;
 
-	TreasureType(String colorPrefix, String itemName, String langKey,
-			RewardType rewardType, Material material, TreasureStyle treasureStyle,
-			int costCoins) {
+	TreasureType(String colorPrefix, String thaiName, String engName,
+			RewardType rewardType, Material material, TreasureStyle treasureStyle, int costCoins) {
 		_colorPrefix = colorPrefix;
-		_itemName = itemName;
-		_langKey = langKey;
+		_thaiName = thaiName;
+		_engName = engName;
 		_rewardType = rewardType;
 		_material = material;
 		_treasureStyle = treasureStyle;
 		_costCoins = costCoins;
 	}
 
-	private static Material resolveMaterial(String preferred, String fallback) {
-		Material preferredMaterial = Material.matchMaterial(preferred);
-		if (preferredMaterial != null)
-			return preferredMaterial;
-
-		Material fallbackMaterial = Material.matchMaterial(fallback);
-		return fallbackMaterial != null ? fallbackMaterial : Material.CHEST;
-	}
-
 	public String getName() {
-		return _colorPrefix + UtilText.toSmallCaps(_itemName);
+		return _colorPrefix + _engName;
 	}
 
 	public String getDisplayName(Player player) {
-		return _colorPrefix + UtilText.toSmallCaps(TreasureLang.get(player, _langKey, _itemName));
+		boolean isThai = com.houzicore.shared.core.lang.LangManager.get().isThai(player);
+		return _colorPrefix + (isThai ? _thaiName : _engName);
 	}
 
 	public String getDisplayName(boolean isThai) {
-		return _colorPrefix + UtilText.toSmallCaps(TreasureLang.getForLocale(isThai ? "THA" : "ENG", _langKey, _itemName));
+		return _colorPrefix + (isThai ? _thaiName : _engName);
 	}
 
 	public String getDisplay(boolean isThai) {
-		return TreasureLang.getForLocale(isThai ? "THA" : "ENG", _langKey, _itemName);
+		return isThai ? _thaiName : _engName;
 	}
 
 	public String getPlainName(Player player) {
-		return com.houzicore.shared.common.util.UtilText.toSmallCaps(TreasureLang.get(player, _langKey, _itemName));
+		boolean isThai = com.houzicore.shared.core.lang.LangManager.get().isThai(player);
+		return isThai ? _thaiName : _engName;
 	}
 
 	public String getItemName() {
-		return _itemName;
+		return _engName;
 	}
 
-	public Material getMaterial() {
-		return _material;
-	}
-
-	public RewardType getRewardType() {
-		return _rewardType;
-	}
-
-	public TreasureStyle getStyle() {
-		return _treasureStyle;
-	}
-
-	public int getCostCoins() {
-		return _costCoins;
-	}
-
-	public int getCostForQty(int qty) {
-		return _costCoins * qty;
-	}
+	public Material getMaterial() { return _material; }
+	public RewardType getRewardType() { return _rewardType; }
+	public TreasureStyle getStyle() { return _treasureStyle; }
+	public int getCostCoins() { return _costCoins; }
+	public int getCostForQty(int qty) { return _costCoins * qty; }
 
 	public List<String> getRarityOddsLore(boolean isThai) {
 		List<String> lines = new ArrayList<>();
-		double myth = _rewardType.getMythicalChance() * 100;
-		double legend = (_rewardType.getLegendaryChance() - _rewardType.getMythicalChance()) * 100;
-		double rare = (_rewardType.getRareChance() - _rewardType.getLegendaryChance()) * 100;
-		double uncommon = (_rewardType.getUncommonChance() - _rewardType.getRareChance()) * 100;
-		double common = Math.max(0, 100 - uncommon - rare - legend - myth);
-		String locale = isThai ? "THA" : "ENG";
-
-		lines.add(" §7" + TreasureLang.getForLocale(locale, "ui.odds.header", isThai ? "โอกาสได้รับ:" : "Drop odds:"));
-		lines.add(String.format(
-			" §f• §7%s §f%.0f%%  §e%s §f%.1f%%",
-			TreasureLang.getForLocale(locale, "ui.odds.common", "Common"),
-			common,
-			TreasureLang.getForLocale(locale, "ui.odds.uncommon", "Uncommon"),
-			uncommon
-		));
-		lines.add(String.format(
-			" §f• §5%s §f%.1f%%  §6%s §f%.2f%%  §c%s §f%.3f%%",
-			TreasureLang.getForLocale(locale, "ui.odds.rare", "Rare"),
-			rare,
-			TreasureLang.getForLocale(locale, "ui.odds.legendary", "Legendary"),
-			legend,
-			TreasureLang.getForLocale(locale, "ui.odds.mythical", "Mythical"),
-			myth
-		));
+		String frame = "<dark_gray> ▪ </dark_gray>";
+		
+		if (isThai) {
+			lines.add(" <gray>📊 โอกาสบรรลุมรรคผลรางวัล:</gray>");
+			switch (this) {
+				case OLD -> {
+					lines.add(frame + "<gray>เกรดสามัญทั่วไป (COMMON): <green>75%</green></gray>");
+					lines.add(frame + "<gray>เกรดวัตถุมงคลหายาก (RARE): <aqua>25%</aqua></gray>");
+				}
+				case ANCIENT -> {
+					lines.add(frame + "<gray>เกรดวัตถุมงคลหายาก (RARE): <aqua>60%</aqua></gray>");
+					lines.add(frame + "<gray>เกรดสมบัติล้ำค่าแดนใต้ (EPIC): <purple>40%</purple></gray>");
+				}
+				case MYTHICAL -> {
+					lines.add(frame + "<gray>เกรดสมบัติล้ำค่าแดนใต้ (EPIC): <purple>70%</purple></gray>");
+					lines.add(frame + "<gray>เกรดวัตถุในตำนานเซียน (LEGENDARY): <gold>30%</gold></gray>");
+				}
+				case IMMORTAL -> {
+					lines.add(frame + "<gray>เกรดวัตถุในตำนานเซียน (LEGENDARY): <gold>80%</gold></gray>");
+					lines.add(frame + "<gray>เกรดสมบัติมรดกอมตะ (MYTHIC): <light_purple>20%</light_purple></gray>");
+				}
+				case DIVINE -> {
+					lines.add(frame + "<gray>เกรดสมบัติมรดกอมตะ (MYTHIC): <light_purple>85%</light_purple></gray>");
+					lines.add(frame + "<gray>เกรดจุติเนตรเก้าชั้นฟ้า (JACKPOT): <rainbow><bold>15%</bold></rainbow></gray>");
+				}
+			}
+		} else {
+			lines.add(" <gray>📊 Breakthrough Odds:</gray>");
+			switch (this) {
+				case OLD -> {
+					lines.add(frame + "<gray>Common Tier: <green>75%</green></gray>");
+					lines.add(frame + "<gray>Rare Tier: <aqua>25%</aqua></gray>");
+				}
+				case ANCIENT -> {
+					lines.add(frame + "<gray>Rare Tier: <aqua>60%</aqua></gray>");
+					lines.add(frame + "<gray>Epic Tier: <purple>40%</purple></gray>");
+				}
+				case MYTHICAL -> {
+					lines.add(frame + "<gray>Epic Tier: <purple>70%</purple></gray>");
+					lines.add(frame + "<gray>Legendary Tier: <gold>30%</gold></gray>");
+				}
+				case IMMORTAL -> {
+					lines.add(frame + "<gray>Legendary Tier: <gold>80%</gold></gray>");
+					lines.add(frame + "<gray>Mythic Tier: <light_purple>20%</light_purple></gray>");
+				}
+				case DIVINE -> {
+					lines.add(frame + "<gray>Mythic Tier: <light_purple>85%</light_purple></gray>");
+					lines.add(frame + "<gray>Divine Jackpot: <rainbow><bold>15%</bold></rainbow></gray>");
+				}
+			}
+		}
 		return lines;
 	}
 }

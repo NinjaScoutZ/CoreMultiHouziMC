@@ -39,6 +39,7 @@ import com.houzicore.shared.core.treasure.event.TreasureStartEvent;
 import com.houzicore.shared.core.treasure.gui.TreasureShop;
 import com.houzicore.shared.core.displayentity.DisplayEntityManager;
 import com.houzicore.shared.core.displayentity.DisplayModel;
+import com.houzicore.shared.core.displayentity.DisplayPart;
 import com.houzicore.shared.core.displayentity.ModelAnimation;
 import com.houzicore.shared.updater.UpdateType;
 import com.houzicore.shared.updater.event.UpdateEvent;
@@ -58,7 +59,7 @@ public class TreasureLocation implements Listener {
 	private final TreasureShop _shop;
 	private final Location _resetLocation;
 	private final DisplayEntityManager _displayEntityManager;
-	private final DisplayModel _idleHologramModel;
+	private DisplayModel _idleCauldronModel;
 	private boolean _hologramPulse;
 
 	public TreasureLocation(TreasureManager treasureManager, TreasureInventoryService treasureInventoryService,
@@ -82,16 +83,12 @@ public class TreasureLocation implements Listener {
 			}
 		}
 		
-		com.houzicore.shared.core.displayentity.DisplayPart chestPart = com.houzicore.shared.core.displayentity.DisplayPart.item(Material.CAULDRON)
-			.itemTransform(org.bukkit.entity.ItemDisplay.ItemDisplayTransform.HEAD);
-		chestPart.scale(new org.joml.Vector3f(1.6f, 1.6f, 1.6f));
-		_idleHologramModel = new DisplayModel("treasure_idle_" + chestBlock.hashCode(), java.util.Collections.singletonList(chestPart));
-		_idleHologramModel.setAnimation(ModelAnimation.rotateY(2.5f));
-		_idleHologramModel.addInteractionBox(0.0, -0.8, 0.0, 1.8f, 1.8f);
-		_displayEntityManager.addModel(_idleHologramModel);
-		
 		setHoloChestVisible(true);
 		_shop = new TreasureShop(treasureManager, _treasureInventoryService, clientManager, donationManager, this);
+	}
+
+	public Block getChestBlock() {
+		return _chestBlock;
 	}
 
 	public void attemptOpenTreasure(Player player, TreasureType treasureType) {
@@ -113,16 +110,14 @@ public class TreasureLocation implements Listener {
 
 		setHoloChestVisible(false);
 
-		if (treasureType == TreasureType.ANCIENT || treasureType == TreasureType.MYTHICAL) {
+		// ดักระบบส่งประกาศแชทสากลขึ้นเน็ตเวิร์กส่วนกลางเมื่อมีการร่ายคัมภีร์ตั้งแต่ระดับสวรรค์ขึ้นไป
+		if (treasureType != TreasureType.OLD) {
+			String tierName = treasureType.name().equalsIgnoreCase("DIVINE") 
+					? "<rainbow><bold>เนตรดวงดาราจุติเก้าชั้นฟ้า (DIVINE)</bold></rainbow>" 
+					: treasureType.getDisplayName(true);
+					
 			for (Player oPlayer : com.houzicore.shared.common.util.UtilServer.getPlayers()) {
-				boolean oIsThai = com.houzicore.shared.core.lang.LangManager.get().isThai(oPlayer);
-				String displayChestName = treasureType.getDisplay(oIsThai);
-				String rarityColor = switch (treasureType) {
-					case ANCIENT -> "#ffaa00";
-					case MYTHICAL -> "#ff5555";
-					default -> "gray";
-				};
-				oPlayer.sendMessage(mm.deserialize(QI_MAIN_TITLE + " <gray>ผู้บำเพ็ญพลังปราณ</gray> <green>" + player.getName() + "</green> <gray>กำลังทำพิธีเปิดคัมภีร์ลับแดนสวรรค์ เกรด:</gray> <" + rarityColor + "><bold>[" + displayChestName + "]</bold></" + rarityColor + ">"));
+				oPlayer.sendMessage(mm.deserialize("<gradient:#ffcc00:#ff5555><bold>สำนักเซียน></bold></gradient> <gray>ผู้บำเพ็ญตบะบารมี</gray> <green>" + player.getName() + "</green> <gray>กำลังทลายด่านบำเพ็ญร่ายคัมภีร์ลี้ลับเกรด:</gray> " + tierName));
 			}
 		}
 
@@ -131,10 +126,6 @@ public class TreasureLocation implements Listener {
 				_hologramManager, _displayEntityManager);
 		_currentTreasure = treasure;
 
-		final Location teleportLocation = treasure.getCenterBlock().getLocation().add(0.5, 0, 0.5);
-		teleportLocation.setPitch(player.getLocation().getPitch());
-		teleportLocation.setYaw(player.getLocation().getYaw());
-
 		for (final Entity entity : player.getNearbyEntities(3, 3, 3)) {
 			if (!entity.equals(player)) {
 				UtilAction.velocity(entity,
@@ -142,8 +133,6 @@ public class TreasureLocation implements Listener {
 						1.2, true, 0.6, 0, 1.0, true);
 			}
 		}
-
-		player.teleport(teleportLocation);
 	}
 
 	@EventHandler
@@ -195,13 +184,10 @@ public class TreasureLocation implements Listener {
 			_currentTreasure.cleanup();
 			_currentTreasure = null;
 		}
+		removeIdleCauldronModel();
 		clearPlayerHolograms();
 		_lastKnownReadyCounts.clear();
 		_hologram.stop();
-		if (_idleHologramModel != null) {
-			_idleHologramModel.remove();
-			_displayEntityManager.removeModel(_idleHologramModel);
-		}
 	}
 
 	public Treasure getCurrentTreasure() {
@@ -246,39 +232,8 @@ public class TreasureLocation implements Listener {
 	}
 
 	@EventHandler
-	public void onInteractEntity(org.bukkit.event.player.PlayerInteractEntityEvent event) {
-		handleInteraction(event.getPlayer(), event.getRightClicked(), event);
-	}
-
-	@EventHandler
-	public void onDamageEntity(org.bukkit.event.entity.EntityDamageByEntityEvent event) {
-		if (event.getDamager() instanceof Player player) {
-			if (handleInteraction(player, event.getEntity(), null)) {
-				event.setCancelled(true);
-			}
-		}
-	}
-
-	private boolean handleInteraction(Player player, org.bukkit.entity.Entity clicked, org.bukkit.event.player.PlayerInteractEntityEvent event) {
-		if (clicked instanceof org.bukkit.entity.Interaction interaction) {
-			org.bukkit.NamespacedKey key = new org.bukkit.NamespacedKey("houzicore", "bde_interact");
-			if (interaction.getPersistentDataContainer().has(key, org.bukkit.persistence.PersistentDataType.STRING)) {
-				String modelId = interaction.getPersistentDataContainer().get(key, org.bukkit.persistence.PersistentDataType.STRING);
-				if (("treasure_idle_" + _chestBlock.hashCode()).equals(modelId)) {
-					openShop(player);
-					if (event != null) event.setCancelled(true);
-					return true;
-				}
-			}
-		}
-		return false;
-	}
-
-	@EventHandler
 	public void onTreasureFinish(TreasureFinishEvent event) {
 		if (event.getTreasure().equals(_currentTreasure)) {
-			final Player player = _currentTreasure.getPlayer();
-			player.teleport(_resetLocation);
 			_currentTreasure = null;
 			setHoloChestVisible(true);
 		}
@@ -306,17 +261,35 @@ public class TreasureLocation implements Listener {
 		if (visible) {
 			_hologram.stop();
 			updatePlayerHolograms();
-			_chestBlock.setType(Material.AIR);
-			if (_idleHologramModel != null && !_idleHologramModel.isSpawned()) {
-				_idleHologramModel.spawn(_chestBlock.getLocation().add(0.5, 1.2, 0.5));
-			}
+			_chestBlock.setType(Material.BARRIER);
+			spawnIdleCauldronModel();
 		} else {
 			_hologram.stop();
 			clearPlayerHolograms();
+			removeIdleCauldronModel();
 			_chestBlock.setType(Material.AIR);
-			if (_idleHologramModel != null) {
-				_idleHologramModel.remove();
-			}
+		}
+	}
+
+	/** Spawn a slowly-rotating BlockDisplay overlay on top of the native CAULDRON block. */
+	private void spawnIdleCauldronModel() {
+		removeIdleCauldronModel();
+		DisplayPart cauldronPart = DisplayPart.centeredBlock(Material.CAULDRON)
+				.scale(1.0f, 1.0f, 1.0f)
+				.brightness(15, 15);
+		_idleCauldronModel = new DisplayModel(
+				"idle_cauldron_" + _chestBlock.hashCode(),
+				java.util.Collections.singletonList(cauldronPart));
+		_idleCauldronModel.setAnimation(ModelAnimation.rotateY(2.0f));
+		_displayEntityManager.addModel(_idleCauldronModel);
+		_idleCauldronModel.spawn(_chestBlock.getLocation().add(0.5, 0.5, 0.5));
+	}
+
+	private void removeIdleCauldronModel() {
+		if (_idleCauldronModel != null) {
+			_idleCauldronModel.remove();
+			_displayEntityManager.removeModel(_idleCauldronModel);
+			_idleCauldronModel = null;
 		}
 	}
 

@@ -46,7 +46,7 @@ public class ParticleAnimation extends Animation {
                 double angle = t * 0.15;
                 double x = Math.cos(angle) * 1.5;
                 double z = Math.sin(angle) * 1.5;
-                double y = 4.5 + 0.5 * Math.sin(t * 0.3);
+                double y = 1.2 + 0.3 * Math.sin(t * 0.3);
                 UtilParticle.PlayParticle(style.getSecondaryParticle(),
                         base.clone().add(x, y, z), 0, 0, 0, 0, 1,
                         ViewDist.NORMAL, UtilServer.getPlayers());
@@ -57,13 +57,13 @@ public class ParticleAnimation extends Animation {
                 double angle = t * 0.25;
                 double x = Math.cos(angle) * 2.0;
                 double z = Math.sin(angle) * 2.0;
-                double y = 4.0 + ((t % 25) * 0.1); // gradual rise, resets every 25 ticks
+                double y = 0.8 + ((t % 25) * 0.05); // gradual rise, resets every 25 ticks
                 UtilParticle.PlayParticle(style.getSecondaryParticle(),
                         base.clone().add(x, y, z), 0.1F, 0.1F, 0.1F, 0, 1,
                         ViewDist.NORMAL, UtilServer.getPlayers());
                 // Secondary FLAME trail slightly behind
                 base.getWorld().spawnParticle(Particle.FLAME,
-                        base.clone().add(x, y - 0.3, z), 1, 0, 0, 0, 0.02);
+                        base.clone().add(x, y - 0.15, z), 1, 0, 0, 0, 0.02);
                 break;
             }
             case MYTHICAL: {
@@ -73,11 +73,11 @@ public class ParticleAnimation extends Animation {
                     double angle = t * 0.3 + (j * Math.PI * 2.0 / 3.0);
                     double x = Math.cos(angle) * r;
                     double z = Math.sin(angle) * r;
-                    double y = 4.0 + Math.sin(t * 0.2 + j);
+                    double y = 1.0 + Math.sin(t * 0.2 + j) * 0.4;
                     base.getWorld().spawnParticle(Particle.SOUL_FIRE_FLAME,
                             base.clone().add(x, y, z), 0, 0, 0, 0, 0);
                     base.getWorld().spawnParticle(Particle.PORTAL,
-                            base.clone().add(x, y - 0.5, z), 1, 0, 0, 0, 0.1);
+                            base.clone().add(x, y - 0.2, z), 1, 0, 0, 0, 0.1);
                 }
                 break;
             }
@@ -88,7 +88,7 @@ public class ParticleAnimation extends Animation {
                     double angle = t * 0.2 + (arm * Math.PI);
                     double x = Math.cos(angle) * r;
                     double z = Math.sin(angle) * r;
-                    double y = 4.0 + Math.sin(t * 0.12 + arm * Math.PI) * 1.2;
+                    double y = 1.0 + Math.sin(t * 0.12 + arm * Math.PI) * 0.5;
                     org.bukkit.Color from = org.bukkit.Color.fromRGB(255, 215, 0);  // Gold
                     org.bukkit.Color to   = org.bukkit.Color.fromRGB(255, 255, 150); // Pale Gold
                     Particle.DustTransition dust = new Particle.DustTransition(from, to, 1.0f);
@@ -96,7 +96,38 @@ public class ParticleAnimation extends Animation {
                             base.clone().add(x, y, z), 1, 0.05, 0.05, 0.05, 0, dust);
                     // Subtle enchant sparkle trailing behind
                     base.getWorld().spawnParticle(Particle.ENCHANT,
-                            base.clone().add(x, y - 0.2, z), 1, 0.05, 0.1, 0.05, 0.01);
+                            base.clone().add(x, y - 0.1, z), 1, 0.05, 0.1, 0.05, 0.01);
+                }
+                break;
+            }
+            case IMMORTAL: {
+                // Ice-blue / Cyan celestial orbit - rotating rings
+                double r = 2.4;
+                for (int j = 0; j < 2; j++) {
+                    double angle = t * 0.15 + (j * Math.PI);
+                    double x = Math.cos(angle) * r;
+                    double z = Math.sin(angle) * r;
+                    double y = 1.2 + Math.sin(t * 0.1 + j * Math.PI) * 0.4;
+                    base.getWorld().spawnParticle(Particle.END_ROD, base.clone().add(x, y, z), 1, 0, 0, 0, 0);
+                    org.bukkit.Color from = org.bukkit.Color.fromRGB(0, 198, 255);  // Ice Blue
+                    org.bukkit.Color to   = org.bukkit.Color.fromRGB(0, 114, 255);  // Deep Blue
+                    Particle.DustTransition dust = new Particle.DustTransition(from, to, 0.8f);
+                    base.getWorld().spawnParticle(Particle.DUST_COLOR_TRANSITION,
+                            base.clone().add(x, y - 0.05, z), 1, 0.02, 0.02, 0.02, 0, dust);
+                }
+                break;
+            }
+            case DIVINE: {
+                // Spectacular rainbow halo with runes and energy sparks
+                double r = 2.6 + Math.sin(t * 0.07) * 0.3; // pulsating radius
+                int points = 4;
+                for (int j = 0; j < points; j++) {
+                    double angle = t * 0.2 + (j * Math.PI * 2.0 / points);
+                    double x = Math.cos(angle) * r;
+                    double z = Math.sin(angle) * r;
+                    double y = 1.4 + Math.cos(angle + t * 0.05) * 0.3;
+                    base.getWorld().spawnParticle(Particle.ENCHANT, base.clone().add(x, y, z), 1, 0, 0, 0, 0.05);
+                    base.getWorld().spawnParticle(Particle.TRIAL_SPAWNER_DETECTION, base.clone().add(x, y + 0.1, z), 1, 0, 0, 0, 0.02);
                 }
                 break;
             }
@@ -109,7 +140,7 @@ public class ParticleAnimation extends Animation {
                     double x = Math.cos(angle) * r;
                     double z = Math.sin(angle) * r;
                     // Tilted orbit: Y position depends on angle (creates a tilted ring)
-                    double y = 4.5 + Math.sin(angle + t * 0.08) * 0.8;
+                    double y = 1.3 + Math.sin(angle + t * 0.08) * 0.4;
                     base.getWorld().spawnParticle(Particle.END_ROD,
                             base.clone().add(x, y, z), 0, 0, 0, 0, 0);
                     // Purple–white dust shimmer
@@ -117,7 +148,7 @@ public class ParticleAnimation extends Animation {
                     org.bukkit.Color to   = org.bukkit.Color.fromRGB(255, 255, 255); // White
                     Particle.DustTransition dust = new Particle.DustTransition(from, to, 0.8f);
                     base.getWorld().spawnParticle(Particle.DUST_COLOR_TRANSITION,
-                            base.clone().add(x, y + 0.15, z), 1, 0, 0, 0, 0, dust);
+                            base.clone().add(x, y + 0.1, z), 1, 0, 0, 0, 0, dust);
                 }
                 break;
             }
@@ -125,7 +156,7 @@ public class ParticleAnimation extends Animation {
                 // Fallback: simple circular orbit using secondary particle
                 double angle = t * 0.2;
                 UtilParticle.PlayParticle(style.getSecondaryParticle(),
-                        base.clone().add(Math.cos(angle) * 1.5, 5.0, Math.sin(angle) * 1.5),
+                        base.clone().add(Math.cos(angle) * 1.5, 1.2, Math.sin(angle) * 1.5),
                         0, 0, 0, 0, 1, ViewDist.NORMAL, UtilServer.getPlayers());
                 break;
             }
